@@ -34,16 +34,16 @@ export default (sequelize, DataTypes) => {
           foreignKey: 'authorId',
           as: 'documents',
         });
-        User.belongsTo(models.Role, {
-          foreignKey: 'roleId',
-          onDelete: 'SET NULL'
-        });
+        // User.belongsTo(models.Role, {
+        //   foreignKey: 'roleId',
+        //   onDelete: 'SET NULL'
+        // });
       }
     },
 
     instanceMethods: {
 
-      verifyPassword(password) {
+      checkPassword(password) {
         return bcrypt.compareSync(password, this.password);
       },
 

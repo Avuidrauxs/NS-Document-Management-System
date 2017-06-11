@@ -27,11 +27,14 @@ module.exports = {
       roleId: {
         type: Sequelize.INTEGER,
         onDelete: 'SET NULL',
-        references: {
-          model: 'Roles',
-          key: 'id',
-          as: 'roleId'
-        }
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
     });
   },
