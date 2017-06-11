@@ -23,10 +23,6 @@ export default (sequelize, DataTypes) => {
     fullName: {
       type: DataTypes.STRING
     },
-    roleId: {
-      type: DataTypes.INTEGER,
-      defaultValue: 1
-    }
   }, {
     classMethods: {
       associate(models) {
@@ -34,10 +30,6 @@ export default (sequelize, DataTypes) => {
           foreignKey: 'authorId',
           as: 'documents',
         });
-        // User.belongsTo(models.Role, {
-        //   foreignKey: 'roleId',
-        //   onDelete: 'SET NULL'
-        // });
       }
     },
 
