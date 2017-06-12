@@ -11,22 +11,26 @@ export default (app) => {
   // Create new user route
   app.post('/users', Controller.user.createNewUser);
 
-  // Fetch all users route
+//  Fetch all users route
   app.get('/users', Authenticate.checkUser, Authenticate.allowAdmin,
     Controller.user.fetchAllUsers);
+
+    // Search for a user by username route
+  app.get('/search/users', Authenticate.checkUser, Authenticate.allowAdmin,
+  Controller.user.fetchAllUsers);
 
   // Fetch user route
   app.get('/users/:id', Authenticate.checkUser, Controller.user.fetchUser);
 
-  // Update user role route
-  app.put('/users/:id', Authenticate.checkUser,
-    Authenticate.allowUser, Controller.user.updateUser);
+  // Update user info route
+  app.put('/users/:id', Authenticate.checkUser, Authenticate.allowUser,
+  Controller.user.updateUser);
 
 // Delete user route
-  app.delete('/users/:id', Authenticate.checkUser,
-    Authenticate.allowAdmin, Controller.user.deleteUser);
+  app.delete('/users/:id', Authenticate.checkUser, Authenticate.allowUser,
+  Controller.user.deleteUser);
 
-// Fetch User saved documents
-  app.get('/users/:id/documents', Authenticate.checkUser,
-    Authenticate.allowAdmin, Controller.user.fetchUserDocuments);
+// Fetch User saved documents route
+  app.get('/users/:id/documents', Authenticate.checkUser, Authenticate.allowUser,
+  Controller.user.fetchUserDocuments);
 };

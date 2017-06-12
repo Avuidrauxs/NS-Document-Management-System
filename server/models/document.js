@@ -26,6 +26,7 @@ export default (sequelize, DataTypes) => {
       associate: (models) => {
         Document.belongsTo(models.User, {
           foreignKey: 'authorId',
+          allowNull: false,
           onDelete: 'SET NULL'
         });
       }

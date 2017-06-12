@@ -6,7 +6,7 @@ const User = {
 
   // Route: POST: /users
   createNewUser(req, res) {
-    if (req.body.roleId === '0') {
+    if (req.body.roleId === 1) {
       return res.status(401).send({ message: 'Invalid Privilege' });
     }
     return models.User.create(req.body)
@@ -36,15 +36,15 @@ const User = {
   },
 
 // Route: PUT: /users/:id
-// This updates user role for no
+// This updates user information
   updateUser(req, res) {
-    if (req.body.roleId !== 0 && res.header.decoded.roleId !== 0) {
+    if (req.body.roleId !== 1 && res.header.decoded.roleId !== 1) {
       return res.status(403).send({
         message: 'You dont have that kinda privilege'
       });
     }
-    // return res.header.user.update(req.body, { fields: Object.keys(req.body) })
-    return res.header.user.update({ roleId: 0 })
+    return res.header.user.update(req.body, { fields: Object.keys(req.body) })
+    // return res.header.user.update({ roleId: 0 })
     .then(updatedUser =>
       res.status(200).send(Authenticate.userDetails(updatedUser)))
     .catch(error => res.status(400).send(error));
@@ -66,6 +66,14 @@ const User = {
         $iLike: searchQuery
       } },
       order: [['createdAt', 'DESC']]
+      // include: [{
+      //   model: models.Role,
+      //   as: 'roles',
+      // }],
+      //   order: [
+      //     ['createdAt', 'DESC'],
+      //     [{ model: models.Role, as: 'roles' }, 'createdAt', 'ASC'],
+      //   ],
     })
     .then((users) => {
       const response = {
@@ -80,10 +88,9 @@ const User = {
 // DELETE NOT WORKING FOR NOW
 // Route: DELETE: /users/:id
   deleteUser(req, res) {
-    if (res.header.decoded.roleId !== res.header.user.id) {
+    if (res.header.decoded.roleId === req.params.id && res.header.decoded.roleId !== 1) {
       return res.status(403).send({ message: 'You dont have that privilege' });
     }
-    console.log(res.header.user);
     return res.header.user.destroy()
     .then(() => res.status(203).send({ message: 'User deleted' }));
   },

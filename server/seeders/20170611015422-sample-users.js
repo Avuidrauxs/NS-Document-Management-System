@@ -7,7 +7,6 @@ module.exports = {
     fullName: 'Admin Igwe',
     email: 'admin@nsdms.org',
     password: bcrypt.hashSync('admin', bcrypt.genSaltSync(8)),
-    roleId: 0,
     createdAt: new Date(),
     updatedAt: new Date()
   }, {
@@ -15,7 +14,6 @@ module.exports = {
     fullName: 'Pepper Soup',
     email: 'p.soup@nsdms.org',
     password: bcrypt.hashSync('soup', bcrypt.genSaltSync(8)),
-    roleId: 1,
     createdAt: new Date(),
     updatedAt: new Date()
   }], {}),

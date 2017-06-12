@@ -12,8 +12,7 @@ const Authenticate = {
       username: user.username,
       fullName: user.fullName,
       email: user.email,
-      roleId: user.roleId,
-      about: user.about
+      roleId: user.roleId
     };
   },
 
@@ -52,9 +51,9 @@ const Authenticate = {
       .then((user) => {
         if (!user) return res.status(404).send({ message: 'User not found' });
 
-        if (res.header.decoded.roleId !== 0
+        if (res.header.decoded.roleId !== 1
           && res.header.decoded.id !== user.id) {
-          return res.status(403).send({ message: 'You dont have privileges' });
+          return res.status(403).send({ message: 'You dont have privileges yet!' });
         }
         res.header.user = user;
         return next();
@@ -63,7 +62,7 @@ const Authenticate = {
   },
 
   allowAdmin(req, res, next) {
-    if (res.header.decoded.roleId === 0) {
+    if (res.header.decoded.roleId === 1) {
       return next();
     }
     return res.status(403).send({ message: 'You dont have privileges' });

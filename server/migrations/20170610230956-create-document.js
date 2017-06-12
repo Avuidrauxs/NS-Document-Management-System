@@ -12,17 +12,21 @@ module.exports = {
         onDelete: 'SET NULL',
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'id',
+          as: 'authorId',
         }
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       body: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       privilege: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
