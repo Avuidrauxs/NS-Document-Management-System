@@ -13,7 +13,7 @@
     "setup:test-server": "npm run reset:db:test && npm run refill:db:test",
     "server-test": "npm run setup:test-server && NODE_ENV=test nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register server/tests/**/*.js --timeout 90000",
     "coverage": "nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run setup:test-server && npm run server-test"
   },
   "dependencies": {
     "axios": "^0.9.1",
@@ -24,6 +24,7 @@
     "body-parser": "^1.17.1",
     "cors": "2.8.3",
     "cross-env": "4.0.0",
+    "coveralls": "^2.13.1",
     "csso-loader": "^0.3.1",
     "dotenv": "^2.0.0",
     "dotenv-webpack": "^1.4.5",
@@ -69,7 +70,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^4.0.2",
     "chai-http": "^3.0.0",
-    "coveralls": "^2.13.1",
     "css-loader": "^0.23.1",
     "deep-freeze-strict": "^1.1.1",
     "enzyme": "^2.8.2",

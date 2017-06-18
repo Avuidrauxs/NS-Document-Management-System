@@ -1,7 +1,7 @@
 /node_modules/**
 lib/**
-seeders/*
-server/test/*
+seeders/**
+server/test/**
 client/test/**
 webpack.config.dev.babel.js
 webpack.config.prod.babel.js
