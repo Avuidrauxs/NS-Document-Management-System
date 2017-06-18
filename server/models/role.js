@@ -10,10 +10,7 @@ export default (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         Role.hasMany(models.User, {
-          foreignKey: {
-            name: 'roleId',
-            defaultValue: 2
-          },
+          foreignKey: 'roleId',
           as: 'users'
         });
       }

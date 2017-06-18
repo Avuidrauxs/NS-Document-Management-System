@@ -83,7 +83,7 @@ const Authenticate = {
       });
     } else {
       return res.status(403).send({
-        message: 'Token absent'
+        message: 'No token provided'
       });
     }
   },

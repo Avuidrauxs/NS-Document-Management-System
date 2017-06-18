@@ -13,9 +13,9 @@ export default (sequelize, DataTypes) => {
     body: {
       type: DataTypes.TEXT,
       allowNull: false,
-      validate: { notEmpty: { args: true, msg: 'Body cant be empty' } }
+      validate: { notEmpty: { args: true, msg: 'Body can\'t be empty' } }
     },
-    privilege: {
+    access: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'public',
@@ -26,7 +26,6 @@ export default (sequelize, DataTypes) => {
       associate: (models) => {
         Document.belongsTo(models.User, {
           foreignKey: 'authorId',
-          allowNull: false,
           onDelete: 'SET NULL'
         });
       }

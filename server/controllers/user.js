@@ -17,7 +17,7 @@ const User = {
         roleId: user.roleId
       });
       const response = Authenticate.userDetails(user);
-      response.message = 'User created';
+      response.message = `Created ${user.username}`;
       response.token = token;
       return res.status(201).send(response);
     })
@@ -38,7 +38,7 @@ const User = {
 // Route: PUT: /users/:id
 // This updates user information
   updateUser(req, res) {
-    if (req.body.roleId !== 1 && res.header.decoded.roleId !== 1) {
+    if (req.body.roleId === 1 && res.header.decoded.roleId !== 1) {
       return res.status(403).send({
         message: 'You dont have that kinda privilege'
       });
@@ -50,7 +50,7 @@ const User = {
     .catch(error => res.status(400).send(error));
   },
 
-  // Route: GET: /users or GET: /users/?limit=[integer]&offset=[integer]&q=[username]
+  // Route: GET: /users or GET: /search/users/?limit=[integer]&offset=[integer]&q=[username]
   fetchAllUsers(req, res) {
     let searchQuery = '%%';
     if (req.query.q) searchQuery = `%${req.query.q}%`;
@@ -85,7 +85,7 @@ const User = {
     .catch(error => res.status(400).send(error));
   },
 
-// DELETE NOT WORKING FOR NOW
+
 // Route: DELETE: /users/:id
   deleteUser(req, res) {
     if (res.header.decoded.roleId === req.params.id && res.header.decoded.roleId !== 1) {
@@ -132,7 +132,7 @@ const User = {
   .catch(error => res.status(400).send(error));
   },
 
-// Route: POST: /users/login
+// Route: POST: /users/logout
   logout(req, res) {
     return res.status(203).send({
       message: 'Successfully logged out'

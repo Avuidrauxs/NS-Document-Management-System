@@ -16,7 +16,7 @@ const documents = {
                id: document.id,
                title: document.title,
                body: document.body,
-               privilege: document.privilege,
+               access: document.access,
                User: { username: user.username, roleId: user.roleId },
                authorId: document.authorId,
                createdAt: document.createdAt,
@@ -44,10 +44,10 @@ const documents = {
       const decoded = Authenticate.checkToken(token);
       const userId = decoded ? decoded.id : null;
       const userRoleId = decoded ? decoded.roleId : null;
-      if (document.privilege !== 'public'
+      if (document.access !== 'public'
         && userRoleId !== 1
         && userId !== document.authorId
-        && !(document.privilege === 'role'
+        && !(document.access === 'role'
           && userRoleId === document.User.roleId)) {
         return res.status(403).send({ message: 'Access denied' });
       }
