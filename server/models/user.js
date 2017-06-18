@@ -15,7 +15,7 @@ export default (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: { args: true, msg: 'Name already exist' },
+      unique: { args: true, msg: 'Username already exist' },
       validate: {
         not: { args: ['\\s+'], msg: 'Use a valid username' },
         notEmpty: { args: true, msg: 'Please enter username' } }
@@ -23,12 +23,20 @@ export default (sequelize, DataTypes) => {
     fullName: {
       type: DataTypes.STRING
     },
+    roleId: {
+      type: DataTypes.INTEGER,
+      defaultValue: 2
+    }
   }, {
     classMethods: {
       associate(models) {
         User.hasMany(models.Document, {
           foreignKey: 'authorId',
           as: 'documents',
+        });
+        User.belongsTo(models.Role, {
+          foreignKey: 'roleId',
+          onDelete: 'SET NULL'
         });
       }
     },

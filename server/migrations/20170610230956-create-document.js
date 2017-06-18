@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      privilege: {
+      access: {
         type: Sequelize.STRING,
         allowNull: false
       },

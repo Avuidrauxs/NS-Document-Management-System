@@ -4,8 +4,8 @@ module.exports = {
       title: 'Non-Sucking Document Management System',
       body: `Just like the name suggests this app doesn't suck like aother documents
       Management systems`,
-      authorId: 5,
-      privilege: 'public',
+      authorId: 1,
+      access: 'public',
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -15,8 +15,8 @@ module.exports = {
       Skills I have acquired over a very long career.
       Skills that make me a nightmare for people like you.
       If you let my daughter go now that'll be the end of it.`,
-      authorId: 6,
-      privilege: 'public',
+      authorId: 2,
+      access: 'public',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {}),
