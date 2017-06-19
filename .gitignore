@@ -59,4 +59,5 @@ typings/
 
 # Miscellanous
 reports
+lib/
 **/*.DS_Store
