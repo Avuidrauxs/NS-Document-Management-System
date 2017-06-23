@@ -9,9 +9,9 @@ dotenv.load();
 export default {
   devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', 'scss', '.jsx'],
     alias: {
-      jquery: path.join(__dirname, 'node_modules/jquery/dist/jquery'),
+      jQuery: path.join(__dirname, 'node_modules/jquery/dist/jquery'),
     }
   },
   plugins: [

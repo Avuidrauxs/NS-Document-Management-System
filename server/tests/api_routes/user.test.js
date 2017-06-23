@@ -7,7 +7,9 @@ import data from '../mockData';
 const expect = chai.expect;
 chai.use(http);
 let adminToken, userToken, fakeId;
-const { pepper, fakeUserDetails, sampleAdmin, sampleUser1, sampleUser2, sampleUser3, sampleUser4, admin, user } = data;
+const { pepper, fakeUserDetails, sampleAdmin,
+  sampleUser1, sampleUser2, sampleUser3,
+  sampleUser4, admin, user } = data;
 
 describe('Users', () => {
   after((done) => {
