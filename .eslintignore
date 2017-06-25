@@ -3,6 +3,7 @@ lib/**
 seeders/**
 server/test/**
 client/test/**
+client/styles/**
 webpack.config.dev.babel.js
 webpack.config.prod.babel.js
 server/index.js

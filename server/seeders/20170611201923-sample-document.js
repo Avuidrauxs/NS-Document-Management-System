@@ -5,7 +5,7 @@ module.exports = {
       body: `Just like the name suggests this app doesn't suck like aother documents
       Management systems`,
       authorId: 1,
-      access: 'public',
+      access: 'private',
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
@@ -19,7 +19,16 @@ module.exports = {
       access: 'public',
       createdAt: new Date(),
       updatedAt: new Date()
-    }], {}),
+    },
+    {
+      title: 'Audax',
+      body: 'I am a banana',
+      authorId: 1,
+      access: 'role',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    ], {}),
   down: queryInterface =>
   queryInterface.bulkDelete('Documents', null, {})
 };
