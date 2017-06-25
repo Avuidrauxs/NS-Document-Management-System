@@ -6,6 +6,7 @@ import Main from './components/Main';
 import routes from './routes';
 import './styles/app.scss';
 import configureStore from './store/configureStore';
+import NotFoundPage from './components/NotFound';
 
 
 const store = configureStore();

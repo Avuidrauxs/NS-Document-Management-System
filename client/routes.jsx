@@ -1,18 +1,6 @@
-// import SignIn from './components/signin/SignInPage';
-// import SignUp from './components/signup/SignUpPage';
-// import Home from './components/home/Home';
-// import Dashboard from './components/dashboard/Dashboard';
-// import AddDocument from './components/documents/AddDocument';
-// import Profile from './components/profile/Profile';
-// import ViewUsers from './components/users/ViewUsers';
-// import RequireAuthentication from
-// './components/common/authentication/RequireAuthentication';
-// import PreventAuthenticatedUsers from
-// './components/common/authentication/PreventAuthenticatedUsers';
-
 import Landing from './components/landing/Landing';
 import Dashboard from './components/dashboard/Dashboard';
-import VerifyRoute from './utilities/verifyRoute';
+import NotFoundPage from './components/NotFound';
 import RestrictRoute from './utilities/restrictRoutes';
 
 const routes = [
@@ -24,6 +12,10 @@ const routes = [
     exact: true,
     component: RestrictRoute(Dashboard),
   },
+  // { path: '/*',
+  //   exact: false,
+  //   component: NotFoundPage,
+  // },
   // { path: '/signup',
   //   exact: true,
   //   component: PreventAuthenticatedUsers(SignUp),

@@ -23,13 +23,30 @@ export function postLogout() {
   };
 }
 
+export function postSignUp(userDetails) {
+  return (dispatch) => {
+    return axios.post('/users', userDetails)
+    .then((res) => {
+      const token = res.data.token;
+      localStorage.setItem('jwt-token', token);
+      dispatch(login(token, CONSTANTS.AUTH.SIGNUP_SUCCESS));
+    },
+  (err) => {
+    dispatch({
+      type: CONSTANTS.AUTH.SIGNUP_FAILURE,
+      error: { message: `Error: ${err}` }
+    });
+  });
+  };
+}
+
 export function postLogin(userDetails) {
   return (dispatch) => {
     return axios.post('/users/login', userDetails)
       .then((res) => {
         if (res.data.message === 'Invalid password or username') {
           dispatch({
-            type: CONSTANTS.AUTH.SIGNUP_FAILURE,
+            type: CONSTANTS.AUTH.SIGNIN_FAILURE,
             error: res.data.message
           });
         } else {
@@ -40,10 +57,9 @@ export function postLogin(userDetails) {
       },
       (err) => {
         dispatch({
-          type: CONSTANTS.AUTH.SIGNUP_FAILURE,
+          type: CONSTANTS.AUTH.SIGNIN_FAILURE,
           error: { message: `Error: ${err}` }
         });
-      }
-    );
+      });
   };
 }

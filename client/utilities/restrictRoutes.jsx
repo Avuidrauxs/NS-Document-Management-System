@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 
 export default (ComposedComponent) => {
@@ -14,6 +16,7 @@ export default (ComposedComponent) => {
     componentWillMount() {
       if (!this.props.isAuthenticated) {
         this.props.history.push('/');
+        console.log('Wrong Credentials');
         return (
           <Redirect
             to={{
@@ -27,6 +30,7 @@ export default (ComposedComponent) => {
     componentWillUpdate(nextProps) {
       if (!this.props.isAuthenticated || !nextProps.isAuthenticated) {
         this.props.history.push('/');
+        console.log('You must be signed in');
         return (
           <Redirect
             to={{

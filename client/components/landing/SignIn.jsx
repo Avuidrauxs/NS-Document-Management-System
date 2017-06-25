@@ -6,14 +6,16 @@ import Input from 'muicss/lib/react/input';
 import TextField from 'material-ui/TextField';
 import Button from 'muicss/lib/react/button';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Container from 'muicss/lib/react/container';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
-import { postLogin } from '../../actions/AuthActions';
+import { postLogin, postSignUp } from '../../actions/AuthActions';
 import { isUserName } from '../../utilities/validator';
 
-export class SignIn extends Component {
+
+class SignIn extends Component {
 
   constructor(props) {
     super(props);
@@ -21,14 +23,20 @@ export class SignIn extends Component {
       open: false,
       username: '',
       password: '',
-      confirmPassword: ''
+      signUpUsername: '',
+      signUpPassword: '',
+      email: '',
+      fullName: '',
+      confirmPassword: '',
+      isError: false
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.onSignInSubmit = this.onSignInSubmit.bind(this);
-    // this.onSignOutSubmit = this.SignOutSubmit.bind(this);
+    this.onSignUpSubmit = this.onSignUpSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    // this.comparePassword = this.comparePassword.this(this);
+    this.comparePassword = this.comparePassword.bind(this);
+    this.alertWrongPassword = this.alertWrongPassword.bind(this);
   }
 
   onChange(event) {
@@ -43,32 +51,44 @@ export class SignIn extends Component {
     this.setState({ open: false });
   }
 
-  onSignOutSubmit(event) {
+  onSignUpSubmit(event) {
     event.preventDefault();
+    this.props.postSignUp({
+      username: this.state.signUpUsername,
+      password: this.state.signUpPassword,
+      fullName: this.state.fullName,
+      email: this.state.email,
+    })
+    .then(() => {
+      console.log('am signed up');
+      this.props.history.push('/dashboard');
+    })
+    .catch((err) => { throw new Error(err); });
   }
 
   onSignInSubmit(event) {
     event.preventDefault();
     const { username, password } = this.state;
 
-
-      this.props.postLogin({ username, password }).then((res) => {
-          console.log('am here ', res);
-          this.props.history.push('/dashboard');
-      },
-    (err) => {
-      return (<Snackbar
-          open
-          message={err}
-          autoHideDuration={4000}
-          onRequestClose={this.handleRequestClose}
-        />)
-    }
-  );
+    this.props.postLogin({ username, password }).then(() => {
+      console.log('am here ');
+      this.handleClose();
+      this.props.history.push('/dashboard');
+    })
+    .catch((err) => { throw new Error(err); });
   }
 
   comparePassword() {
-
+    if (this.state.signUpPassword !== this.state.confirmPassword) {
+      this.alertWrongPassword()
+    }
+  }
+  alertWrongPassword() {
+    alert('Password mismatch');
+    this.setState({
+      signUpPassword: '',
+      confirmPassword: ''
+    });
   }
 
   render() {
@@ -78,19 +98,12 @@ export class SignIn extends Component {
         primary
         onTouchTap={this.handleClose}
       />,
-      <FlatButton
-        label="Submit"
-        primary
-        keyboardFocused
-        onTouchTap={this.handleClose}
-      />,
     ];
 
     return (
       <MuiThemeProvider>
         <div>
           <div className="sign-in">
-            <div className="divider" />
             <Form
               style={{
                 marginTop: '180px',
@@ -113,7 +126,7 @@ export class SignIn extends Component {
                 onChange={this.onChange}
                 />
 
-                <Button color="primary" variant="raised">SignIn</Button>
+              <Button color="primary" variant="raised">SignIn</Button>
 
               <br />
               <br />
@@ -122,7 +135,7 @@ export class SignIn extends Component {
                 style={{ cursor: 'pointer', color: 'black' }}
                         ><em>here
             </em></a> to register</p>
-            </Form>
+        </Form>
           </div>
           <div>
             <Dialog
@@ -134,20 +147,56 @@ export class SignIn extends Component {
             onRequestClose={this.handleClose}
             autoScrollBodyContent
           >
-              <Form>
-                <Input label="First name" floatingLabel required errorText="Feild required" />
-                <Input label="Last name" floatingLabel />
-                <Input label="Username" floatingLabel required />
-                <Input label="Email" type="password" floatingLabel required />
-                <Input label="Password" type="password" floatingLabel required />
-                <Input
+              <Container>
+                <Form onSubmit={this.onSignUpSubmit}>
+                  <Input
+                    label="Full name"
+                    floatingLabel
+                    required
+                    name="fullName"
+                    value={this.state.fullName}
+                    onChange={this.onChange}
+                    />
+                  <Input
+                    label="Username"
+                    floatingLabel
+                    required
+                    name="signUpUsername"
+                    value={this.state.signUpUsername}
+                    onChange={this.onChange}
+                    />
+                  <Input
+                    label="Email"
+                    type="email"
+                    floatingLabel
+                    required
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    />
+                  <Input
+                  label="Password"
+                  type="password"
+                  floatingLabel
+                  required
+                  name="signUpPassword"
+                  value={this.state.signUpPassword}
+                  onChange={this.onChange}
+                  />
+                  <Input
                     label="Re-type Password"
                     type="password"
                     floatingLabel
                     required
+                    name="confirmPassword"
+                    value={this.state.confirmPassword}
+                    onChange={this.onChange}
+                    onBlur={this.comparePassword}
                   />
-              </Form>
 
+                <Button color="primary" variant="raised">Sign Up</Button>
+                </Form>
+              </Container>
             </Dialog>
           </div>
         </div>
@@ -158,8 +207,9 @@ export class SignIn extends Component {
 
 SignIn.propTypes = {
   postLogin: PropTypes.func.isRequired,
+  postSignUp: PropTypes.func.isRequired,
   history: PropTypes.object
 };
 
 
-export default withRouter(connect(null, { postLogin })(SignIn));
+export default withRouter(connect(null, { postLogin, postSignUp })(SignIn));

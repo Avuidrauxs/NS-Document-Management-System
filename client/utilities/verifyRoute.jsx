@@ -5,7 +5,6 @@ import { PropTypes } from 'prop-types';
 
 
 export default (ComposedComponent) => {
-
   class VerifyRoute extends Component {
 
     componentWillMount() {
