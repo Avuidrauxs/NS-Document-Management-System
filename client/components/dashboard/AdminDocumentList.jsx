@@ -9,12 +9,13 @@ import FlatButton from 'material-ui/FlatButton';
 import { fetchDocuments } from '../../actions/DocumentActions';
 
 
-class DocumentsList extends Component {
+class AdminDocumentsList extends Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
+    // disptching action to fetch documents here
     this.props.fetchDocuments();
   }
   render() {
@@ -27,43 +28,43 @@ class DocumentsList extends Component {
         <h1>Documents go here</h1>
         <Container fluid>
           <Row>
-            {this.props.documents.map((document, index) => {
-              if (document.access === 'public') {
-                return (
-                  <Col xs="6" md="4">
-                    <Card key={index} style={{ width: '300px' }}>
-                      <CardHeader
+
+        {this.props.documents.map((document, index) => {
+            return (
+              <Col xs="6" md="4">
+              <Card key={index}>
+                <CardHeader
      title={document.title}
      subtitle={document.title}
      actAsExpander
      showExpandableButton
    />
-                      <CardActions>
-                        <FlatButton label="Edit" />
-                        <FlatButton label="Delete" />
-                      </CardActions>
-                      <CardText expandable>
-                        {document.body}
-                      </CardText>
-                    </Card>
-                  </Col>
-                );
-              }
-            })}
+                <CardActions>
+                  <FlatButton label="Edit" />
+                  <FlatButton label="Delete" />
+                </CardActions>
+                <CardText expandable>
+                  {document.body}
+                </CardText>
+              </Card>
+                </Col>
+            );
+        })}
 
-          </Row>
+        </Row>
         </Container>
+
       </div>
 
     );
   }
 }
 
-DocumentsList.propTypes = {
+AdminDocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,
   documents: PropTypes.array.isRequired,
 };
 
 export default connect(state => ({
   documents: state.DocumentReducer
-}), { fetchDocuments })(DocumentsList);
+}), { fetchDocuments })(AdminDocumentsList);

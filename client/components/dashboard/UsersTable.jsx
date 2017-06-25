@@ -70,7 +70,8 @@ export default class UsersTable extends Component {
       height: '300px',
     };
   }
-
+  componentWillMount() {
+  }
   handleToggle(event, toggled) {
     this.setState({
       [event.target.name]: toggled,

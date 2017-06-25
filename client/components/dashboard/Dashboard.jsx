@@ -128,35 +128,25 @@ class Dashboard extends Component {
                 leftIcon={<ContentDrafts />}
                 />
                 <ListItem
+                  style={
+                    {
+                      display: ''
+                    }
+                  }
                 primaryText="Admin Actions"
                 leftIcon={<ContentInbox />}
-                initiallyOpens
                 primaryTogglesNestedList
                 nestedItems={[
-                  <Link to="/dash-users"><ListItem
+                  <Link key={1} to="/dash-users"><ListItem
                     key={1}
                     primaryText="View All Users"
                     leftIcon={<ActionList />}
                   /></Link>,
-                  <ListItem
+                  <Link key={2} to="/admin-documents"><ListItem
                     key={2}
                     primaryText="View All Documents"
                     leftIcon={<ContentFilterList />}
-                    disabled
-                    nestedItems={[
-                      <ListItem key={1} primaryText="Drafts" leftIcon={<ContentDrafts />} />,
-                    ]}
-                  />,
-                  <ListItem
-                    key={3}
-                    primaryText="Inbox"
-                    leftIcon={<ContentInbox />}
-                    open={this.state.open}
-                    onNestedListToggle={this.handleNestedListToggle}
-                    nestedItems={[
-                      <ListItem key={1} primaryText="Drafts" leftIcon={<ContentDrafts />} />,
-                    ]}
-                  />,
+                  /></Link>,
                 ]}
               />
               </List>
