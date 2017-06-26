@@ -120,7 +120,7 @@ describe('Documents', () => {
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body.rows).to.be.a('array');
-          expect(res.body.rows.length).to.equal(4);
+          expect(res.body.rows.length).to.equal(5);
           done();
         });
     });
@@ -137,7 +137,7 @@ describe('Documents', () => {
         });
         expect(res.status).to.equal(200);
         expect(res.body.rows).to.be.a('array');
-        expect(res.body.rows.length).to.equal(2);
+        expect(res.body.rows.length).to.equal(1);
         expect(all).to.be.true;
         done();
       });
@@ -196,25 +196,25 @@ describe('Documents', () => {
 
       it('should return a particular document given an id', (done) => {
         chai.request(app)
-          .get('/documents/1')
+          .get('/documents/2')
           .set({ 'x-access-token': userToken })
           .end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.body).to.be.a('object');
             expect(res.body).to.have.keys(['id', 'title', 'body', 'access',
               'authorId', 'createdAt', 'updatedAt', 'User']);
-            expect(res.body.title).to.equal('Non-Sucking Document Management System');
+            expect(res.body.title).to.equal('Taken Epic Liam Neeson Monologue');
             done();
           });
       });
 
       it('should allow an anonymous user to view a public document', (done) => {
         chai.request(app)
-        .get('/documents/1')
+        .get('/documents/2')
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.a('object');
-          expect(res.body.title).to.equal('Non-Sucking Document Management System');
+          expect(res.body.title).to.equal('Taken Epic Liam Neeson Monologue');
           done();
         });
       });
