@@ -18,7 +18,7 @@ let userToken;
 describe('Authenticate middleware', () => {
   before((done) => {
     chai.request(app)
-      .post('/users/login')
+      .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         userToken = res.body.token;
@@ -32,7 +32,7 @@ describe('Authenticate middleware', () => {
       response.header = {};
       const request = mockHttp.createRequest({
         method: 'GET',
-        url: '/users',
+        url: '/api/users',
         headers: { 'x-access-token': userToken }
       });
 
@@ -52,7 +52,7 @@ describe('Authenticate middleware', () => {
       response.header = {};
       const request = mockHttp.createRequest({
         method: 'GET',
-        url: '/users'
+        url: '/api/users'
       });
 
       const callback = () => {};
@@ -67,7 +67,7 @@ describe('Authenticate middleware', () => {
       const response = responseEvent();
       const request = mockHttp.createRequest({
         method: 'GET',
-        url: '/users',
+        url: '/api/users',
         headers: { 'x-access-token': 'imabananaanananana' }
       });
 
@@ -88,7 +88,7 @@ describe('Authenticate middleware', () => {
       response.header = { decoded: { roleId: 1 } };
       const request = mockHttp.createRequest({
         method: 'GET',
-        url: '/users'
+        url: '/api/users'
       });
 
       const callback = () => {
@@ -106,7 +106,7 @@ describe('Authenticate middleware', () => {
       response.header = { decoded: { roleId: 2 } };
       const request = mockHttp.createRequest({
         method: 'GET',
-        url: '/users'
+        url: '/api/users'
       });
 
       const callback = () => {};
@@ -123,7 +123,7 @@ describe('Authenticate middleware', () => {
         response.header = { decoded: { roleId: 1 } };
         const request = mockHttp.createRequest({
           method: 'GET',
-          url: '/users',
+          url: '/api/users',
           params: { id: 2 }
         });
 
@@ -141,7 +141,7 @@ describe('Authenticate middleware', () => {
         response.header = { decoded: { roleId: 2, id: 2 } };
         const request = mockHttp.createRequest({
           method: 'GET',
-          url: '/users',
+          url: '/api/users',
           params: { id: 2 }
         });
 
@@ -159,7 +159,7 @@ describe('Authenticate middleware', () => {
         response.header = { decoded: { roleId: 2 } };
         const request = mockHttp.createRequest({
           method: 'GET',
-          url: '/users',
+          url: '/api/users',
           params: { id: 2 }
         });
 

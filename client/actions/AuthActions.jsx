@@ -25,7 +25,7 @@ export function postLogout() {
 
 export function postSignUp(userDetails) {
   return (dispatch) => {
-    return axios.post('/users', userDetails)
+    return axios.post('/api/users', userDetails)
     .then((res) => {
       const token = res.data.token;
       localStorage.setItem('jwt-token', token);
@@ -42,7 +42,7 @@ export function postSignUp(userDetails) {
 
 export function postLogin(userDetails) {
   return (dispatch) => {
-    return axios.post('/users/login', userDetails)
+    return axios.post('api/users/login', userDetails)
       .then((res) => {
         if (res.data.message === 'Invalid password or username') {
           dispatch({

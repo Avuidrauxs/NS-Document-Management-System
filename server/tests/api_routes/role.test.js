@@ -14,7 +14,7 @@ let userToken, adminToken;
 describe('Role', () => {
   before((done) => {
     chai.request(app)
-      .post('/users/login')
+      .post('/api/users/login')
       .send(admin)
       .end((err, res) => {
         adminToken = res.body.token;
@@ -23,7 +23,7 @@ describe('Role', () => {
   });
   before((done) => {
     chai.request(app)
-      .post('/users/login')
+      .post('/api/users/login')
       .send(user)
       .end((err, res) => {
         userToken = res.body.token;
@@ -35,7 +35,7 @@ describe('Role', () => {
   describe('Adding a role', () => {
     it('should allow an admin to create a new role', (done) => {
       chai.request(app)
-      .post('/roles')
+      .post('/api/roles')
       .set({ 'x-access-token': adminToken })
       .send(roleOne)
       .end((err, res) => {
@@ -52,7 +52,7 @@ describe('Role', () => {
 
     // it('should fail if role alreay exists', (done) => {
     //   chai.request(app)
-    //   .post('/roles')
+    //   .post('/api/roles')
     //   .set({ 'x-access-token': adminToken })
     //   .send(roleOne)
     //   .end((err, res) => {
@@ -64,7 +64,7 @@ describe('Role', () => {
 
     it('should deny access if user is not admin', (done) => {
       chai.request(app)
-      .post('/roles')
+      .post('/api/roles')
       .set({ 'x-access-token': userToken })
       .send({ description: 'user' })
       .end((err, res) => {
@@ -79,7 +79,7 @@ describe('Role', () => {
   describe('Fetching all roles', () => {
     it('should return all roles', (done) => {
       chai.request(app)
-        .get('/roles')
+        .get('/api/roles')
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.a('array');
@@ -93,7 +93,7 @@ describe('Role', () => {
   describe('Fetching a role based on id', () => {
     it('should return a role given an id', (done) => {
       chai.request(app)
-        .get('/roles/2')
+        .get('/api/roles/2')
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.a('object');
@@ -107,7 +107,7 @@ describe('Role', () => {
 
     it('should send "Role not found" for invalid id', (done) => {
       chai.request(app)
-      .get('/roles/250')
+      .get('/api/roles/250')
       .end((err, res) => {
         expect(res.status).to.equal(404);
         expect(res.body).to.be.a('object');
@@ -119,7 +119,7 @@ describe('Role', () => {
     it('should fail if the provided id is out of range',
     (done) => {
       chai.request(app)
-      .get('/roles/3000000000')
+      .get('/api/roles/3000000000')
       .end((err, res) => {
         expect(res.status).to.equal(400);
         expect(res.body).to.be.a('object');
@@ -135,7 +135,7 @@ describe('Role', () => {
   describe('Updating a role', () => {
     it('should allow an admin to edit a role', (done) => {
       chai.request(app)
-      .put(`/roles/${roleOne.roleId}`)
+      .put(`/api/roles/${roleOne.roleId}`)
       .set({ 'x-access-token': adminToken })
       .send({ description: 'editor' })
       .end((err, res) => {
@@ -148,7 +148,7 @@ describe('Role', () => {
 
     it('should deny access if user is not an admin', (done) => {
       chai.request(app)
-      .put(`/roles/${roleOne.roleId}`)
+      .put(`/api/roles/${roleOne.roleId}`)
       .set({ 'x-access-token': userToken })
       .send({ description: 'Super Admin' })
       .end((err, res) => {
@@ -162,7 +162,7 @@ describe('Role', () => {
     // it('should not allow a user to use an existing role name',
     // (done) => {
     //   chai.request(app)
-    //   .put('/roles/2')
+    //   .put('/api/roles/2')
     //   .set({ 'x-access-token': adminToken })
     //   .send({ description: 'admin' })
     //   .end((err, res) => {
@@ -175,7 +175,7 @@ describe('Role', () => {
 
     it('should send "Role not found" for invalid id', (done) => {
       chai.request(app)
-      .put('/roles/250')
+      .put('/api/roles/250')
       .set({ 'x-access-token': adminToken })
       .send({ description: 'Gimli-Team' })
       .end((err, res) => {
@@ -189,7 +189,7 @@ describe('Role', () => {
     it('should fail if the provided id is out of range',
     (done) => {
       chai.request(app)
-      .put('/roles/3000000000')
+      .put('/api/roles/3000000000')
       .set({ 'x-access-token': adminToken })
       .send({ description: 'Gimli-Team' })
       .end((err, res) => {
@@ -207,7 +207,7 @@ describe('Role', () => {
     describe('Deleting a role', () => {
       it('should allow admin to delete a role', (done) => {
         chai.request(app)
-        .delete(`/roles/${roleOne.roleId}`)
+        .delete(`/api/roles/${roleOne.roleId}`)
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(203);
@@ -219,7 +219,7 @@ describe('Role', () => {
 
       it('should send "Role not found" for invalid id', (done) => {
         chai.request(app)
-        .delete('/roles/250')
+        .delete('/api/roles/250')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(404);
@@ -232,7 +232,7 @@ describe('Role', () => {
       it('should fail if the provided id is out of range',
       (done) => {
         chai.request(app)
-        .delete('/roles/3000000000')
+        .delete('/api/roles/3000000000')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(400);
