@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
@@ -8,52 +10,9 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
+import { fetchAllUsers } from '../../actions/UserActions';
 
-const styles = {
-  propContainer: {
-    width: 200,
-    overflow: 'hidden',
-    margin: '20px auto 0',
-  },
-  propToggleHeader: {
-    margin: '20px auto 10px',
-  },
-};
-
-const tableData = [
-  {
-    name: 'John Smith',
-    status: 'Employed',
-  },
-  {
-    name: 'Randal White',
-    status: 'Unemployed',
-  },
-  {
-    name: 'Stephanie Sanders',
-    status: 'Employed',
-  },
-  {
-    name: 'Steve Brown',
-    status: 'Employed',
-  },
-  {
-    name: 'Joyce Whitten',
-    status: 'Employed',
-  },
-  {
-    name: 'Samuel Roberts',
-    status: 'Employed',
-  },
-  {
-    name: 'Adam Moore',
-    status: 'Employed',
-  },
-];
-
-export default class UsersTable extends Component {
+class UsersTable extends Component {
 
   constructor(props) {
     super(props)
@@ -71,11 +30,7 @@ export default class UsersTable extends Component {
     };
   }
   componentWillMount() {
-  }
-  handleToggle(event, toggled) {
-    this.setState({
-      [event.target.name]: toggled,
-    });
+    this.props.fetchAllUsers();
   }
 
   handleChange(event) {
@@ -103,9 +58,9 @@ export default class UsersTable extends Component {
               </TableHeaderColumn>
             </TableRow>
             <TableRow>
-              <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
-              <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-              <TableHeaderColumn tooltip="The Status">Status</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Number">No.</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Role ID">Role ID</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -114,11 +69,11 @@ export default class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {tableData.map((row, index) => (
+            {this.props.users.map((user, index) => (
               <TableRow key={index}>
                 <TableRowColumn>{index}</TableRowColumn>
-                <TableRowColumn>{row.name}</TableRowColumn>
-                <TableRowColumn>{row.status}</TableRowColumn>
+                <TableRowColumn>{user.username}</TableRowColumn>
+                <TableRowColumn>{user.roleId}</TableRowColumn>
               </TableRow>
               ))}
           </TableBody>
@@ -126,9 +81,9 @@ export default class UsersTable extends Component {
             adjustForCheckbox={this.state.showCheckboxes}
           >
             <TableRow>
-              <TableRowColumn>ID</TableRowColumn>
-              <TableRowColumn>Name</TableRowColumn>
-              <TableRowColumn>Status</TableRowColumn>
+              <TableRowColumn>No.</TableRowColumn>
+              <TableRowColumn>Username</TableRowColumn>
+              <TableRowColumn>Role ID</TableRowColumn>
             </TableRow>
             <TableRow>
               <TableRowColumn colSpan="3" style={{ textAlign: 'center' }}>
@@ -141,3 +96,12 @@ export default class UsersTable extends Component {
     );
   }
 }
+
+UsersTable.propTypes = {
+  fetchAllUsers: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired
+};
+
+export default connect(state => ({
+  users: state.UserReducer.users
+}), { fetchAllUsers })(UsersTable);

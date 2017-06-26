@@ -17,6 +17,7 @@ class DocumentsList extends Component {
   componentWillMount() {
     this.props.fetchDocuments();
   }
+
   render() {
     return (
       <div
@@ -30,8 +31,8 @@ class DocumentsList extends Component {
             {this.props.documents.map((document, index) => {
               if (document.access === 'public') {
                 return (
-                  <Col xs="6" md="4">
-                    <Card key={index} style={{ width: '300px' }}>
+                  <Col xs="6" md="4" key={index}>
+                    <Card key={index} style={{ width: '300px', marginTop: '20px' }}>
                       <CardHeader
      title={document.title}
      subtitle={document.title}

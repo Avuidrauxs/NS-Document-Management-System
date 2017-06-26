@@ -3,7 +3,7 @@ import DocumentsList from './DocumentList';
 import AdminDocumentsList from './AdminDocumentList';
 
 const routes = [
-  { path: '/',
+  { path: '/dashboard',
     exact: true,
     main: DocumentsList
   },

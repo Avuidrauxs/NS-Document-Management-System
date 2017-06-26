@@ -29,29 +29,29 @@ class AdminDocumentsList extends Component {
         <Container fluid>
           <Row>
 
-        {this.props.documents.map((document, index) => {
-            return (
-              <Col xs="6" md="4">
-              <Card key={index}>
-                <CardHeader
+            {this.props.documents.map((document, index) => {
+              return (
+                <Col xs="6" md="4" key={index}>
+                  <Card key={index} style={{ width: '300px', marginTop: '20px' }} >
+                    <CardHeader
      title={document.title}
      subtitle={document.title}
      actAsExpander
      showExpandableButton
    />
-                <CardActions>
-                  <FlatButton label="Edit" />
-                  <FlatButton label="Delete" />
-                </CardActions>
-                <CardText expandable>
-                  {document.body}
-                </CardText>
-              </Card>
+                    <CardActions>
+                      <FlatButton label="Edit" />
+                      <FlatButton label="Delete" />
+                    </CardActions>
+                    <CardText expandable>
+                      {document.body}
+                    </CardText>
+                  </Card>
                 </Col>
-            );
-        })}
+              );
+            })}
 
-        </Row>
+          </Row>
         </Container>
 
       </div>

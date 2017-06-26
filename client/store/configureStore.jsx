@@ -8,7 +8,8 @@ const thunk = require('redux-thunk').default;
 const configureStore = (initialState = {}) => {
   const reducer = combineReducers({
     AuthReducer,
-    DocumentReducer
+    DocumentReducer,
+    UserReducer
   });
 
   const store = createStore(reducer,
