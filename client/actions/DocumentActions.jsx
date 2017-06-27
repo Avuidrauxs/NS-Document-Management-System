@@ -23,7 +23,7 @@ export function fetchDocuments(offset = 0, limit = 9) {
 }
 
 export function saveDocument(doc) {
-  if (!doc.updateId) {
+  if (!doc.id) {
     return (dispatch) => {
       return axios.post('/api/documents', doc)
     .then((res) => {
@@ -41,7 +41,7 @@ export function saveDocument(doc) {
     };
   }
   return (dispatch) => {
-    return axios.put(`/api/documents/${document.updateId}`, doc)
+    return axios.put(`/api/documents/${doc.id}`, doc)
     .then((res) => {
       dispatch({
         type: CONSTANTS.DOCUMENT.UPDATE_SUCCESS,
@@ -51,6 +51,23 @@ export function saveDocument(doc) {
   (err) => {
     dispatch({
       type: CONSTANTS.DOCUMENT.UPDATE_FAILURE,
+      error: { message: `Error: ${err}` }
+    });
+  });
+  };
+}
+
+export function deleteDocument(id) {
+  return (dispatch) => {
+    return axios.delete(`/api/documents/${id}`)
+    .then(() => {
+      dispatch({
+        type: CONSTANTS.DOCUMENT.DELETE_SUCCESS
+      });
+    },
+  (err) => {
+    dispatch({
+      type: CONSTANTS.DOCUMENT.DELETE_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });

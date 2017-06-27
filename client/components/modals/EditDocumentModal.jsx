@@ -10,15 +10,85 @@ import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { saveDocument } from '../../actions/DocumentActions';
 
-export default class EditDocumentModal extends Component {
+class EditDocumentModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openEdit: this.props.openEdit
+      openEdit: this.props.openEdit,
+      title: this.props.doc.title,
+      access: this.props.doc.access,
+      body: this.props.doc.body,
+      checked: this.handlePropChecked(),
+      hoverText: '',
+      errorUpdate: false
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handlePropChecked = this.handlePropChecked.bind(this);
+    this.onChecked = this.onChecked.bind(this);
+    this.onBodyChanged = this.onBodyChanged.bind(this);
+    this.handleMouseIn = this.handleMouseIn.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.onDocumentUpdate = this.onDocumentUpdate.bind(this);
+  }
+  handleClose() {
+    this.setState({ errorUpdate: false });
+  }
+  handleMouseIn() {
+    if (this.state.checked) {
+      this.setState({
+        hoverText: 'Click to toggle Public',
+        access: 'public'
+      });
+    } else {
+      this.setState({
+        hoverText: 'Click to toggle Private',
+        access: 'private'
+      });
+    }
+  }
+
+  handleMouseOut() {
+    this.setState({ hoverText: '' });
+  }
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+  handlePropChecked() {
+    if (this.props.doc.access === 'public') {
+      return false;
+    }
+    return true;
+  }
+  onChecked() {
+    this.setState({ checked: !this.state.checked });
+  }
+  onBodyChanged(html) {
+    this.setState({ body: html });
+  }
+  onDocumentUpdate() {
+    const { title, body, access } = this.state;
+    const { id } = this.props.doc;
+    if (this.state.title !== '' && this.state.body !== '') {
+      this.props.saveDocument({
+        title,
+        id,
+        body,
+        access
+      }).then(() => {
+        console.log(`${title} updated`);
+        this.props.closeEdit();
+      })
+      .catch((err) => { throw new Error(err); });
+    } else {
+      this.setState({
+        errorUpdate: true
+      });
+    }
   }
   render() {
-    const { id, title, body, access } = this.props.doc;
+    // const { id, title, body, access } = this.props.doc;
+    console.log(this.state.checked);
     const modules = {
       toolbar: [
         [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -47,6 +117,7 @@ export default class EditDocumentModal extends Component {
         key="2"
 label="Save"
 primary
+onTouchTap={this.onDocumentUpdate}
 />
     ];
     const styles = {
@@ -68,15 +139,15 @@ primary
                   hint="Title"
                   required
                   name="title"
-                  value={title}
+                  value={this.state.title}
                   onChange={this.handleChange}
                   style={styles.title}
                   />
                   <Checkbox
              checkedIcon={<VisibilityOff />}
              uncheckedIcon={<Visibility />}
-             checked={access}
-             onClick={this.handleChecked}
+             checked={this.state.checked}
+             onClick={this.onChecked}
              onMouseEnter={this.handleMouseIn}
              onMouseOut={this.handleMouseOut}
              label={this.state.hoverText}
@@ -84,8 +155,9 @@ primary
            />
         <ReactQuill
                   theme={'snow'}
-                  name="editorHtml"
-                  value={body}
+                  name="body"
+                  onChange={this.onBodyChanged}
+                  value={this.state.body}
                   modules={modules}
                   formats={formats}
                  />
@@ -97,9 +169,12 @@ primary
 EditDocumentModal.propTypes = {
   openEdit: PropTypes.bool.isRequired,
   closeEdit: PropTypes.func.isRequired,
-  doc: PropTypes.object.isRequired
+  doc: PropTypes.object.isRequired,
+  saveDocument: PropTypes.func.isRequired,
 };
 
 EditDocumentModal.defaultProps = {
   openEdit: false,
 };
+
+export default connect(null, { saveDocument })(EditDocumentModal);
