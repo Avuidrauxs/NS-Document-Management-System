@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
+import jwt from 'jwt-decode';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,7 +15,8 @@ export default (ComposedComponent) => {
     }
 
     componentWillMount() {
-      if (!this.props.isAuthenticated) {
+      const decoded = jwt(localStorage.getItem('jwt-token'));
+      if (!this.props.isAuthenticated && !decoded) {
         this.props.history.push('/');
         console.log('Wrong Credentials');
         return (
@@ -28,7 +30,8 @@ export default (ComposedComponent) => {
     }
 
     componentWillUpdate(nextProps) {
-      if (!this.props.isAuthenticated || !nextProps.isAuthenticated) {
+      const decoded = jwt(localStorage.getItem('jwt-token'));
+      if ((!this.props.isAuthenticated || !nextProps.isAuthenticated) && !decoded) {
         this.props.history.push('/');
         console.log('You must be signed in');
         return (

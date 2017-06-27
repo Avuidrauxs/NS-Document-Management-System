@@ -40,11 +40,12 @@ class AdminDocumentsList extends Component {
      showExpandableButton
    />
                     <CardActions>
+                      <FlatButton label="Open" />
                       <FlatButton label="Edit" />
                       <FlatButton label="Delete" />
                     </CardActions>
                     <CardText expandable>
-                      {document.body}
+                      <div dangerouslySetInnerHTML={{ __html: document.body }}></div>
                     </CardText>
                   </Card>
                 </Col>
