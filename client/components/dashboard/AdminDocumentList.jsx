@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import { fetchDocuments } from '../../actions/DocumentActions';
+import DocumentCard from '../document-editor/DocumentCard';
 
 
 class AdminDocumentsList extends Component {
@@ -32,22 +31,7 @@ class AdminDocumentsList extends Component {
             {this.props.documents.map((document, index) => {
               return (
                 <Col xs="6" md="4" key={index}>
-                  <Card key={index} style={{ width: '300px', marginTop: '20px' }} >
-                    <CardHeader
-     title={document.title}
-     subtitle={document.title}
-     actAsExpander
-     showExpandableButton
-   />
-                    <CardActions>
-                      <FlatButton label="Open" />
-                      <FlatButton label="Edit" />
-                      <FlatButton label="Delete" />
-                    </CardActions>
-                    <CardText expandable>
-                      <div dangerouslySetInnerHTML={{ __html: document.body }}></div>
-                    </CardText>
-                  </Card>
+                  <DocumentCard document={document} />
                 </Col>
               );
             })}

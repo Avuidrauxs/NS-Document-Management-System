@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
+
 export default class OpenDocumentModal extends Component {
   constructor(props) {
     super(props);
@@ -28,6 +29,7 @@ export default class OpenDocumentModal extends Component {
   render() {
     const { title, body } = this.props.doc;
     return (
+      <div>
       <Dialog
       title={title}
       actions={<FlatButton
@@ -41,6 +43,8 @@ export default class OpenDocumentModal extends Component {
     >
         <div dangerouslySetInnerHTML={{ __html: body }} />
       </Dialog>
+
+      </div>
     );
   }
 }

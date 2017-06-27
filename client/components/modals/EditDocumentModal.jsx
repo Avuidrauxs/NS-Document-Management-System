@@ -9,6 +9,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { saveDocument } from '../../actions/DocumentActions';
+import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 class EditDocumentModal extends Component {
   constructor(props) {
@@ -20,7 +21,9 @@ class EditDocumentModal extends Component {
       body: this.props.doc.body,
       checked: this.handlePropChecked(),
       hoverText: '',
-      errorUpdate: false
+      errorUpdate: false,
+      openSnackbar: false,
+      snackbarMsg: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePropChecked = this.handlePropChecked.bind(this);
@@ -76,13 +79,19 @@ class EditDocumentModal extends Component {
         body,
         access
       }).then(() => {
-        console.log(`${title} updated`);
         this.props.closeEdit();
+        console.log(`${title} updated`);
+        this.setState({
+          openSnackbar: true,
+          snackbarMsg: `${title} updated`
+        });
       })
       .catch((err) => { throw new Error(err); });
     } else {
+      console.log(`${title} update failed`);
       this.setState({
-        errorUpdate: true
+        openSnackbar: true,
+        snackbarMsg: `${title} update failed`
       });
     }
   }
@@ -129,39 +138,45 @@ onTouchTap={this.onDocumentUpdate}
       },
     };
     return (
-      <Dialog
-                      actions={actions}
-                      modal
-                      autoScrollBodyContent
-                      open={this.props.openEdit}
-                    >
-                    <Input
-                  hint="Title"
-                  required
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.handleChange}
-                  style={styles.title}
-                  />
-                  <Checkbox
-             checkedIcon={<VisibilityOff />}
-             uncheckedIcon={<Visibility />}
-             checked={this.state.checked}
-             onClick={this.onChecked}
-             onMouseEnter={this.handleMouseIn}
-             onMouseOut={this.handleMouseOut}
-             label={this.state.hoverText}
-             style={styles.checkbox}
-           />
-        <ReactQuill
-                  theme={'snow'}
-                  name="body"
-                  onChange={this.onBodyChanged}
-                  value={this.state.body}
-                  modules={modules}
-                  formats={formats}
-                 />
-      </Dialog>
+      <div>
+        <Dialog
+                        actions={actions}
+                        modal
+                        autoScrollBodyContent
+                        open={this.props.openEdit}
+                      >
+                      <Input
+                    hint="Title"
+                    required
+                    name="title"
+                    value={this.state.title}
+                    onChange={this.handleChange}
+                    style={styles.title}
+                    />
+                    <Checkbox
+               checkedIcon={<VisibilityOff />}
+               uncheckedIcon={<Visibility />}
+               checked={this.state.checked}
+               onClick={this.onChecked}
+               onMouseEnter={this.handleMouseIn}
+               onMouseOut={this.handleMouseOut}
+               label={this.state.hoverText}
+               style={styles.checkbox}
+             />
+          <ReactQuill
+                    theme={'snow'}
+                    name="body"
+                    onChange={this.onBodyChanged}
+                    value={this.state.body}
+                    modules={modules}
+                    formats={formats}
+                   />
+        </Dialog>
+        <GeneralSnackbar
+          openSnackbar={this.state.openSnackbar}
+          message={this.state.snackbarMsg}
+          />
+      </div>
     );
   }
 }

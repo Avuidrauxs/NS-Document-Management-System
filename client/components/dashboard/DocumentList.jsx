@@ -5,10 +5,6 @@ import jwt from 'jwt-decode';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import ReactQuill from 'react-quill';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import DocumentCard from '../document-editor/DocumentCard';
 import { fetchDocuments } from '../../actions/DocumentActions';
 

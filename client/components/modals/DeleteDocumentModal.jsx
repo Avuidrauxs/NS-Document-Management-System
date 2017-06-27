@@ -3,13 +3,30 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { deleteDocument } from '../../actions/DocumentActions';
+import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
-export default class DeleteDocumentModal extends Component {
+class DeleteDocumentModal extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      openDelete: this.props.openDelete
-    }
+      openDelete: this.props.openDelete,
+      openSnackbar: false,
+      snackbarMsg: ''
+    };
+    this.onDocumentDelete = this.onDocumentDelete.bind(this);
+  }
+  onDocumentDelete() {
+    this.props.deleteDocument(this.props.doc.id)
+    .then(() => {
+      console.log(`${this.props.doc.title} deleted`);
+      this.setState({
+        openSnackbar: true,
+        snackbarMsg: `${this.props.doc.title} deleted`
+      });
+      this.props.closeDelete();
+    })
+    .catch((err) => { throw new Error(err); });
   }
   render() {
     const { title } = this.props.doc;
@@ -24,9 +41,11 @@ export default class DeleteDocumentModal extends Component {
         key="2"
 label="Confirm"
 primary
+onTouchTap={this.onDocumentDelete}
 />];
     return (
-      <Dialog
+      <div>
+        <Dialog
                       actions={actions}
                       modal
                       autoScrollBodyContent
@@ -34,6 +53,11 @@ primary
                     >
         Are you sure you want to delete <strong>{title}</strong> ?
       </Dialog>
+        <GeneralSnackbar
+        openSnackbar={this.state.openSnackbar}
+        message={this.state.snackbarMsg}
+        />
+      </div>
     );
   }
 }
@@ -41,9 +65,12 @@ primary
 DeleteDocumentModal.propTypes = {
   openDelete: PropTypes.bool.isRequired,
   closeDelete: PropTypes.func.isRequired,
-  doc: PropTypes.object.isRequired
+  doc: PropTypes.object.isRequired,
+  deleteDocument: PropTypes.func.isRequired,
 };
 
 DeleteDocumentModal.defaultProps = {
   openDelete: false,
 };
+
+export default connect(null, { deleteDocument })(DeleteDocumentModal);
