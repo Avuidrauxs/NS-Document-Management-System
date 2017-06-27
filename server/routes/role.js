@@ -3,20 +3,20 @@ import Authenticate from '../middleware/authenticate';
 
 export default (app) => {
   // Route fetches all roles
-  app.get('/roles', Controller.role.fetchRoles);
+  app.get('/api/roles', Controller.role.fetchRoles);
 
   // Route adds a new role
-  app.post('/roles', Authenticate.checkUser, Authenticate.allowAdmin,
+  app.post('/api/roles', Authenticate.checkUser, Authenticate.allowAdmin,
   Controller.role.addRole);
 
   // Route fetches role by id
-  app.get('/roles/:id', Controller.role.fetchRole);
+  app.get('/api/roles/:id', Controller.role.fetchRole);
 
   // Route to upate a role
-  app.put('/roles/:id', Authenticate.checkUser,
+  app.put('/api/roles/:id', Authenticate.checkUser,
   Authenticate.allowAdmin, Controller.role.updateRole);
 
   // Route to remove a role
-  app.delete('/roles/:id', Authenticate.checkUser,
+  app.delete('/api/roles/:id', Authenticate.checkUser,
   Authenticate.allowAdmin, Controller.role.removeRole);
 };

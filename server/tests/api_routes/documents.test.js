@@ -23,7 +23,7 @@ describe('Documents', () => {
         ])
         .then(() => {
           chai.request(app)
-            .post('/users/login')
+            .post('/api/users/login')
             .send({ username: author.username, password: 'banana' })
             .end((err, res) => {
               authorToken = res.body.token;
@@ -34,7 +34,7 @@ describe('Documents', () => {
     });
     before((done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send(user)
         .end((err, res) => {
           userToken = res.body.token;
@@ -43,7 +43,7 @@ describe('Documents', () => {
     });
     before((done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send(admin)
         .end((err, res) => {
           adminToken = res.body.token;
@@ -64,7 +64,7 @@ describe('Documents', () => {
   describe('Creating a new document ', () => {
     it('should actually create a new document', (done) => {
       chai.request(app)
-      .post('/documents')
+      .post('/api/documents')
       .send(privateDoc)
       .set({ 'x-access-token': userToken })
       .end((err, res) => {
@@ -95,7 +95,7 @@ describe('Documents', () => {
 
     it('can create a new document and store the correct author', (done) => {
       chai.request(app)
-      .post('/documents')
+      .post('/api/documents')
       .send(roleDoc)
       .set({ 'x-access-token': authorToken })
       .end((err, res) => {
@@ -115,7 +115,7 @@ describe('Documents', () => {
   describe('Fetching all documents', () => {
     it('should return all documents if the user is an admin', (done) => {
       chai.request(app)
-        .get('/documents')
+        .get('/api/documents')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -127,7 +127,7 @@ describe('Documents', () => {
 
     it('should return only public documents for an anonymous user', (done) => {
       chai.request(app)
-      .get('/documents')
+      .get('/api/documents')
       .end((err, res) => {
         let all = true;
         res.body.rows.forEach((document) => {
@@ -145,7 +145,7 @@ describe('Documents', () => {
 
     it('should return correct documents(s) for a query', (done) => {
       chai.request(app)
-        .get('/documents?q=Non')
+        .get('/api/documents?q=Non')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -157,7 +157,7 @@ describe('Documents', () => {
 
     it('can limit the number of documents returned', (done) => {
       chai.request(app)
-        .get('/documents?limit=2')
+        .get('/api/documents?limit=2')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -170,7 +170,7 @@ describe('Documents', () => {
 
     it('can offset the starting position of returned documents', (done) => {
       chai.request(app)
-        .get('/documents?offset=1')
+        .get('/api/documents?offset=1')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -186,7 +186,7 @@ describe('Documents', () => {
       let publisherToken;
       before((done) => {
         chai.request(app)
-          .post('/users/login')
+          .post('/api/users/login')
           .send({ username: publisher.username, password: 'banana' })
           .end((err, res) => {
             publisherToken = res.body.token;
@@ -196,7 +196,7 @@ describe('Documents', () => {
 
       it('should return a particular document given an id', (done) => {
         chai.request(app)
-          .get('/documents/2')
+          .get('/api/documents/2')
           .set({ 'x-access-token': userToken })
           .end((err, res) => {
             expect(res.status).to.equal(200);
@@ -210,7 +210,7 @@ describe('Documents', () => {
 
       it('should allow an anonymous user to view a public document', (done) => {
         chai.request(app)
-        .get('/documents/2')
+        .get('/api/documents/2')
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body).to.be.a('object');
@@ -222,7 +222,7 @@ describe('Documents', () => {
       it("should not allow a user to access another user's private document",
       (done) => {
         chai.request(app)
-        .get(`/documents/${privateDoc.docId}`)
+        .get(`/api/documents/${privateDoc.docId}`)
         .set({ 'x-access-token': authorToken })
         .end((err, res) => {
           expect(res.status).to.equal(403);
@@ -235,7 +235,7 @@ describe('Documents', () => {
       it('should allow a user to access a document with the same role',
       (done) => {
         chai.request(app)
-        .get(`/documents/${roleDoc.docId}`)
+        .get(`/api/documents/${roleDoc.docId}`)
         .set({ 'x-access-token': publisherToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -249,7 +249,7 @@ describe('Documents', () => {
 
       it('should send "Document not found" for an invalid id', (done) => {
         chai.request(app)
-        .get('/documents/250')
+        .get('/api/documents/250')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(404);
@@ -262,7 +262,7 @@ describe('Documents', () => {
       it('should fail if the provided id is out of range',
       (done) => {
         chai.request(app)
-        .get('/documents/3000000000')
+        .get('/api/documents/3000000000')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(400);
@@ -279,7 +279,7 @@ describe('Documents', () => {
   describe('Updating a document', () => {
     it('should allow a user to update his/her document', (done) => {
       chai.request(app)
-      .put('/documents/2')
+      .put('/api/documents/2')
       .set({ 'x-access-token': userToken })
       .send({ title: 'No title now' })
       .end((err, res) => {
@@ -293,7 +293,7 @@ describe('Documents', () => {
     it("should deny access if a user tries to update another user's document",
     (done) => {
       chai.request(app)
-      .put('/documents/2')
+      .put('/api/documents/2')
       .set({ 'x-access-token': authorToken })
       .send({ title: 'False True' })
       .end((err, res) => {
@@ -324,7 +324,7 @@ describe('Documents', () => {
     it("should deny access if a user tries to delete another user's document",
     (done) => {
       chai.request(app)
-      .delete(`/documents/${roleDoc.docId}`)
+      .delete(`/api/documents/${roleDoc.docId}`)
       .set({ 'x-access-token': userToken })
       .end((err, res) => {
         expect(res.status).to.equal(403);
@@ -336,7 +336,7 @@ describe('Documents', () => {
 
     it('should allow a user to delete his/her document', (done) => {
       chai.request(app)
-      .delete(`/documents/${privateDoc.docId}`)
+      .delete(`/api/documents/${privateDoc.docId}`)
       .set({ 'x-access-token': userToken })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -348,7 +348,7 @@ describe('Documents', () => {
 
     it('should send "Document not found" given an invalid id', (done) => {
       chai.request(app)
-      .delete('/documents/250')
+      .delete('/api/documents/250')
       .set({ 'x-access-token': adminToken })
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -361,7 +361,7 @@ describe('Documents', () => {
     it('should fail if the provided id is out of range',
     (done) => {
       chai.request(app)
-      .delete('/documents/3000000000')
+      .delete('/api/documents/3000000000')
       .set({ 'x-access-token': adminToken })
       .end((err, res) => {
         expect(res.status).to.equal(400);

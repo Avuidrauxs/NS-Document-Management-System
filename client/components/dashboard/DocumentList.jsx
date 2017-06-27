@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import jwt from 'jwt-decode';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
@@ -19,6 +20,7 @@ class DocumentsList extends Component {
   }
 
   render() {
+    const decoded = jwt(localStorage.getItem('jwt-token'));
     return (
       <div
         style={{
@@ -29,7 +31,7 @@ class DocumentsList extends Component {
         <Container fluid>
           <Row>
             {this.props.documents.map((document, index) => {
-              if (document.access === 'public') {
+              if (document.access === 'public' || document.authorId === decoded.id) {
                 return (
                   <Col xs="6" md="4" key={index}>
                     <Card key={index} style={{ width: '300px', marginTop: '20px' }}>

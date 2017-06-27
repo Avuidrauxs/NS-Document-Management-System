@@ -116,9 +116,9 @@ class Dashboard extends Component {
      >
               <List>
                 <Subheader>Welcome, Audax</Subheader>
-                <ListItem
+                <Link to="/create-document"><ListItem
                 primaryText="Save a New Document"
-                leftIcon={<ActionChromeReaderMode />} />
+                leftIcon={<ActionChromeReaderMode />} /></Link>
                 <Link to="/dash-documents"><ListItem
                 primaryText="View Documents"
                 leftIcon={<ContentFilterList />}

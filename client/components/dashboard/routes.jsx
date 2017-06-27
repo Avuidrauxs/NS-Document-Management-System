@@ -1,6 +1,7 @@
 import UsersTable from './UsersTable';
 import DocumentsList from './DocumentList';
 import AdminDocumentsList from './AdminDocumentList';
+import DocumentEditor from '../document-editor/DocumentEditor';
 
 const routes = [
   { path: '/dashboard',
@@ -18,6 +19,10 @@ const routes = [
   { path: '/dash-users',
     exact: true,
     main: UsersTable
+  },
+  { path: '/create-document',
+    exact: true,
+    main: DocumentEditor
   }
 ];
 

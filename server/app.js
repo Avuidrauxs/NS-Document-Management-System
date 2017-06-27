@@ -28,7 +28,7 @@ routes(app);
 //   message: 'I am a banana',
 // }));
 
-app.use(express.static('lib/public'));
+// app.use(express.static('lib/public'));
 // app.all('*', function(req, res, next) {
 //     res.header('Access-Control-Allow-Origin', '*');
 //     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -41,5 +41,10 @@ app.use(express.static('lib/public'));
 //       next();
 //     }
 // });
+app.get('/', (req, res) => {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('Welcome to the NSDMS API Server');
+    });
+
 
 export default app;

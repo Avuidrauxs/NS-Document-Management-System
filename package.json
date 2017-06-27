@@ -6,7 +6,7 @@
   "scripts": {
     "start:client:dev": "webpack-dev-server --config webpack.config.dev.babel.js --progress --colors",
     "start:api:dev": "nodemon --exec babel-node --presets es2015 ./server/index",
-    "start:web:dev": "npm-run-all --parallel start:client:dev start:api:dev",
+    "start:web:dev": "cross-env npm-run-all --parallel start:client:dev start:api:dev",
     "reset:db": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "refill:db": "sequelize db:seed:all",
     "reset:db:test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
@@ -54,6 +54,7 @@
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
+    "react-quill": "^1.0.0-rc.3",
     "react-redux": "5.0.5",
     "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^2.0.1",
