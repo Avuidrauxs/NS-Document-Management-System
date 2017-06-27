@@ -2,6 +2,10 @@ import Landing from './components/landing/Landing';
 import Dashboard from './components/dashboard/Dashboard';
 import NotFoundPage from './components/NotFound';
 import RestrictRoute from './utilities/restrictRoutes';
+import UsersTable from './components/dashboard/UsersTable';
+import DocumentsList from './components/dashboard/DocumentList';
+import AdminDocumentsList from './components/dashboard/AdminDocumentList';
+import DocumentEditor from './components/document-editor/DocumentEditor';
 
 const routes = [
   { path: '/',
@@ -12,6 +16,22 @@ const routes = [
     exact: true,
     component: RestrictRoute(Dashboard),
   },
+  // { path: '/dash-documents',
+  //   exact: true,
+  //   main: RestrictRoute(DocumentsList)
+  // },
+  // { path: '/admin-documents',
+  //   exact: true,
+  //   main: RestrictRoute(AdminDocumentsList)
+  // },
+  // { path: '/dash-users',
+  //   exact: true,
+  //   main: RestrictRoute(UsersTable)
+  // },
+  // { path: '/create-document',
+  //   exact: true,
+  //   main: RestrictRoute(DocumentEditor)
+  // }
   // { path: '/*',
   //   exact: false,
   //   component: NotFoundPage,

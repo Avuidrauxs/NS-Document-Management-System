@@ -5,14 +5,26 @@ import jwt from 'jwt-decode';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import DocumentCard from '../document-editor/DocumentCard';
 import { fetchDocuments } from '../../actions/DocumentActions';
 
 
 class DocumentsList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      openEdit: false
+    };
+    this.handleEditClose = this.handleEditClose.bind(this);
+    this.handleEditOpen = this.handleEditOpen.bind(this);
+  }
+
+  handleEditClose() {
+    this.setState({ openEdit: false });
+  }
+
+  handleEditOpen() {
+    this.setState({ openEdit: true });
   }
 
   componentWillMount() {
@@ -34,21 +46,7 @@ class DocumentsList extends Component {
               if (document.access === 'public' || document.authorId === decoded.id) {
                 return (
                   <Col xs="6" md="4" key={index}>
-                    <Card key={index} style={{ width: '300px', marginTop: '20px' }}>
-                      <CardHeader
-     title={document.title}
-     subtitle={document.title}
-     actAsExpander
-     showExpandableButton
-   />
-                      <CardActions>
-                        <FlatButton label="Edit" />
-                        <FlatButton label="Delete" />
-                      </CardActions>
-                      <CardText expandable>
-                        {document.body}
-                      </CardText>
-                    </Card>
+                    <DocumentCard document={document} />
                   </Col>
                 );
               }
@@ -61,6 +59,7 @@ class DocumentsList extends Component {
     );
   }
 }
+
 
 DocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,

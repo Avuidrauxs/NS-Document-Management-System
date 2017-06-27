@@ -2,27 +2,28 @@ import UsersTable from './UsersTable';
 import DocumentsList from './DocumentList';
 import AdminDocumentsList from './AdminDocumentList';
 import DocumentEditor from '../document-editor/DocumentEditor';
+import RestrictRoute from '../../utilities/restrictRoutes';
 
 const routes = [
   { path: '/dashboard',
     exact: true,
-    main: DocumentsList
+    main: RestrictRoute(DocumentsList)
   },
   { path: '/dash-documents',
     exact: true,
-    main: DocumentsList
+    main: RestrictRoute(DocumentsList)
   },
   { path: '/admin-documents',
     exact: true,
-    main: AdminDocumentsList
+    main: RestrictRoute(AdminDocumentsList)
   },
   { path: '/dash-users',
     exact: true,
-    main: UsersTable
+    main: RestrictRoute(UsersTable)
   },
   { path: '/create-document',
     exact: true,
-    main: DocumentEditor
+    main: RestrictRoute(DocumentEditor)
   }
 ];
 
