@@ -88,10 +88,10 @@ class EditDocumentModal extends Component {
       })
       .catch((err) => { throw new Error(err); });
     } else {
-      console.log(`${title} update failed`);
+      console.log('Please fill out all fields');
       this.setState({
         openSnackbar: true,
-        snackbarMsg: `${title} update failed`
+        snackbarMsg: 'Please fill out all fields'
       });
     }
   }

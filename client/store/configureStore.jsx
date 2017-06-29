@@ -1,9 +1,10 @@
 import { createStore, compose, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { persistStore, autoRehydrate } from 'redux-persist';
 import DocumentReducer from '../reducers/DocumentReducer';
 import AuthReducer from '../reducers/AuthReducer';
 import UserReducer from '../reducers/UserReducer';
 
-const thunk = require('redux-thunk').default;
 
 const configureStore = (initialState = {}) => {
   const reducer = combineReducers({
@@ -19,6 +20,7 @@ const configureStore = (initialState = {}) => {
   ? window.devToolsExtension()
   : f => f));
 
+  // persistStore(store);
   return store;
 };
 

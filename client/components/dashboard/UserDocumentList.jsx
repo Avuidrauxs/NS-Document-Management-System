@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import jwt from 'jwt-decode';
 import PropTypes from 'prop-types';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
@@ -8,7 +9,7 @@ import { fetchDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
 
-class AdminDocumentsList extends Component {
+class UserDocumentsList extends Component {
   constructor(props) {
     super(props);
   }
@@ -18,6 +19,7 @@ class AdminDocumentsList extends Component {
     this.props.fetchDocuments();
   }
   render() {
+    const decoded = jwt(localStorage.getItem('jwt-token'));
     return (
       <div
         style={{
@@ -29,11 +31,13 @@ class AdminDocumentsList extends Component {
           <Row>
 
             {this.props.documents.map((document, index) => {
-              return (
-                <Col xs="6" md="4" key={index}>
-                  <DocumentCard document={document} ReadOnly />
-                </Col>
-              );
+              if (document.authorId === decoded.id) {
+                return (
+                  <Col xs="6" md="4" key={index}>
+                    <DocumentCard document={document} />
+                  </Col>
+                );
+              }
             })}
 
           </Row>
@@ -45,11 +49,11 @@ class AdminDocumentsList extends Component {
   }
 }
 
-AdminDocumentsList.propTypes = {
+UserDocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,
   documents: PropTypes.array.isRequired,
 };
 
 export default connect(state => ({
   documents: state.DocumentReducer
-}), { fetchDocuments })(AdminDocumentsList);
+}), { fetchDocuments })(UserDocumentsList);

@@ -11,7 +11,6 @@ export default class GeneralSnackbar extends Component {
       open: this.props.openSnackbar,
     };
     this.handleTouchTap = this.handleTouchTap.bind(this);
-    // this.handleRequestClose = this.handleRequestClose.bind(this);
   }
 
   handleTouchTap() {
@@ -20,21 +19,10 @@ export default class GeneralSnackbar extends Component {
     });
   }
 
-  // handleRequestClose() {
-  //   this.setState({
-  //     open: false,
-  //   });
-  // }
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props !== nextProps) {
-  //     this.setState({ open: nextProps.openSnackbar });
-  //   }
-  // }
-
   render() {
     return (
       <Snackbar
-          open={this.state.open}
+          open={this.props.openSnackbar}
           message={this.props.message}
           autoHideDuration={4000}
         />

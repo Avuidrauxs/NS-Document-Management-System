@@ -7,24 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 export default class OpenDocumentModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      openModal: this.props.openDocument
-    };
-    this.handleEditClose = this.handleEditClose.bind(this);
   }
-  handleEditClose() {
-    this.setState({ openModal: false });
-  }
-
-  handleEditOpen() {
-    this.setState({ openModal: true });
-  }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props !== nextProps) {
-  //     this.setState({ openModal: nextProps.openDocument });
-  //   }
-  // }
 
   render() {
     const { title, body } = this.props.doc;

@@ -15,14 +15,14 @@ export default (ComposedComponent) => {
     }
 
     componentWillMount() {
-      const decoded = jwt(localStorage.getItem('jwt-token'));
-      if (!this.props.isAuthenticated && !decoded) {
+      if (!this.props.isAuthenticated) {
         this.props.history.push('/');
         console.log('Wrong Credentials');
         return (
           <Redirect
             to={{
               pathname: '/',
+              state: { from: this.props.location }
             }}
           />
         );
@@ -30,8 +30,7 @@ export default (ComposedComponent) => {
     }
 
     componentWillUpdate(nextProps) {
-      const decoded = jwt(localStorage.getItem('jwt-token'));
-      if ((!this.props.isAuthenticated || !nextProps.isAuthenticated) && !decoded) {
+      if (!this.props.isAuthenticated || !nextProps.isAuthenticated) {
         this.props.history.push('/');
         console.log('You must be signed in');
         return (

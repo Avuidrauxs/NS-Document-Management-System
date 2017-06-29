@@ -3,15 +3,16 @@ import DocumentsList from './DocumentList';
 import AdminDocumentsList from './AdminDocumentList';
 import DocumentEditor from '../document-editor/DocumentEditor';
 import RestrictRoute from '../../utilities/restrictRoutes';
+import UserDocumentsList from './UserDocumentList';
 
 const routes = [
-  { path: '/dashboard',
+  { path: '/',
     exact: true,
     main: RestrictRoute(DocumentsList)
   },
-  { path: '/dash-documents',
+  { path: '/user-documents',
     exact: true,
-    main: RestrictRoute(DocumentsList)
+    main: RestrictRoute(UserDocumentsList)
   },
   { path: '/admin-documents',
     exact: true,

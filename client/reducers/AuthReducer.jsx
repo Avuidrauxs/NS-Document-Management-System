@@ -1,3 +1,4 @@
+import { REHYDRATE } from 'redux-persist/constants'
 import * as CONSTANTS from '../constants/Constants';
 import initialState from '../utilities/initialState';
 

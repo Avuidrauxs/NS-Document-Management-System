@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Form from 'muicss/lib/react/form';
 import Input from 'muicss/lib/react/input';
-import TextField from 'material-ui/TextField';
 import Button from 'muicss/lib/react/button';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Container from 'muicss/lib/react/container';
 import Dialog from 'material-ui/Dialog';
-import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 import { postLogin, postSignUp } from '../../actions/AuthActions';
-import { isUserName } from '../../utilities/validator';
 
 
 class SignIn extends Component {
@@ -60,7 +57,6 @@ class SignIn extends Component {
       email: this.state.email,
     })
     .then(() => {
-      console.log('am signed up');
       this.props.history.push('/dashboard');
     })
     .catch((err) => { throw new Error(err); });
@@ -71,7 +67,6 @@ class SignIn extends Component {
     const { username, password } = this.state;
 
     this.props.postLogin({ username, password }).then(() => {
-      console.log('am here ');
       this.handleClose();
       this.props.history.push('/dashboard');
     })
@@ -80,7 +75,7 @@ class SignIn extends Component {
 
   comparePassword() {
     if (this.state.signUpPassword !== this.state.confirmPassword) {
-      this.alertWrongPassword()
+      this.alertWrongPassword();
     }
   }
   alertWrongPassword() {
@@ -94,6 +89,7 @@ class SignIn extends Component {
   render() {
     const actions = [
       <FlatButton
+        key="1"
         label="Cancel"
         primary
         onTouchTap={this.handleClose}
@@ -135,7 +131,7 @@ class SignIn extends Component {
                 style={{ cursor: 'pointer', color: 'black' }}
                         ><em>here
             </em></a> to register</p>
-        </Form>
+            </Form>
           </div>
           <div>
             <Dialog
@@ -194,7 +190,7 @@ class SignIn extends Component {
                     onBlur={this.comparePassword}
                   />
 
-                <Button color="primary" variant="raised">Sign Up</Button>
+                  <Button color="primary" variant="raised">Sign Up</Button>
                 </Form>
               </Container>
             </Dialog>

@@ -4,7 +4,7 @@ import * as CONSTANTS from '../constants/constants';
 import setHeader from '../utilities/setHeader';
 
 
-const login = (token, type) => {
+export function login(token, type) {
   setHeader(token);
   let user = {};
   const decoded = jwt(token);
@@ -13,9 +13,9 @@ const login = (token, type) => {
     type,
     user
   };
-};
+}
 
-export function postLogout() {
+export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwt-token');
     setHeader(null);
