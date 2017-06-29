@@ -80,7 +80,6 @@ class EditDocumentModal extends Component {
         access
       }).then(() => {
         this.props.closeEdit();
-        console.log(`${title} updated`);
         this.setState({
           openSnackbar: true,
           snackbarMsg: `${title} updated`
@@ -88,7 +87,6 @@ class EditDocumentModal extends Component {
       })
       .catch((err) => { throw new Error(err); });
     } else {
-      console.log('Please fill out all fields');
       this.setState({
         openSnackbar: true,
         snackbarMsg: 'Please fill out all fields'
@@ -96,8 +94,6 @@ class EditDocumentModal extends Component {
     }
   }
   render() {
-    // const { id, title, body, access } = this.props.doc;
-    console.log(this.state.checked);
     const modules = {
       toolbar: [
         [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -145,7 +141,7 @@ onTouchTap={this.onDocumentUpdate}
                         autoScrollBodyContent
                         open={this.props.openEdit}
                       >
-                      <Input
+          <Input
                     hint="Title"
                     required
                     name="title"
@@ -153,7 +149,7 @@ onTouchTap={this.onDocumentUpdate}
                     onChange={this.handleChange}
                     style={styles.title}
                     />
-                    <Checkbox
+          <Checkbox
                checkedIcon={<VisibilityOff />}
                uncheckedIcon={<Visibility />}
                checked={this.state.checked}

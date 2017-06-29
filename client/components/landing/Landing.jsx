@@ -6,6 +6,7 @@ import SignIn from './SignIn';
 import Welcome from './Welcome';
 import background from '../../images/background_spots_lines.jpg';
 
+
 const sectionStyle = {
   width: '100%',
   height: '100%',
@@ -20,7 +21,7 @@ const Landing = () => (
   <Container fluid style={sectionStyle}>
     <Row>
       <Col xs="12" md="8"><Welcome /></Col>
-      <div className="custom-divider"></div>
+      <div className="custom-divider"><span /></div>
       <Col xs="6" md="4"><SignIn /></Col>
     </Row>
   </Container>

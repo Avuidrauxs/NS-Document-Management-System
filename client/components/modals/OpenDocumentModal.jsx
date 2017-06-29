@@ -1,36 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-
-export default class OpenDocumentModal extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { title, body } = this.props.doc;
-    return (
-      <div>
+const OpenDocumentModal = (props) => {
+  const { title, body } = props.doc;
+  return (
+    <div>
       <Dialog
-      title={title}
-      actions={<FlatButton
-    label="Cancel"
-    primary
-    onTouchTap={() => this.props.closeDocument()}
-  />}
-      modal
-      autoScrollBodyContent
-      open={this.props.openDocument}
-    >
+    title={title}
+    actions={<FlatButton
+  label="Cancel"
+  primary
+  onTouchTap={() => props.closeDocument()}
+/>}
+    modal
+    autoScrollBodyContent
+    open={props.openDocument}
+  >
         <div dangerouslySetInnerHTML={{ __html: body }} />
       </Dialog>
 
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
 
 OpenDocumentModal.propTypes = {
   openDocument: PropTypes.bool.isRequired,
@@ -41,3 +35,5 @@ OpenDocumentModal.propTypes = {
 OpenDocumentModal.defaultProps = {
   openDocument: false,
 };
+
+export default OpenDocumentModal;

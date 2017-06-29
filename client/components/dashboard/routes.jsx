@@ -4,6 +4,7 @@ import AdminDocumentsList from './AdminDocumentList';
 import DocumentEditor from '../document-editor/DocumentEditor';
 import RestrictRoute from '../../utilities/restrictRoutes';
 import UserDocumentsList from './UserDocumentList';
+import NotFoundPage from '../NotFound';
 
 const routes = [
   { path: '/',
@@ -25,6 +26,10 @@ const routes = [
   { path: '/create-document',
     exact: true,
     main: RestrictRoute(DocumentEditor)
+  },
+  { path: '*',
+    exact: true,
+    component: NotFoundPage,
   }
 ];
 

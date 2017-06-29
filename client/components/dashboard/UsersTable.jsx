@@ -10,12 +10,13 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
 import { fetchAllUsers } from '../../actions/UserActions';
 
 class UsersTable extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       fixedHeader: true,
       fixedFooter: true,
@@ -27,19 +28,56 @@ class UsersTable extends Component {
       deselectOnClickaway: true,
       showCheckboxes: true,
       height: '300px',
+      searchText: ''
     };
+    this.filteredSearch = this.filteredSearch.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
   componentWillMount() {
     this.props.fetchAllUsers();
+  }
+
+  onChange(event) {
+    return this.setState({ [event.target.name]: event.target.value });
   }
 
   handleChange(event) {
     this.setState({ height: event.target.value });
   }
 
+  filteredSearch(users, searchText) {
+    let filteredSearch = users;
+    if (searchText === '') {
+      return filteredSearch;
+    }
+    filteredSearch = filteredSearch.filter((source) => {
+      const text = source.username.toLowerCase();
+      return searchText.length === 0 || text.indexOf(searchText) > -1;
+    });
+    return filteredSearch;
+  }
   render() {
+    const users = this.filteredSearch(
+      this.props.users,
+      this.state.searchText
+    );
     return (
-      <div>
+      <div
+        style={{
+          marginTop: '80px',
+          textAlign: 'center'
+        }}>
+
+          <TextField
+        hintText="Search Users"
+        fullWidth
+        name="searchText"
+        onChange={this.onChange}
+        value={this.state.searchText}
+        style={{
+          textAlign: 'center'
+        }}
+      />
         <Table
           height={this.state.height}
           fixedHeader={this.state.fixedHeader}
@@ -69,7 +107,7 @@ class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.users.map((user, index) => (
+            {users.map((user, index) => (
               <TableRow key={index}>
                 <TableRowColumn>{index}</TableRowColumn>
                 <TableRowColumn>{user.username}</TableRowColumn>
