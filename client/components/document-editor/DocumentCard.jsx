@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import ActionEdit from 'material-ui/svg-icons/image/edit';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import ActionOpen from 'material-ui/svg-icons/action/open-in-browser';
 import OpenDocumentModal from '../modals/OpenDocumentModal';
 import EditDocumentModal from '../modals/EditDocumentModal';
 import DeleteDocumentModal from '../modals/DeleteDocumentModal';
+
 
 export default class DocumentCard extends Component {
   constructor(props) {
@@ -41,25 +45,70 @@ export default class DocumentCard extends Component {
     this.setState({ openDelete: false });
   }
   render() {
-    const { title, body, authorId } = this.props.document
+    const { title, body, authorId } = this.props.document;
+    let openStyle, editStyle, deleteStyle;
+    if (this.props.ReadOnly) {
+      openStyle = {
+        display: ''
+      };
+      editStyle = {
+        display: 'none'
+      };
+      deleteStyle = {
+        display: 'none'
+      };
+    } else {
+      openStyle = {
+        display: ''
+      };
+      editStyle = {
+        display: ''
+      };
+      deleteStyle = {
+        display: ''
+      };
+    }
     return (
       <div>
         <div>
-          <Card style={{ width: '300px', marginTop: '20px' }}>
+          <Card style={{ width: '350px', marginTop: '20px', height: '150px', position: 'fixed' }}>
             <CardHeader
+              className="CustomCard"
 title={title}
-subtitle={title}
 actAsExpander
 showExpandableButton
+style={{
+  backgroundColor: '#00bcd4',
+  textTransform: 'capitalize',
+  fontWeight: 'bold'
+}}
 />
-            <CardActions>
-              <FlatButton label="Open" onClick={this.handleOpen} />
-              <FlatButton label="Edit" onClick={this.handleOpenEdit} />
-              <FlatButton label="Delete" onClick={this.handleDelete} />
-            </CardActions>
+            <div className="card-content">
+              <CardActions>
+                <IconButton
+                  style={openStyle}
+                  tooltip="Open Document"
+                  onTouchTap={this.handleOpen}>
+                  <ActionOpen />
+                </IconButton>
+                <IconButton
+                  style={editStyle}
+                  tooltip="Edit Document"
+                  onTouchTap={this.handleOpenEdit}>
+                  <ActionEdit />
+                </IconButton>
+                <IconButton
+                  style={deleteStyle}
+                  tooltip="Delete Document"
+                  onTouchTap={this.handleDelete}>
+                  <ActionDelete />
+                </IconButton>
+              </CardActions>
+            </div>
             <CardText expandable>
-              <div dangerouslySetInnerHTML={{ __html: body }}></div>
-            </CardText>
+      Created by Anonymous
+    </CardText>
+
           </Card>
         </div>
         <div>
@@ -85,8 +134,10 @@ showExpandableButton
 
 DocumentCard.propTypes = {
   document: PropTypes.object.isRequired,
+  ReadOnly: PropTypes.object.isRequired
 };
 
 DocumentCard.defaultProps = {
-  document: {}
+  document: {},
+  ReadOnly: false
 };

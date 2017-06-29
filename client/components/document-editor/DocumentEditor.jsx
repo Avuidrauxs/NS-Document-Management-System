@@ -13,6 +13,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { saveDocument } from '../../actions/DocumentActions';
+import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 /*
  * Simple editor component
@@ -27,6 +28,8 @@ class DocumentEditor extends Component {
       access: 'public',
       checked: false,
       hoverText: '',
+      openSnackbar: false,
+      snackbarMsg: '',
       errorSave: false
     };
     this.handleChange = this.handleChange.bind(this);
@@ -73,13 +76,17 @@ class DocumentEditor extends Component {
         access: this.state.access,
         authorId: decoded.id
       }).then(() => {
-        console.log(`${this.state.title} saved`);
         this.props.history.push('/dashboard');
+        this.setState({
+          openSnackbar: true,
+          snackbarMsg: `${this.state.title} saved`
+        });
       })
       .catch((err) => { throw new Error(err); });
     } else {
       this.setState({
-        errorSave: true
+        openSnackbar: true,
+        snackbarMsg: 'Document save failed'
       });
     }
   }
@@ -153,6 +160,10 @@ class DocumentEditor extends Component {
           Please fill out both Title and Body
         </Dialog>
         </div>
+        <GeneralSnackbar
+          openSnackbar={this.state.openSnackbar}
+          message={this.state.snackbarMsg}
+          />
       </div>
     );
   }

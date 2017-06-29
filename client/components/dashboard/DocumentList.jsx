@@ -46,7 +46,7 @@ class DocumentsList extends Component {
               if (document.access === 'public' || document.authorId === decoded.id) {
                 return (
                   <Col xs="6" md="4" key={index}>
-                    <DocumentCard document={document} />
+                    <DocumentCard document={document} ReadOnly />
                   </Col>
                 );
               }
