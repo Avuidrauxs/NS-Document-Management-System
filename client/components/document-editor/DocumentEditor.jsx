@@ -76,10 +76,13 @@ class DocumentEditor extends Component {
         access: this.state.access,
         authorId: decoded.id
       }).then(() => {
-        this.props.history.push('/dashboard');
+        // setTimeout(this.props.history.push('/'), 5000);
         this.setState({
           openSnackbar: true,
-          snackbarMsg: `${this.state.title} saved`
+          snackbarMsg: `${this.state.title} saved`,
+          title: '',
+          editorHtml: '',
+          access: 'public'
         });
       })
       .catch((err) => { throw new Error(err); });

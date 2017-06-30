@@ -73,3 +73,41 @@ export function deleteDocument(id) {
   });
   };
 }
+
+export function searchDocuments(query, offset = 0, limit = 9) {
+  return (dispatch) => {
+    return axios
+      .get(`/api/search/documents?q=${query}&limit=${limit}&offset=${offset}`)
+      .then((res) => {
+        dispatch({
+          type: CONSTANTS.DOCUMENT.SEARCH_SUCCESS,
+          documents: res.data.rows,
+          metaData: res.data.metaData,
+          query,
+          offset
+        });
+      },
+    (err) => {
+      dispatch({
+        type: CONSTANTS.DOCUMENT.SEARCH_FAILURE,
+        error: { message: `Error: ${err}` }
+      });
+    });
+  };
+}
+export function fetchUserDocuments(id) {
+  return (dispatch) => {
+    return axios.get(`/api/users/${id}/documents`)
+      .then((res) => {
+        dispatch({
+          type: CONSTANTS.USER.GET_DOCS_SUCCESS,
+          documents: res.data
+        });
+      }, (err) => {
+        dispatch({
+          type: CONSTANTS.USER.GET_DOCS_FAILURE,
+          error: { message: `Error: ${err}` }
+        });
+      });
+  };
+}

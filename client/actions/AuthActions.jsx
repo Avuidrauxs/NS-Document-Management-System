@@ -58,7 +58,7 @@ export function postLogin(userDetails) {
       (err) => {
         dispatch({
           type: CONSTANTS.AUTH.SIGNIN_FAILURE,
-          error: { message: `Error: ${err}` }
+          error: { message: `Error: ${err} action here` }
         });
       });
   };

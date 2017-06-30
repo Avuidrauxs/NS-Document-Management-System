@@ -82,7 +82,7 @@ onMouseLeave={this.handleRequestClose}
      animation={PopoverAnimationVertical}
     >
             <Menu>
-              <MenuItem primaryText="Help &amp; feedback" />
+              <MenuItem primaryText="Edit Profile" />
               <MenuItem primaryText="Read API Doc" />
               <MenuItem primaryText="Sign out" onTouchTap={this.handleSignOut} />
             </Menu>

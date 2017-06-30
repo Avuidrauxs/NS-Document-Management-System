@@ -11,3 +11,14 @@
 .search-text span {
   text-align: center;
 }
+
+.page-numbers {
+  list-style: none;
+  display: flex;
+  > li {
+    margin-right: 0.8em;
+    color: blue;
+    user-select: none;
+    cursor: pointer;
+  }
+}

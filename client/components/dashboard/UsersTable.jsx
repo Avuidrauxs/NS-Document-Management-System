@@ -11,6 +11,9 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import ActionEdit from 'material-ui/svg-icons/image/edit';
+import IconButton from 'material-ui/IconButton';
 import { fetchAllUsers } from '../../actions/UserActions';
 
 class UsersTable extends Component {
@@ -91,14 +94,10 @@ class UsersTable extends Component {
             enableSelectAll={this.state.enableSelectAll}
           >
             <TableRow>
-              <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{ textAlign: 'center' }}>
-                Super Header
-              </TableHeaderColumn>
-            </TableRow>
-            <TableRow>
               <TableHeaderColumn tooltip="Number">No.</TableHeaderColumn>
               <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
               <TableHeaderColumn tooltip="Role ID">Role ID</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Actions">Actions</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -112,6 +111,20 @@ class UsersTable extends Component {
                 <TableRowColumn>{index}</TableRowColumn>
                 <TableRowColumn>{user.username}</TableRowColumn>
                 <TableRowColumn>{user.roleId}</TableRowColumn>
+                <TableRowColumn>
+                  <IconButton
+                    id={user.id}
+                    tooltip="Edit User Role"
+                    onTouchTap="#">
+                    <ActionEdit />
+                  </IconButton>
+                  <IconButton
+                    key={user.id}
+                    tooltip="Remove User"
+                    onTouchTap="#">
+                    <ActionDelete />
+                  </IconButton>
+                </TableRowColumn>
               </TableRow>
               ))}
           </TableBody>
@@ -122,11 +135,7 @@ class UsersTable extends Component {
               <TableRowColumn>No.</TableRowColumn>
               <TableRowColumn>Username</TableRowColumn>
               <TableRowColumn>Role ID</TableRowColumn>
-            </TableRow>
-            <TableRow>
-              <TableRowColumn colSpan="3" style={{ textAlign: 'center' }}>
-                Super Footer
-              </TableRowColumn>
+              <TableHeaderColumn tooltip="Actions">Actions</TableHeaderColumn>
             </TableRow>
           </TableFooter>
         </Table>
