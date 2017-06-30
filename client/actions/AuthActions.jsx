@@ -1,9 +1,14 @@
 import axios from 'axios';
 import jwt from 'jwt-decode';
-import * as CONSTANTS from '../constants/constants';
+import { AUTH } from '../constants/constants';
 import setHeader from '../utilities/setHeader';
 
-
+/**
+ * Login action
+ * @param  {string} token [Jwt token string]
+ * @param  {string} type  [action type description]
+ * @return {object}       [action object with type and payload]
+ */
 export function login(token, type) {
   setHeader(token);
   let user = {};
@@ -15,49 +20,62 @@ export function login(token, type) {
   };
 }
 
+/**
+ * Logout action
+ * @return {object} [action object with type description]
+ */
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwt-token');
     setHeader(null);
-    dispatch({ type: CONSTANTS.AUTH.SIGNOUT_SUCCESS });
+    dispatch({ type: AUTH.SIGNOUT_SUCCESS });
   };
 }
 
+/**
+ * SignUp action
+ * @param  {object} userDetails [user details object]
+ * @return {object}             [action object with type description]
+ */
 export function postSignUp(userDetails) {
   return (dispatch) => {
     return axios.post('/api/users', userDetails)
     .then((res) => {
       const token = res.data.token;
       localStorage.setItem('jwt-token', token);
-      dispatch(login(token, CONSTANTS.AUTH.SIGNUP_SUCCESS));
+      dispatch(login(token, AUTH.SIGNUP_SUCCESS));
     },
   (err) => {
     dispatch({
-      type: CONSTANTS.AUTH.SIGNUP_FAILURE,
+      type: AUTH.SIGNUP_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });
   };
 }
-
+/**
+ * SignIn action
+ * @param  {object} userDetails [user details object]
+ * @return {object}             [action object with type description]
+ */
 export function postLogin(userDetails) {
   return (dispatch) => {
     return axios.post('api/users/login', userDetails)
       .then((res) => {
         if (res.data.message === 'Invalid password or username') {
           dispatch({
-            type: CONSTANTS.AUTH.SIGNIN_FAILURE,
+            type: AUTH.SIGNIN_FAILURE,
             error: res.data.message
           });
         } else {
           const token = res.data.token;
           localStorage.setItem('jwt-token', token);
-          dispatch(login(token, CONSTANTS.AUTH.SIGNIN_SUCCESS));
+          dispatch(login(token, AUTH.SIGNIN_SUCCESS));
         }
       },
       (err) => {
         dispatch({
-          type: CONSTANTS.AUTH.SIGNIN_FAILURE,
+          type: AUTH.SIGNIN_FAILURE,
           error: { message: `Error: ${err} action here` }
         });
       });

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import * as CONSTANTS from '../constants/constants';
+import { USER } from '../constants/constants';
 
 export function fetchAllUsers(offset = 0, limit = 9) {
   return (dispatch) => {
     return axios.get(`/api/users?limit=${limit}&offset=${offset}`)
     .then((res) => {
       dispatch({
-        type: CONSTANTS.USER.GET_ALL_SUCCESS,
+        type: USER.GET_ALL_SUCCESS,
         users: res.data.rows,
         metaData: res.data.metaData,
         offset,
@@ -14,7 +14,7 @@ export function fetchAllUsers(offset = 0, limit = 9) {
       });
     }, (err) => {
       dispatch({
-        type: CONSTANTS.USER.GET_ALL_FAILURE,
+        type: USER.GET_ALL_FAILURE,
         error: { message: `Error: ${err}` }
       });
     });
@@ -26,12 +26,12 @@ export function updateUser(user) {
     return axios.put(`/api/users/${user.id}`, user)
       .then((res) => {
         dispatch({
-          type: CONSTANTS.USER.UPDATE_SUCCESS,
+          type: USER.UPDATE_SUCCESS,
           user: res.data
         });
       }, (err) => {
         dispatch({
-          type: CONSTANTS.USER.UPDATE_FAILURE,
+          type: USER.UPDATE_FAILURE,
           error: { message: `Error: ${err}` }
         });
       });
@@ -43,11 +43,11 @@ export function deleteUser(id) {
     return axios.delete(`/api/users/${id}`)
       .then(() => {
         dispatch({
-          type: CONSTANTS.USER.DELETE_SUCCESS,
+          type: USER.DELETE_SUCCESS,
         });
       }, (err) => {
         dispatch({
-          type: CONSTANTS.USER.DELETE_FAILURE,
+          type: USER.DELETE_FAILURE,
           error: { message: `Error: ${err}` }
         });
       });
@@ -59,7 +59,7 @@ export function searchUsers(query, offset = 0, limit = 9) {
     return axios.get(`/api/search/users?q=${query}&limit=${limit}&offset=${offset}`)
       .then((res) => {
         dispatch({
-          type: CONSTANTS.USER.SEARCH_SUCCESS,
+          type: USER.SEARCH_SUCCESS,
           users: res.data.rows,
           metaData: res.data.metaData,
           query,
@@ -67,7 +67,7 @@ export function searchUsers(query, offset = 0, limit = 9) {
         });
       }, (err) => {
         dispatch({
-          type: CONSTANTS.USER.SEARCH_FAILURE,
+          type: USER.SEARCH_FAILURE,
           error: { message: `Error: ${err}` }
         });
       });

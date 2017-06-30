@@ -71,43 +71,39 @@ export default class DocumentCard extends Component {
     return (
       <div>
         <div>
-          <Card style={{ width: '350px', marginTop: '20px', height: '150px', position: 'fixed' }}>
+          <Card style={{ width: '350px', marginTop: '20px' }}>
             <CardHeader
               className="CustomCard"
-title={title}
-actAsExpander
-showExpandableButton
-style={{
-  backgroundColor: '#00bcd4',
-  textTransform: 'capitalize',
-  fontWeight: 'bold'
-}}
-/>
-            <div className="card-content">
-              <CardActions>
-                <IconButton
-                  style={openStyle}
-                  tooltip="Open Document"
-                  onTouchTap={this.handleOpen}>
-                  <ActionOpen />
-                </IconButton>
-                <IconButton
-                  style={editStyle}
-                  tooltip="Edit Document"
-                  onTouchTap={this.handleOpenEdit}>
-                  <ActionEdit />
-                </IconButton>
-                <IconButton
-                  style={deleteStyle}
-                  tooltip="Delete Document"
-                  onTouchTap={this.handleDelete}>
-                  <ActionDelete />
-                </IconButton>
-              </CardActions>
-            </div>
-            <CardText expandable>
-      Created by Anonymous
-    </CardText>
+              title={`${title.substring(0, 15)}...`}
+              titleColor="white"
+              subtitle="Created by Anonymous"
+              subtitleColor="grey"
+              style={{
+                backgroundColor: '#00bcd4',
+                textTransform: 'capitalize',
+                fontWeight: 'bold'
+              }}
+            />
+            <CardActions>
+              <IconButton
+                style={openStyle}
+                tooltip="Open Document"
+                onTouchTap={this.handleOpen}>
+                <ActionOpen />
+              </IconButton>
+              <IconButton
+                style={editStyle}
+                tooltip="Edit Document"
+                onTouchTap={this.handleOpenEdit}>
+                <ActionEdit />
+              </IconButton>
+              <IconButton
+                style={deleteStyle}
+                tooltip="Delete Document"
+                onTouchTap={this.handleDelete}>
+                <ActionDelete />
+              </IconButton>
+            </CardActions>
 
           </Card>
         </div>

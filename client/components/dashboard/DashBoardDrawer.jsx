@@ -38,7 +38,7 @@ onRequestChange={() => props.closeDrawer()}
         leftIcon={<ActionHome />}
         /></Link>
         <Link to="/create-document"><ListItem
-      primaryText="Save a New Document"
+      primaryText="Create A Document"
       leftIcon={<ActionChromeReaderMode />} /></Link>
         <Link to="/user-documents"><ListItem
       primaryText="View Your Documents"

@@ -19,7 +19,7 @@ class DocumentsList extends Component {
       searchText: '',
       total: 10,
       currentPage: 1,
-      itemsPerPage: 8
+      itemsPerPage: 9
     };
     this.handleClick = this.handleClick.bind(this);
     this.filteredSearch = this.filteredSearch.bind(this);
