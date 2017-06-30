@@ -19,7 +19,6 @@ class DeleteDocumentModal extends Component {
   onDocumentDelete() {
     this.props.deleteDocument(this.props.doc.id)
     .then(() => {
-      console.log(`${this.props.doc.title} deleted`);
       this.setState({
         openSnackbar: true,
         snackbarMsg: `${this.props.doc.title} deleted`

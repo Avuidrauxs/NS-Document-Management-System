@@ -42,6 +42,7 @@
     "jsonwebtoken": "^7.4.0",
     "jwt-decode": "^2.2.0",
     "material-ui": "^0.18.3",
+    "material-ui-pagination": "^1.0.4",
     "mocha": "^2.5.3",
     "morgan": "^1.8.1",
     "muicss": "^0.9.16",

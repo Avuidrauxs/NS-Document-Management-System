@@ -134,7 +134,7 @@ style={{
 
 DocumentCard.propTypes = {
   document: PropTypes.object.isRequired,
-  ReadOnly: PropTypes.object.isRequired
+  ReadOnly: PropTypes.bool.isRequired
 };
 
 DocumentCard.defaultProps = {
