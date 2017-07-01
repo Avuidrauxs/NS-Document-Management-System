@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
-  TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
@@ -15,7 +14,9 @@ import TextField from 'material-ui/TextField';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
-import { fetchAllUsers } from '../../actions/UserActions';
+import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import { fetchAllUsers, searchUsers } from '../../actions/UserActions';
 import EditUserModal from '../modals/EditUserModal';
 import DeleteUserModal from '../modals/DeleteUserModal';
 
@@ -37,19 +38,45 @@ class UsersTable extends Component {
       searchText: '',
       openEdit: false,
       openDelete: false,
-      currentUserID: ''
+      currentUserID: '',
+      currentPage: props.pagination.pageCount,
+      pageNumbers: [],
+      itemsPerPage: 9
     };
+    this.handleClick = this.handleClick.bind(this);
     this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleOpenDelete = this.handleOpenDelete.bind(this);
     this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
     this.onCloseOpenDelete = this.onCloseOpenDelete.bind(this);
+    this.onClickSearch = this.onClickSearch.bind(this);
+    this.handleFirstClick = this.handleFirstClick.bind(this);
+    this.handleLastClick = this.handleLastClick.bind(this);
   }
-  componentDidMount() {
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
+  handleFirstClick() {
+    this.setState({
+      currentPage: 1
+    });
+  }
+  handleLastClick() {
+    this.setState({
+      currentPage: this.state.pageNumbers.length
+    });
+  }
+  componentWillMount() {
     this.props.fetchAllUsers();
   }
 
+  onClickSearch() {
+    this.props.searchUsers(this.state.searchText);
+  }
   handleOpenEdit(id) {
     this.setState({
       openEdit: true,
@@ -88,11 +115,31 @@ class UsersTable extends Component {
     return filteredSearch;
   }
   render() {
+    const { currentPage, itemsPerPage } = this.state;
     const decoded = jwt(localStorage.getItem('jwt-token'));
-    const users = this.filteredSearch(
-      this.props.users,
-      this.state.searchText
-    );
+    // Logic for pagination
+    const indexOfLastDocument = currentPage * itemsPerPage;
+    const indexofFirstDocument = indexOfLastDocument - itemsPerPage;
+    const paginatedUsers = this.props.users.slice(indexofFirstDocument, indexOfLastDocument);
+
+    // Logic for displaying page numbers
+    const { pageNumbers } = this.state;
+    for (let i = 1; i <= Math.ceil(this.props.users.length / itemsPerPage); i += 1) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+             key={number}
+             id={number}
+             onClick={this.handleClick}
+             style={{ marginTop: '12px' }}
+           >
+          {number}
+        </li>
+      );
+    });
     return (
       <div
         style={{
@@ -101,15 +148,33 @@ class UsersTable extends Component {
         }}>
 
         <TextField
-        hintText="Search Users"
+        hintText="Search Users by Username"
         fullWidth
         name="searchText"
         onChange={this.onChange}
+        onKeyUp={this.onClickSearch}
         value={this.state.searchText}
         style={{
           textAlign: 'center'
         }}
       />
+        <div style={{ marginLeft: '500px' }}>
+          <ul className="page-numbers">
+            <li><IconButton
+              onTouchTap={this.handleFirstClick}
+              tooltip="Go to First">
+              <IconLeft />
+            </IconButton>
+            </li>
+            {renderPageNumbers}
+            <li><IconButton
+              onTouchTap={this.handleLastClick}
+              tooltip="Go to Last">
+              <IconRight />
+            </IconButton>
+            </li>
+          </ul>
+        </div>
         <Table
           height={this.state.height}
           fixedHeader={this.state.fixedHeader}
@@ -135,7 +200,7 @@ class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {users.map((user, index) => {
+            {paginatedUsers.map((user, index) => {
               if (user.id !== decoded.id) {
                 return (
                   <TableRow key={index}>
@@ -180,9 +245,12 @@ class UsersTable extends Component {
 
 UsersTable.propTypes = {
   fetchAllUsers: PropTypes.func.isRequired,
-  users: PropTypes.array.isRequired
+  searchUsers: PropTypes.func.isRequired,
+  users: PropTypes.array.isRequired,
+  pagination: PropTypes.object.isRequired
 };
 
 export default connect(state => ({
-  users: state.UserReducer.users
-}), { fetchAllUsers })(UsersTable);
+  users: state.UserReducer.users,
+  pagination: state.PaginationReducer
+}), { fetchAllUsers, searchUsers })(UsersTable);

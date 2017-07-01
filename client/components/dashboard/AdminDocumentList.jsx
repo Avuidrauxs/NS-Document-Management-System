@@ -5,6 +5,9 @@ import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import { fetchDocuments, searchDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
@@ -15,16 +18,30 @@ class AdminDocumentsList extends Component {
     this.state = {
       searchText: '',
       paginate: Object.assign({}, props.pagination),
+      pageNumbers: [],
       currentPage: 1,
       itemsPerPage: 9
     };
     this.onClickSearch = this.onClickSearch.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleFirstClick = this.handleFirstClick.bind(this);
+    this.handleLastClick = this.handleLastClick.bind(this);
   }
+
   handleClick(event) {
     this.setState({
       currentPage: Number(event.target.id)
+    });
+  }
+  handleFirstClick() {
+    this.setState({
+      currentPage: 1
+    });
+  }
+  handleLastClick() {
+    this.setState({
+      currentPage: this.state.pageNumbers.length
     });
   }
   onChange(event) {
@@ -46,7 +63,7 @@ class AdminDocumentsList extends Component {
     const paginateDocuments = this.props.documents.slice(indexofFirstDocument, indexOfLastDocument);
 
     // Logic for displaying page numbers
-    const pageNumbers = [];
+    const { pageNumbers } = this.state;
     for (let i = 1; i <= Math.ceil(this.props.documents.length / itemsPerPage); i += 1) {
       pageNumbers.push(i);
     }
@@ -57,6 +74,7 @@ class AdminDocumentsList extends Component {
              key={number}
              id={number}
              onClick={this.handleClick}
+             style={{ marginTop: '12px' }}
            >
           {number}
         </li>
@@ -80,9 +98,21 @@ class AdminDocumentsList extends Component {
           textAlign: 'center'
         }}
       />
-        <div>
+        <div style={{ marginLeft: '500px' }}>
           <ul className="page-numbers">
+            <li><IconButton
+        onTouchTap={this.handleFirstClick}
+        tooltip="Go to First">
+              <IconLeft />
+            </IconButton>
+            </li>
             {renderPageNumbers}
+            <li><IconButton
+        onTouchTap={this.handleLastClick}
+        tooltip="Go to Last">
+              <IconRight />
+            </IconButton>
+            </li>
           </ul>
         </div>
         <Container fluid>

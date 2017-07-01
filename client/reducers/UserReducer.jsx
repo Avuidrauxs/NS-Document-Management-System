@@ -18,7 +18,7 @@ const UserReducer = (state = initialState.users, action) => {
     return Object.assign({}, state, { users: newState });
 
   case USER.SEARCH_SUCCESS:
-    return Object.assign({}, state, { users: action.user });
+    return Object.assign({}, state, { users: action.users });
 
   default:
     return state;
