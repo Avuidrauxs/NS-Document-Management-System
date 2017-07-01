@@ -15,7 +15,6 @@ class EditDocumentModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openEdit: this.props.openEdit,
       title: this.props.doc.title,
       access: this.props.doc.access,
       body: this.props.doc.body,

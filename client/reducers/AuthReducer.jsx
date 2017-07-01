@@ -1,22 +1,22 @@
-import { REHYDRATE } from 'redux-persist/constants'
-import * as CONSTANTS from '../constants/Constants';
+import { REHYDRATE } from 'redux-persist/constants';
+import { AUTH } from '../constants/Constants';
 import initialState from '../utilities/initialState';
 
 const AuthReducer = (state = initialState.auth, action) => {
   switch (action.type) {
 
-  case CONSTANTS.AUTH.SIGNIN_SUCCESS:
-  case CONSTANTS.AUTH.SIGNUP_SUCCESS:
+  case AUTH.SIGNIN_SUCCESS:
+  case AUTH.SIGNUP_SUCCESS:
     return {
       loggedIn: true,
       user: action.user
     };
 
-  case CONSTANTS.AUTH.SIGNUP_FAILURE:
-  case CONSTANTS.AUTH.SIGNIN_FAILURE:
+  case AUTH.SIGNUP_FAILURE:
+  case AUTH.SIGNIN_FAILURE:
     return action.error;
 
-  case CONSTANTS.AUTH.SIGNOUT_SUCCESS:
+  case AUTH.SIGNOUT_SUCCESS:
     return initialState.auth;
 
   default:

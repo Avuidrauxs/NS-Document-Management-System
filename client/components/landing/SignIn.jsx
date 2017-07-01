@@ -10,6 +10,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 import { postLogin, postSignUp } from '../../actions/AuthActions';
+import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 
 class SignIn extends Component {
@@ -25,7 +26,9 @@ class SignIn extends Component {
       email: '',
       fullName: '',
       confirmPassword: '',
-      isError: false
+      isError: false,
+      openSnackbar: false,
+      snackbarMsg: ''
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -37,7 +40,10 @@ class SignIn extends Component {
   }
 
   onChange(event) {
-    return this.setState({ [event.target.name]: event.target.value });
+    return this.setState({
+      [event.target.name]: event.target.value,
+      openSnackbar: false
+    });
   }
 
   handleOpen() {
@@ -45,7 +51,7 @@ class SignIn extends Component {
   }
 
   handleClose() {
-    this.setState({ open: false });
+    this.setState({ open: false, openSnackbar: false });
   }
 
   onSignUpSubmit(event) {
@@ -79,10 +85,11 @@ class SignIn extends Component {
     }
   }
   alertWrongPassword() {
-    alert('Password mismatch');
     this.setState({
       signUpPassword: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      openSnackbar: true,
+      snackbarMsg: 'Password mismatch'
     });
   }
 
@@ -194,6 +201,10 @@ class SignIn extends Component {
                 </Form>
               </Container>
             </Dialog>
+            <GeneralSnackbar
+              openSnackbar={this.state.openSnackbar}
+              message={this.state.snackbarMsg}
+              />
           </div>
         </div>
       </MuiThemeProvider>

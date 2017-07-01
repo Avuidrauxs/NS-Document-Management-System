@@ -40,7 +40,7 @@ class UserDocumentsList extends Component {
     });
     return filteredSearch;
   }
-  componentWillMount() {
+  componentDidMount() {
     const decoded = jwt(localStorage.getItem('jwt-token'));
     // disptching action to fetch documents here
     this.props.fetchUserDocuments(decoded.id);

@@ -1,12 +1,18 @@
 import axios from 'axios';
-import * as CONSTANTS from '../constants/constants';
+import { USER, DOCUMENT } from '../constants/constants';
 
+/**
+ * Fetch all documents action
+ * @param  {Number} [offset=0] [Offset variable]
+ * @param  {Number} [limit=9]  [limit variable]
+ * @return {object}            [action object with metadata, type description and documents]
+ */
 export function fetchDocuments(offset = 0, limit = 9) {
   return (dispatch) => {
     return axios.get(`/api/documents?limit=${limit}&offset=${offset}`)
     .then((res) => {
       dispatch({
-        type: CONSTANTS.DOCUMENT.GET_ALL_SUCCESS,
+        type: DOCUMENT.GET_ALL_SUCCESS,
         documents: res.data.rows,
         metaData: res.data.metaData,
         offset,
@@ -15,26 +21,31 @@ export function fetchDocuments(offset = 0, limit = 9) {
     },
   (err) => {
     dispatch({
-      type: CONSTANTS.DOCUMENT.GET_ALL_FAILURE,
+      type: DOCUMENT.GET_ALL_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });
   };
 }
 
+/**
+ * [Save document action description]
+ * @param  {object} doc [document object eith document details]
+ * @return {object}     [action object with newly saved document and type description]
+ */
 export function saveDocument(doc) {
   if (!doc.id) {
     return (dispatch) => {
       return axios.post('/api/documents', doc)
     .then((res) => {
       dispatch({
-        type: CONSTANTS.DOCUMENT.CREATE_SUCCESS,
+        type: DOCUMENT.CREATE_SUCCESS,
         document: res.data
       });
     },
   (err) => {
     dispatch({
-      type: CONSTANTS.DOCUMENT.CREATE_FAILURE,
+      type: DOCUMENT.CREATE_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });
@@ -44,13 +55,13 @@ export function saveDocument(doc) {
     return axios.put(`/api/documents/${doc.id}`, doc)
     .then((res) => {
       dispatch({
-        type: CONSTANTS.DOCUMENT.UPDATE_SUCCESS,
+        type: DOCUMENT.UPDATE_SUCCESS,
         document: res.data
       });
     },
   (err) => {
     dispatch({
-      type: CONSTANTS.DOCUMENT.UPDATE_FAILURE,
+      type: DOCUMENT.UPDATE_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });
@@ -62,12 +73,12 @@ export function deleteDocument(id) {
     return axios.delete(`/api/documents/${id}`)
     .then(() => {
       dispatch({
-        type: CONSTANTS.DOCUMENT.DELETE_SUCCESS
+        type: DOCUMENT.DELETE_SUCCESS
       });
     },
   (err) => {
     dispatch({
-      type: CONSTANTS.DOCUMENT.DELETE_FAILURE,
+      type: DOCUMENT.DELETE_FAILURE,
       error: { message: `Error: ${err}` }
     });
   });
@@ -80,7 +91,7 @@ export function searchDocuments(query, offset = 0, limit = 9) {
       .get(`/api/search/documents?q=${query}&limit=${limit}&offset=${offset}`)
       .then((res) => {
         dispatch({
-          type: CONSTANTS.DOCUMENT.SEARCH_SUCCESS,
+          type: DOCUMENT.SEARCH_SUCCESS,
           documents: res.data.rows,
           metaData: res.data.metaData,
           query,
@@ -89,7 +100,7 @@ export function searchDocuments(query, offset = 0, limit = 9) {
       },
     (err) => {
       dispatch({
-        type: CONSTANTS.DOCUMENT.SEARCH_FAILURE,
+        type: DOCUMENT.SEARCH_FAILURE,
         error: { message: `Error: ${err}` }
       });
     });
@@ -100,12 +111,12 @@ export function fetchUserDocuments(id) {
     return axios.get(`/api/users/${id}/documents`)
       .then((res) => {
         dispatch({
-          type: CONSTANTS.USER.GET_DOCS_SUCCESS,
+          type: USER.GET_DOCS_SUCCESS,
           documents: res.data
         });
       }, (err) => {
         dispatch({
-          type: CONSTANTS.USER.GET_DOCS_FAILURE,
+          type: USER.GET_DOCS_FAILURE,
           error: { message: `Error: ${err}` }
         });
       });

@@ -10,11 +10,14 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import jwt from 'jwt-decode';
 import TextField from 'material-ui/TextField';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
 import { fetchAllUsers } from '../../actions/UserActions';
+import EditUserModal from '../modals/EditUserModal';
+import DeleteUserModal from '../modals/DeleteUserModal';
 
 class UsersTable extends Component {
 
@@ -31,15 +34,40 @@ class UsersTable extends Component {
       deselectOnClickaway: true,
       showCheckboxes: true,
       height: '300px',
-      searchText: ''
+      searchText: '',
+      openEdit: false,
+      openDelete: false,
+      currentUserID: ''
     };
     this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
+    this.handleOpenDelete = this.handleOpenDelete.bind(this);
+    this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
+    this.onCloseOpenDelete = this.onCloseOpenDelete.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchAllUsers();
   }
 
+  handleOpenEdit(id) {
+    this.setState({
+      openEdit: true,
+      currentUserID: id
+    });
+  }
+  handleOpenDelete(id) {
+    this.setState({
+      openDelete: true,
+      currentUserID: id
+    });
+  }
+  onCloseOpenEdit() {
+    this.setState({ openEdit: false });
+  }
+  onCloseOpenDelete() {
+    this.setState({ openDelete: false });
+  }
   onChange(event) {
     return this.setState({ [event.target.name]: event.target.value });
   }
@@ -60,6 +88,7 @@ class UsersTable extends Component {
     return filteredSearch;
   }
   render() {
+    const decoded = jwt(localStorage.getItem('jwt-token'));
     const users = this.filteredSearch(
       this.props.users,
       this.state.searchText
@@ -71,7 +100,7 @@ class UsersTable extends Component {
           textAlign: 'center'
         }}>
 
-          <TextField
+        <TextField
         hintText="Search Users"
         fullWidth
         name="searchText"
@@ -106,39 +135,44 @@ class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {users.map((user, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>{index}</TableRowColumn>
-                <TableRowColumn>{user.username}</TableRowColumn>
-                <TableRowColumn>{user.roleId}</TableRowColumn>
-                <TableRowColumn>
-                  <IconButton
-                    id={user.id}
-                    tooltip="Edit User Role"
-                    onTouchTap="#">
-                    <ActionEdit />
-                  </IconButton>
-                  <IconButton
-                    key={user.id}
-                    tooltip="Remove User"
-                    onTouchTap="#">
-                    <ActionDelete />
-                  </IconButton>
-                </TableRowColumn>
-              </TableRow>
-              ))}
+            {users.map((user, index) => {
+              if (user.id !== decoded.id) {
+                return (
+                  <TableRow key={index}>
+                    <TableRowColumn>{index}</TableRowColumn>
+                    <TableRowColumn>{user.username}</TableRowColumn>
+                    <TableRowColumn>{user.roleId}</TableRowColumn>
+                    <TableRowColumn>
+                      <IconButton
+                          id={user.id}
+                          tooltip="Edit User Role"
+                          onTouchTap={() => this.handleOpenEdit(user.id)}>
+                        <ActionEdit />
+                      </IconButton>
+                      <IconButton
+                          key={user.id}
+                          tooltip="Remove User"
+                          onTouchTap={() => this.handleOpenDelete(user.id)}>
+                        <ActionDelete />
+                      </IconButton>
+                    </TableRowColumn>
+                  </TableRow>
+                );
+              }
+            }
+            )}
           </TableBody>
-          <TableFooter
-            adjustForCheckbox={this.state.showCheckboxes}
-          >
-            <TableRow>
-              <TableRowColumn>No.</TableRowColumn>
-              <TableRowColumn>Username</TableRowColumn>
-              <TableRowColumn>Role ID</TableRowColumn>
-              <TableHeaderColumn tooltip="Actions">Actions</TableHeaderColumn>
-            </TableRow>
-          </TableFooter>
         </Table>
+        <EditUserModal
+          id={this.state.currentUserID}
+          openEdit={this.state.openEdit}
+          onCloseOpenEdit={this.onCloseOpenEdit}
+          />
+        <DeleteUserModal
+          id={this.state.currentUserID}
+          openDelete={this.state.openDelete}
+          onCloseOpenDelete={this.onCloseOpenDelete}
+          />
       </div>
     );
   }

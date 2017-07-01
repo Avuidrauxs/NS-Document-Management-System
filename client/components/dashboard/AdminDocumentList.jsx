@@ -5,7 +5,7 @@ import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
-import { fetchDocuments } from '../../actions/DocumentActions';
+import { fetchDocuments, searchDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
 
@@ -13,36 +13,55 @@ class AdminDocumentsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchText: ''
+      searchText: '',
+      paginate: Object.assign({}, props.pagination),
+      currentPage: 1,
+      itemsPerPage: 9
     };
-    this.filteredSearch = this.filteredSearch.bind(this);
+    this.onClickSearch = this.onClickSearch.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
-
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
+  }
   onChange(event) {
     return this.setState({ [event.target.name]: event.target.value });
   }
-
-  filteredSearch(documents, searchText) {
-    let filteredSearch = documents;
-    if (searchText === '') {
-      return filteredSearch;
-    }
-    filteredSearch = filteredSearch.filter((source) => {
-      const text = source.title.toLowerCase();
-      return searchText.length === 0 || text.indexOf(searchText) > -1;
-    });
-    return filteredSearch;
+  onClickSearch() {
+    this.props.searchDocuments(this.state.searchText);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // disptching action to fetch documents here
     this.props.fetchDocuments();
   }
   render() {
-    const documents = this.filteredSearch(
-      this.props.documents,
-      this.state.searchText);
+    const { currentPage, itemsPerPage } = this.state;
+    // Logic for pagination
+    const indexOfLastDocument = currentPage * itemsPerPage;
+    const indexofFirstDocument = indexOfLastDocument - itemsPerPage;
+    const paginateDocuments = this.props.documents.slice(indexofFirstDocument, indexOfLastDocument);
+
+    // Logic for displaying page numbers
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.props.documents.length / itemsPerPage); i += 1) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+             key={number}
+             id={number}
+             onClick={this.handleClick}
+           >
+          {number}
+        </li>
+      );
+    });
     return (
       <div
         style={{
@@ -51,18 +70,24 @@ class AdminDocumentsList extends Component {
         }}>
         <h1>Public Documents</h1>
         <TextField
-        hintText="Search Documents"
+        hintText="Search Documents by Title"
         fullWidth
         name="searchText"
         onChange={this.onChange}
+        onKeyUp={this.onClickSearch}
         value={this.state.searchText}
         style={{
           textAlign: 'center'
         }}
       />
+        <div>
+          <ul className="page-numbers">
+            {renderPageNumbers}
+          </ul>
+        </div>
         <Container fluid>
           <Row>
-            {documents.map((document, index) => {
+            {paginateDocuments.map((document, index) => {
               return (
                 <Col xs="6" md="4" key={index}>
                   <DocumentCard document={document} ReadOnly />
@@ -82,8 +107,11 @@ class AdminDocumentsList extends Component {
 AdminDocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,
   documents: PropTypes.array.isRequired,
+  searchDocuments: PropTypes.func.isRequired,
+  pagination: PropTypes.object.isRequired,
 };
 
 export default connect(state => ({
-  documents: state.DocumentReducer
-}), { fetchDocuments })(AdminDocumentsList);
+  documents: state.DocumentReducer,
+  pagination: state.PaginationReducer
+}), { fetchDocuments, searchDocuments })(AdminDocumentsList);

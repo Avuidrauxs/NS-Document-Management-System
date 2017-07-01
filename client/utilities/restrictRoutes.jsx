@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
-import jwt from 'jwt-decode';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 
 
 export default (ComposedComponent) => {
-
   class RestrictRoute extends Component {
     constructor(props) {
       super(props);

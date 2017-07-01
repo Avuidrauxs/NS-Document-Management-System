@@ -78,11 +78,11 @@ class DocumentEditor extends Component {
       }).then(() => {
         // setTimeout(this.props.history.push('/'), 5000);
         this.setState({
-          openSnackbar: true,
-          snackbarMsg: `${this.state.title} saved`,
           title: '',
           editorHtml: '',
-          access: 'public'
+          access: 'public',
+          openSnackbar: true,
+          snackbarMsg: `${this.state.title} saved`,
         });
       })
       .catch((err) => { throw new Error(err); });
@@ -94,7 +94,10 @@ class DocumentEditor extends Component {
     }
   }
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      [event.target.name]: event.target.value,
+      openSnackbar: false
+    });
   }
   onChange(html) {
     this.setState({ editorHtml: html });
