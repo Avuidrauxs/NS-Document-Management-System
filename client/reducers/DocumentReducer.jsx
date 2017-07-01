@@ -23,6 +23,9 @@ const DocumentReducer = (state = initialState.documents, action) => {
     return [Object.assign({}, newDoc),
       ...state.filter(item => item.id !== newDoc.id)];
 
+  case DOCUMENT.SEARCH_SUCCESS:
+    return action.documents;
+
   case USER.GET_DOCS_SUCCESS:
     return action.documents;
 

@@ -10,6 +10,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import jwt from 'jwt-decode';
 import TextField from 'material-ui/TextField';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
@@ -45,7 +46,7 @@ class UsersTable extends Component {
     this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
     this.onCloseOpenDelete = this.onCloseOpenDelete.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchAllUsers();
   }
 
@@ -87,6 +88,7 @@ class UsersTable extends Component {
     return filteredSearch;
   }
   render() {
+    const decoded = jwt(localStorage.getItem('jwt-token'));
     const users = this.filteredSearch(
       this.props.users,
       this.state.searchText
@@ -133,33 +135,33 @@ class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {users.map((user, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>{index}</TableRowColumn>
-                <TableRowColumn>{user.username}</TableRowColumn>
-                <TableRowColumn>{user.roleId}</TableRowColumn>
-                <TableRowColumn>
-                  <IconButton
-                    id={user.id}
-                    tooltip="Edit User Role"
-                    onTouchTap={() => this.handleOpenEdit(user.id)}>
-                    <ActionEdit />
-                  </IconButton>
-                  <IconButton
-                    key={user.id}
-                    tooltip="Remove User"
-                    onTouchTap={() => this.handleOpenDelete(user.id)}>
-                    <ActionDelete />
-                  </IconButton>
-                </TableRowColumn>
-              </TableRow>
-              ))}
+            {users.map((user, index) => {
+              if (user.id !== decoded.id) {
+                return (
+                  <TableRow key={index}>
+                    <TableRowColumn>{index}</TableRowColumn>
+                    <TableRowColumn>{user.username}</TableRowColumn>
+                    <TableRowColumn>{user.roleId}</TableRowColumn>
+                    <TableRowColumn>
+                      <IconButton
+                          id={user.id}
+                          tooltip="Edit User Role"
+                          onTouchTap={() => this.handleOpenEdit(user.id)}>
+                        <ActionEdit />
+                      </IconButton>
+                      <IconButton
+                          key={user.id}
+                          tooltip="Remove User"
+                          onTouchTap={() => this.handleOpenDelete(user.id)}>
+                        <ActionDelete />
+                      </IconButton>
+                    </TableRowColumn>
+                  </TableRow>
+                );
+              }
+            }
+            )}
           </TableBody>
-          <TableFooter
-            adjustForCheckbox={this.state.showCheckboxes}
-          >
-            
-          </TableFooter>
         </Table>
         <EditUserModal
           id={this.state.currentUserID}
