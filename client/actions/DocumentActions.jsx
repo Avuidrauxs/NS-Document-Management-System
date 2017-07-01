@@ -4,10 +4,10 @@ import { USER, DOCUMENT } from '../constants/constants';
 /**
  * Fetch all documents action
  * @param  {Number} [offset=0] [Offset variable]
- * @param  {Number} [limit=9]  [limit variable]
+ * @param  {Number} [limit=20]  [limit variable]
  * @return {object}            [action object with metadata, type description and documents]
  */
-export function fetchDocuments(offset = 0, limit = 9) {
+export function fetchDocuments(offset = 0, limit = 20) {
   return (dispatch) => {
     return axios.get(`/api/documents?limit=${limit}&offset=${offset}`)
     .then((res) => {

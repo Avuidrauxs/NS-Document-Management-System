@@ -48,17 +48,24 @@ class DocumentEditor extends Component {
     this.setState({
       checked: !this.state.checked,
     });
+    if (this.state.checked) {
+      this.setState({
+        access: 'private'
+      });
+    } else {
+      this.setState({
+        access: 'public'
+      });
+    }
   }
   handleMouseIn() {
     if (this.state.checked) {
       this.setState({
-        hoverText: 'Click to toggle Public',
-        access: 'public'
+        hoverText: 'Click to toggle Public'
       });
     } else {
       this.setState({
-        hoverText: 'Click to toggle Private',
-        access: 'private'
+        hoverText: 'Click to toggle Private'
       });
     }
   }
@@ -205,8 +212,7 @@ DocumentEditor.formats = [
  * PropType validation
  */
 DocumentEditor.propTypes = {
-  saveDocument: PropTypes.func.isRequired,
-  history: PropTypes.object
+  saveDocument: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(null, { saveDocument })(DocumentEditor));

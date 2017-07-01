@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -14,7 +14,6 @@ export default class DocumentCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      document: this.props.document,
       openDocument: false,
       openEdit: false,
       openDelete: false,
@@ -45,7 +44,7 @@ export default class DocumentCard extends Component {
     this.setState({ openDelete: false });
   }
   render() {
-    const { title, body, authorId } = this.props.document;
+    const { title, User } = this.props.document;
     let openStyle, editStyle, deleteStyle;
     if (this.props.ReadOnly) {
       openStyle = {
@@ -76,7 +75,7 @@ export default class DocumentCard extends Component {
               className="CustomCard"
               title={`${title.substring(0, 15)}...`}
               titleColor="white"
-              subtitle="Created by Anonymous"
+              subtitle={`Created by ${User.username}`}
               subtitleColor="grey"
               style={{
                 backgroundColor: '#00bcd4',

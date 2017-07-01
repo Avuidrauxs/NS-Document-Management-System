@@ -6,6 +6,9 @@ import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import { fetchUserDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
@@ -15,16 +18,30 @@ class UserDocumentsList extends Component {
     super(props);
     this.state = {
       searchText: '',
+      pageNumbers: [],
       currentPage: 1,
-      itemsPerPage: 8
+      itemsPerPage: 9
     };
     this.handleClick = this.handleClick.bind(this);
     this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.handleFirstClick = this.handleFirstClick.bind(this);
+    this.handleLastClick = this.handleLastClick.bind(this);
   }
+
   handleClick(event) {
     this.setState({
       currentPage: Number(event.target.id)
+    });
+  }
+  handleFirstClick() {
+    this.setState({
+      currentPage: 1
+    });
+  }
+  handleLastClick() {
+    this.setState({
+      currentPage: this.state.pageNumbers.length
     });
   }
 
@@ -40,7 +57,7 @@ class UserDocumentsList extends Component {
     });
     return filteredSearch;
   }
-  componentDidMount() {
+  componentWillMount() {
     const decoded = jwt(localStorage.getItem('jwt-token'));
     // disptching action to fetch documents here
     this.props.fetchUserDocuments(decoded.id);
@@ -57,7 +74,7 @@ class UserDocumentsList extends Component {
     const pagiDocuments = documents.slice(indexofFirstDocument, indexOfLastDocument);
 
     // Logic for displaying page numbers
-    const pageNumbers = [];
+    const { pageNumbers } = this.state;
     for (let i = 1; i <= Math.ceil(documents.length / itemsPerPage); i += 1) {
       pageNumbers.push(i);
     }
@@ -68,6 +85,7 @@ class UserDocumentsList extends Component {
              key={number}
              id={number}
              onClick={this.handleClick}
+             style={{ marginTop: '12px' }}
            >
           {number}
         </li>
@@ -79,7 +97,10 @@ class UserDocumentsList extends Component {
             marginTop: '80px',
             textAlign: 'center'
           }}>
-        <h1>{decoded.username} Documents</h1>
+        <h1
+          style={{ textTransform: 'capitalize' }}>
+          {`${decoded.username}'s`} Documents
+        </h1>
         <TextField
           hintText="Search Documents"
           fullWidth
@@ -90,9 +111,21 @@ class UserDocumentsList extends Component {
             textAlign: 'center'
           }}
         />
-        <div>
+        <div style={{ marginLeft: '500px' }}>
           <ul className="page-numbers">
+            <li><IconButton
+              onTouchTap={this.handleFirstClick}
+              tooltip="Go to First">
+              <IconLeft />
+            </IconButton>
+            </li>
             {renderPageNumbers}
+            <li><IconButton
+              onTouchTap={this.handleLastClick}
+              tooltip="Go to Last">
+              <IconRight />
+            </IconButton>
+            </li>
           </ul>
         </div>
         <Container fluid>
