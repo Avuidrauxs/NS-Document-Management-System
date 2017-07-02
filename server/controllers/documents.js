@@ -4,8 +4,12 @@ import Paginate from '../helpers/paginate';
 
 const documents = {
 
-// Route: POST: /documents
-
+/**
+ * Route: POST: /documents
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   createDocument(req, res) {
     return models.User.findById(res.header.decoded.id)
        .then((user) => {
@@ -28,8 +32,13 @@ const documents = {
        })
        .catch(error => res.status(400).send(error));
   },
-// Route: GET: /documents/:id
 
+/**
+ * Route: GET: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   fetchDocument(req, res) {
     return models.Document.findById(req.params.id, {
       include: [{
@@ -57,8 +66,12 @@ const documents = {
     .catch(error => res.status(400).send(error));
   },
 
-// Route: PUT: /documents/:id
-
+/**
+ * Route: PUT: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   updateDocument(req, res) {
     return res.header.document
     .update(req.body, { fields: Object.keys(req.body) })
@@ -73,13 +86,23 @@ const documents = {
     .catch(error => res.status(400).send(error));
   },
 
-// Route: DELETE: /documents/:id
+/**
+ *  Route: DELETE: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   deleteDocument(req, res) {
     res.header.document.destroy()
     .then(() => res.status(200).send({ message: 'Document deleted' }));
   },
 
-  // Route: GET: /documents or GET: /documents/?limit=[integer]&offset=[integer]&q=[title]
+  /**
+   * Route: GET: /documents or GET: /documents/?limit=[integer]&offset=[integer]&q=[title]
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   fetchAllDocuments(req, res) {
     let searchKey = '%%';
     if (req.query.q) {
@@ -127,4 +150,5 @@ const documents = {
     .catch(error => res.status(400).send(error));
   },
 };
+
 export default documents;
