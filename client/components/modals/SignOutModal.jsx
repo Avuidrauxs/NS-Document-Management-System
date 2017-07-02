@@ -6,18 +6,37 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { logout } from '../../actions/AuthActions';
 
+/**
+ * SignOutModal Component
+ * @type {object}
+ */
 class SignOutModal extends Component {
+
+  /**
+   * SignOutModal constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.onSignOut = this.onSignOut.bind(this);
   }
 
+/**
+ * This function disptaches an action to log a user out of NSDMS
+ * @return {null}       retruns nothing
+ */
   onSignOut() {
     this.props.logout()
     .then(() => {
       this.props.history.push('/');
     });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const actions = [
       <FlatButton

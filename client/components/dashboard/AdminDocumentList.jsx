@@ -11,8 +11,17 @@ import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import { fetchDocuments, searchDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
-
+/**
+ * Admins Document List Component
+ * @type {Object}
+ */
 class AdminDocumentsList extends Component {
+
+/**
+ * AdminDocumentsList constuctor, here is where all states are initiated
+ * @param  {object} props [contains props parameters passed into Component]
+ * @return {null}       retruns nothing
+ */
   constructor(props) {
     super(props);
     this.state = {
@@ -29,32 +38,67 @@ class AdminDocumentsList extends Component {
     this.handleLastClick = this.handleLastClick.bind(this);
   }
 
+  /**
+   * This function handles the click events of the pagination numbers
+   * @param  {object} event [event object paramter]
+   * @return {null}       returns nothing
+   */
   handleClick(event) {
     this.setState({
       currentPage: Number(event.target.id)
     });
   }
+
+  /**
+   * This handles resetting the pagination to the first page
+   * @return {null}       returns nothing
+   */
   handleFirstClick() {
     this.setState({
       currentPage: 1
     });
   }
+
+  /**
+   * This function handles going to the last pagination page
+   * @return {null}       returns nothing
+   */
   handleLastClick() {
     this.setState({
       currentPage: this.state.pageNumbers.length
     });
   }
+
+  /**
+   * This function handles changing the state of the textfields onChange event
+   * @param  {object} event [object parameter]
+   * @return {null}       returns nothing
+   */
   onChange(event) {
-    return this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   }
+
+  /**
+   * This function handles search for a document
+   * @return {null}       returns nothing
+   */
   onClickSearch() {
     this.props.searchDocuments(this.state.searchText);
   }
 
+/**
+ * this function is invoked immediately after a component is mounted
+ * @return {null}       returns nothing
+ */
   componentDidMount() {
     // disptching action to fetch documents here
     this.props.fetchDocuments();
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const { currentPage, itemsPerPage } = this.state;
     // Logic for pagination

@@ -1,9 +1,11 @@
 import axios from 'axios';
+
+
 /**
 * Set and use a token for every ajax call
 *
 * @param {Object} token
-* @returns {Undefined} returns nothing
+* @returns {null} returns nothing
 */
 export default function setHeader(token) {
   if (token) {

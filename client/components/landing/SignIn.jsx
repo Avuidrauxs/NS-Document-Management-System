@@ -12,9 +12,17 @@ import { withRouter } from 'react-router-dom';
 import { postLogin, postSignUp } from '../../actions/AuthActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
-
+/**
+ * SignIn Component
+ * @type {Object}
+ */
 class SignIn extends Component {
 
+  /**
+   * SignIn constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +47,11 @@ class SignIn extends Component {
     this.alertWrongPassword = this.alertWrongPassword.bind(this);
   }
 
+  /**
+   * This function changes intial states based on onChange events
+   * @param  {object} event [the events object parameter]
+   * @return {null}       retruns nothing
+   */
   onChange(event) {
     return this.setState({
       [event.target.name]: event.target.value,
@@ -46,14 +59,28 @@ class SignIn extends Component {
     });
   }
 
+/**
+ * This function opens the SignUp Modal
+ * @return {null}       retruns nothing
+ */
   handleOpen() {
     this.setState({ open: true });
   }
 
+  /**
+   * This function closes the SignUp Modal
+   * @return {null}       retruns nothing
+   */
   handleClose() {
     this.setState({ open: false, openSnackbar: false });
   }
 
+
+/**
+ * This dispatches the action to create a new user onClick on the signup button
+ * @param  {object} event [this is the event object parameter]
+ *  @return {null}       retruns nothing
+ */
   onSignUpSubmit(event) {
     event.preventDefault();
     this.props.postSignUp({
@@ -68,6 +95,12 @@ class SignIn extends Component {
     .catch((err) => { throw new Error(err); });
   }
 
+  /**
+   * This dispatches the action to allow a user to login onClick
+   * on the signin button
+   * @param  {object} event [this is the event object parameter]
+   *  @return {null}       retruns nothing
+   */
   onSignInSubmit(event) {
     event.preventDefault();
     const { username, password } = this.state;
@@ -79,11 +112,22 @@ class SignIn extends Component {
     .catch((err) => { throw new Error(err); });
   }
 
+/**
+ * This function compares password and comparePassword test inputs
+ * to verify they are the same
+ * @return {null}       retruns nothing
+ */
   comparePassword() {
     if (this.state.signUpPassword !== this.state.confirmPassword) {
       this.alertWrongPassword();
     }
   }
+
+  /**
+   * This function pops up a snackbar to alert user of wrong password input
+   * during signup
+   * @return {null}       retruns nothing
+   */
   alertWrongPassword() {
     this.setState({
       signUpPassword: '',
@@ -93,6 +137,10 @@ class SignIn extends Component {
     });
   }
 
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const actions = [
       <FlatButton

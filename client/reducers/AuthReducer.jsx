@@ -1,7 +1,12 @@
-import { REHYDRATE } from 'redux-persist/constants';
 import { AUTH } from '../constants/Constants';
 import initialState from '../utilities/initialState';
 
+/**
+ * Authentication Reducer
+ * @param {object} [state=initialState.auth] [state object parameter]
+ * @param {object} action    object parameter contains action type and payload
+ * @returns {object}  returns a state object
+ */
 const AuthReducer = (state = initialState.auth, action) => {
   switch (action.type) {
 

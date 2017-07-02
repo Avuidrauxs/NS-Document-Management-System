@@ -6,6 +6,10 @@ import RestrictRoute from '../../utilities/restrictRoutes';
 import UserDocumentsList from './UserDocumentList';
 import NotFoundPage from '../NotFound';
 
+/**
+ * This is the Routes array that contains components for the React Router
+ * @type {Array}
+ */
 const routes = [
   { path: '/',
     exact: true,
