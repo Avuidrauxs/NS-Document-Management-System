@@ -6,7 +6,17 @@ import FlatButton from 'material-ui/FlatButton';
 import { deleteDocument } from '../../actions/DocumentActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
+/**
+ * DeleteDocumentModal Component
+ * @type {Object}
+ */
 class DeleteDocumentModal extends Component {
+
+  /**
+   * DeleteDocumentModal constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -16,6 +26,11 @@ class DeleteDocumentModal extends Component {
     };
     this.onDocumentDelete = this.onDocumentDelete.bind(this);
   }
+
+  /**
+   * This function dispatches the action to delete a document
+   * @return {[type]} [description]
+   */
   onDocumentDelete() {
     this.props.deleteDocument(this.props.doc.id)
     .then(() => {
@@ -27,6 +42,11 @@ class DeleteDocumentModal extends Component {
     })
     .catch((err) => { throw new Error(err); });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const { title } = this.props.doc;
     const actions = [

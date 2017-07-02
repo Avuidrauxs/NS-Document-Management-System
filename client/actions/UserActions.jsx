@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { USER } from '../constants/constants';
 
-export function fetchAllUsers(offset = 0, limit = 9) {
+/**
+ * This function fetches all users of the NSDMS sytem stored in the backend
+ * @param  {Number} [offset=0] [offset parameter]
+ * @param  {Number} [limit=9]  [limit paramter]
+ * @return {object}    [action object with type and payload]
+ */
+export function fetchAllUsers(offset = 0, limit = 20) {
   return (dispatch) => {
     return axios.get(`/api/users?limit=${limit}&offset=${offset}`)
     .then((res) => {
@@ -20,7 +26,11 @@ export function fetchAllUsers(offset = 0, limit = 9) {
     });
   };
 }
-
+/**
+ * Update a user's information in the backend
+ * @param  {object} user [the user object]
+ * @return {object}    [action object with type and payload]
+ */
 export function updateUser(user) {
   return (dispatch) => {
     return axios.put(`/api/users/${user.id}`, user)
@@ -38,6 +48,11 @@ export function updateUser(user) {
   };
 }
 
+/**
+ * Deletes a user from the NSDMS backend
+ * @param  {number} id [The user's id parameter]
+ * @return {object}    [action object with type and payload]
+ */
 export function deleteUser(id) {
   return (dispatch) => {
     return axios.delete(`/api/users/${id}`)
@@ -54,7 +69,14 @@ export function deleteUser(id) {
   };
 }
 
-export function searchUsers(query, offset = 0, limit = 9) {
+/**
+ * This function searches for users from the backend by username
+ * @param  {string} query      [Username query string ]
+ * @param  {Number} [offset=0] [offset parameter]
+ * @param  {Number} [limit=9]  [limit parameter]
+ * @return {object}    [action object with type and payload]
+ */
+export function searchUsers(query, offset = 0, limit = 20) {
   return (dispatch) => {
     return axios.get(`/api/search/users?q=${query}&limit=${limit}&offset=${offset}`)
       .then((res) => {

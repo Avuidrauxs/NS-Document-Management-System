@@ -6,7 +6,12 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 
-// <Header> and <Footer>
+/**
+ * Main Componet
+ * this function returns a single React element ie. native DOM component
+ * @param {object} props this constains parameters for ths component
+ * @return {React.Component} [A react componet element]
+ */
 const Main = props => (
   <div>
     { props.children }

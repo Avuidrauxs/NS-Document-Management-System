@@ -8,8 +8,17 @@ import DashboardDrawer from './DashboardDrawer';
 import ProfilePic from '../../images/profile-placeholder.png';
 import SignOutModal from '../modals/SignOutModal';
 
-
+/**
+ * DashboardAppBar React Componet
+ * @type {Object}
+ */
 class DashboardAppBar extends Component {
+
+  /**
+   * DashboardAppBar constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -24,23 +33,55 @@ class DashboardAppBar extends Component {
     this.handleSignoutClose = this.handleSignoutClose.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
   }
+
+  /**
+   * this function handles the signout modal close event
+   * @return {null} returns nothing
+   */
   handleSignoutClose() {
     this.setState({ signOutOpen: false });
   }
+
+  /**
+   * This function handles opening the modal for signout
+   * @return {null} returns nothing
+   */
   handleSignOut() {
     this.setState({ signOutOpen: true });
   }
+
+  /**
+   * This function handles toggling the drawer
+   * @return {null} returns nothing
+   */
   handleToggle() {
     this.setState({ open: !this.state.open });
   }
+
+  /**
+   * this function handles closing the drawer when
+   * mouse is clicked away from the drawer
+   * @return {null} returns nothing
+   */
   handleClose() {
     this.setState({ open: false });
   }
+
+  /**
+   * This function handles closing the popover menu on the Avatar
+   * on mouse click outside the componst
+   * @return {null} returns nothing
+   */
   handleRequestClose() {
     this.setState({
       menuOpen: false,
     });
   }
+  /**
+   * This function handles the opening of the popover menu on the avatar
+   * @param  {[type]} event [description]
+   * @return {[type]}       [description]
+   */
   handleTouchTap(event) {
   // This prevents ghost click.
     event.preventDefault();
@@ -50,6 +91,11 @@ class DashboardAppBar extends Component {
       anchorEl: event.currentTarget,
     });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const sectionStyle = {
       position: 'absolute',

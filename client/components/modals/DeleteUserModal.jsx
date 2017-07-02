@@ -6,7 +6,17 @@ import FlatButton from 'material-ui/FlatButton';
 import { deleteUser } from '../../actions/UserActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
+/**
+ * DeleteUserModal Component
+ * @type {Object}
+ */
 class DeleteUserModal extends Component {
+
+  /**
+   * DeleteUserModal constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +25,11 @@ class DeleteUserModal extends Component {
     };
     this.onDeleteUser = this.onDeleteUser.bind(this);
   }
+
+  /**
+   * This function dispatches the action to delte a user
+   * @return {null}       retruns nothing
+   */
   onDeleteUser() {
     this.props.deleteUser(this.props.id)
     .then(() => {
@@ -25,6 +40,11 @@ class DeleteUserModal extends Component {
       this.props.onCloseOpenDelete();
     });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const actions = [
       <FlatButton

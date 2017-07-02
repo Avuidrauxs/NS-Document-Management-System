@@ -9,8 +9,17 @@ import OpenDocumentModal from '../modals/OpenDocumentModal';
 import EditDocumentModal from '../modals/EditDocumentModal';
 import DeleteDocumentModal from '../modals/DeleteDocumentModal';
 
-
+/**
+ * DocumentCard Component
+ * @type {Object}
+ */
 export default class DocumentCard extends Component {
+
+  /**
+   * DocumentCard constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -25,24 +34,58 @@ export default class DocumentCard extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.onCloseDelete = this.onCloseDelete.bind(this);
   }
+  /**
+   * This function opens the view document modal
+   * @return {null}       retruns nothing
+   */
   handleOpen() {
     this.setState({ openDocument: true });
   }
+
+  /**
+   * This function opens the edit document modal
+   * @return {null}       retruns nothing
+   */
   handleOpenEdit() {
     this.setState({ openEdit: true });
   }
+
+  /**
+   * This function opens the delete document modal
+   * @return {null}       retruns nothing
+   */
   handleDelete() {
     this.setState({ openDelete: true });
   }
+
+  /**
+   * This function closes the view document modal
+   * @return {null}       retruns nothing
+   */
   onCloseDocument() {
     this.setState({ openDocument: false });
   }
+
+  /**
+   * This function closes the edit document modal
+   * @return {null}       retruns nothing
+   */
   onCloseEdit() {
     this.setState({ openEdit: false });
   }
+
+  /**
+   * This function closes the delete document modal
+   * @return {null}       retruns nothing
+   */
   onCloseDelete() {
     this.setState({ openDelete: false });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const { title, User } = this.props.document;
     let openStyle, editStyle, deleteStyle;

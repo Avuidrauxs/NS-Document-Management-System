@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
+/**
+ * OpenDocumentModal component
+ * this function returns a single React element ie. native DOM component
+ * @param {object} props  this constains parameters passed into the component
+ * @return {React.Component} [A react componet element]
+ */
 const OpenDocumentModal = (props) => {
   const { title, body } = props.doc;
   return (

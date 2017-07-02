@@ -15,9 +15,13 @@ const sectionStyle = {
   left: '-10px',
   right: '-10px'
 };
+
+/**
+ * Landing page component
+ * this function returns a single React element ie. native DOM component
+ * @return {React.Component} [A react componet element]
+ */
 const Landing = () => (
-
-
   <Container fluid style={sectionStyle}>
     <Row>
       <Col xs="12" md="8"><Welcome /></Col>

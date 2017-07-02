@@ -8,19 +8,28 @@ import Input from 'muicss/lib/react/input';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import { saveDocument } from '../../actions/DocumentActions';
+import { saveDocument, fetchDocument } from '../../actions/DocumentActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
+/**
+ * EditDocumentModal Component
+ * @type {Object}
+ */
 class EditDocumentModal extends Component {
+
+  /**
+   * EditDocumentModal constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
-      title: this.props.doc.title,
-      access: this.props.doc.access,
-      body: this.props.doc.body,
+      title: '',
+      access: '',
+      body: '',
       checked: this.handlePropChecked(),
       hoverText: '',
-      errorUpdate: false,
       openSnackbar: false,
       snackbarMsg: ''
     };
@@ -30,12 +39,26 @@ class EditDocumentModal extends Component {
     this.onBodyChanged = this.onBodyChanged.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.onDocumentUpdate = this.onDocumentUpdate.bind(this);
   }
-  handleClose() {
-    this.setState({ errorUpdate: false });
+
+  /**
+   * This function is invoked before a mounted component receives new props.
+   * @param  {object} nextProps [prop parameters just updated]
+   * @return {null}       retruns nothing
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      title: nextProps.doc.title,
+      body: nextProps.doc.body,
+      access: nextProps.doc.access
+    });
   }
+
+  /**
+   * This function handls on mouse in events on the checkbox component
+   * @return {null}       retruns nothing
+   */
   handleMouseIn() {
     if (this.state.checked) {
       this.setState({
@@ -50,24 +73,55 @@ class EditDocumentModal extends Component {
     }
   }
 
+  /**
+   * This function handls on mouse out events on the checkbox component
+   * @return {null}       retruns nothing
+   */
   handleMouseOut() {
     this.setState({ hoverText: '' });
   }
+
+  /**
+   * This function changes intial states based on onChange events
+   * @param  {object} event [the events object parameter]
+   *@return {null}       retruns nothing
+   */
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
+  /**
+   * Checks props.access value to set initial checkbox state
+   * @return {null}       retruns nothing
+   */
   handlePropChecked() {
     if (this.props.doc.access === 'public') {
       return false;
     }
     return true;
   }
+
+  /**
+   * This function handles checkbox check events
+   * @return {null}       retruns nothing
+   */
   onChecked() {
     this.setState({ checked: !this.state.checked });
   }
+
+  /**
+   * This function handles changes in state in the React Quill body component
+   * @param  {string} html [That is the body parameter from quill editor]
+   * @return {[type]}       [description]
+   */
   onBodyChanged(html) {
     this.setState({ body: html });
   }
+
+  /**
+   * This function dispatches an action to update document
+   * @return {null}       retruns nothing
+   */
   onDocumentUpdate() {
     const { title, body, access } = this.state;
     const { id } = this.props.doc;
@@ -92,6 +146,11 @@ class EditDocumentModal extends Component {
       });
     }
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react component element]
+   */
   render() {
     const modules = {
       toolbar: [
@@ -180,11 +239,15 @@ EditDocumentModal.propTypes = {
   openEdit: PropTypes.bool.isRequired,
   closeEdit: PropTypes.func.isRequired,
   doc: PropTypes.object.isRequired,
+  document: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
+  fetchDocument: PropTypes.func.isRequired,
 };
 
 EditDocumentModal.defaultProps = {
   openEdit: false,
 };
 
-export default connect(null, { saveDocument })(EditDocumentModal);
+export default connect(state => ({
+  document: state.Document
+}), { saveDocument, fetchDocument })(EditDocumentModal);

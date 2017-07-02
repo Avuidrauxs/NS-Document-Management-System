@@ -20,8 +20,17 @@ import { fetchAllUsers, searchUsers } from '../../actions/UserActions';
 import EditUserModal from '../modals/EditUserModal';
 import DeleteUserModal from '../modals/DeleteUserModal';
 
+/**
+ * UsersTable component
+ * @type {Object}
+ */
 class UsersTable extends Component {
 
+  /**
+   * UsersTable constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -55,54 +64,117 @@ class UsersTable extends Component {
     this.handleLastClick = this.handleLastClick.bind(this);
   }
 
+  /**
+   * This function handles the click events of the pagination numbers
+   * @param  {object} event [event object paramter]
+   * @return {null}       returns nothing
+   */
   handleClick(event) {
     this.setState({
       currentPage: Number(event.target.id)
     });
   }
+
+  /**
+   * This handles resetting the pagination to the first page
+   * @return {null}       returns nothing
+   */
   handleFirstClick() {
     this.setState({
       currentPage: 1
     });
   }
+
+  /**
+   * This function handles going to the last pagination page
+   * @return {null}       returns nothing
+   */
   handleLastClick() {
     this.setState({
       currentPage: this.state.pageNumbers.length
     });
   }
+
+  /**
+   * This function is invoked immediately before mounting occurs.
+   * @return {null}       returns nothing
+   */
   componentWillMount() {
     this.props.fetchAllUsers();
   }
 
+/**
+ * This function dispatches action to search for a user based on theri username
+ * @return {null}       returns nothing
+ */
   onClickSearch() {
     this.props.searchUsers(this.state.searchText);
   }
+
+  /**
+   * This function opens the edit user modal
+   * @param  {number} id [that is the user selected id parameter]
+   * @return {null}       returns nothing
+   */
   handleOpenEdit(id) {
     this.setState({
       openEdit: true,
       currentUserID: id
     });
   }
+
+  /**
+   * This function opens the delete user modal
+   * @param  {number} id [that is the user selected id parameter]
+   * @return {null}       returns nothing
+   */
   handleOpenDelete(id) {
     this.setState({
       openDelete: true,
       currentUserID: id
     });
   }
+
+  /**
+   * This function closes the edit user modal
+   * @return {null}       returns nothing
+   */
   onCloseOpenEdit() {
     this.setState({ openEdit: false });
   }
+
+  /**
+   * This function closes the delete user modal
+   * @return {null}       returns nothing
+   */
   onCloseOpenDelete() {
     this.setState({ openDelete: false });
   }
+
+  /**
+   * This function changes intial states based on onChange events
+   * @param  {object} event [the events object parameter]
+   * @return {[type]}       [description]
+   */
   onChange(event) {
     return this.setState({ [event.target.name]: event.target.value });
   }
 
+  /**
+   * This handles the intial state of height when it changes
+   * @param  {object} event [the events object parameter]
+   * @return {[type]}       [description]
+   */
   handleChange(event) {
     this.setState({ height: event.target.value });
   }
 
+  /**
+   * This function filters through the users list
+   * @param  {array} users [array of user objects]
+   * @param {string} searchText string paramter from search textfield
+   * @return {array}           [array of filtered user objects]
+   */
   filteredSearch(users, searchText) {
     let filteredSearch = users;
     if (searchText === '') {
@@ -114,13 +186,19 @@ class UsersTable extends Component {
     });
     return filteredSearch;
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react componet element]
+   */
   render() {
     const { currentPage, itemsPerPage } = this.state;
     const decoded = jwt(localStorage.getItem('jwt-token'));
+
     // Logic for pagination
-    const indexOfLastDocument = currentPage * itemsPerPage;
-    const indexofFirstDocument = indexOfLastDocument - itemsPerPage;
-    const paginatedUsers = this.props.users.slice(indexofFirstDocument, indexOfLastDocument);
+    const indexOfLastUser = currentPage * itemsPerPage;
+    const indexofFirstUser = indexOfLastUser - itemsPerPage;
+    const paginatedUsers = this.props.users.slice(indexofFirstUser, indexOfLastUser);
 
     // Logic for displaying page numbers
     const { pageNumbers } = this.state;

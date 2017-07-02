@@ -68,6 +68,11 @@ export function saveDocument(doc) {
   };
 }
 
+/**
+ * Delete document from backend method
+ * @param  {number} id [The id of the document to be deleted]
+ * @return {object}    [action object with type and payload]
+ */
 export function deleteDocument(id) {
   return (dispatch) => {
     return axios.delete(`/api/documents/${id}`)
@@ -85,7 +90,14 @@ export function deleteDocument(id) {
   };
 }
 
-export function searchDocuments(query, offset = 0, limit = 9) {
+/**
+ * This method is for searching through documents from the backend
+ * @param  {string} query      [this is search quiery string]
+ * @param  {Number} [offset=0] [offset parameter]
+ * @param  {Number} [limit=9]  [limit parameter]
+ * @return {object}    [action object with type and payload]
+ */
+export function searchDocuments(query, offset = 0, limit = 20) {
   return (dispatch) => {
     return axios
       .get(`/api/search/documents?q=${query}&limit=${limit}&offset=${offset}`)
@@ -106,6 +118,33 @@ export function searchDocuments(query, offset = 0, limit = 9) {
     });
   };
 }
+
+/**
+ * This method fetches documents based on id from the backend
+ * @param  {number} id [document id paramter]
+ * @return {object}    [action object with type and payload]
+ */
+export function fetchDocument(id) {
+  return (dispatch) => {
+    return axios.get(`/api/documents/${id}`)
+      .then((res) => {
+        dispatch({
+          type: DOCUMENT.GET_SUCCESS,
+          document: res.data
+        });
+      }, (err) => {
+        dispatch({
+          type: DOCUMENT.GET_FAILURE,
+          error: { message: `Error: ${err}` }
+        });
+      });
+  };
+}
+/**
+ * This method fetches User authored documents
+ * @param  {number} id [the user's id parameter]
+ * @return {object}    [action object with type and payload]
+ */
 export function fetchUserDocuments(id) {
   return (dispatch) => {
     return axios.get(`/api/users/${id}/documents`)

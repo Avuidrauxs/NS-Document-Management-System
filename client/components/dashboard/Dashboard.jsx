@@ -6,7 +6,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import DashboardAppBar from './DashboardAppBar';
 import routes from './routes';
 
-
+/**
+ * Dashboard
+ * this function returns a single React element ie. native DOM component
+ * @return {React.Component} [A react componet element]
+ */
 const Dashboard = () => (
   <HashRouter history={browserHistory}>
     <MuiThemeProvider>

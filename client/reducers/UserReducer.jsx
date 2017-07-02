@@ -1,6 +1,12 @@
 import { USER } from '../constants/Constants';
 import initialState from '../utilities/initialState';
 
+/**
+ * Users Reducer
+ * @param {object} [state=initialState.auth] [state object parameter]
+ * @param {object} action    object parameter contains action type and payload
+ * @returns {object}  returns a state object
+ */
 const UserReducer = (state = initialState.users, action) => {
   let newState;
   switch (action.type) {

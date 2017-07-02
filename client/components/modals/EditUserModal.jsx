@@ -7,7 +7,17 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import { updateUser } from '../../actions/UserActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
+/**
+ * EditUserModal Component
+ * @type {Object}
+ */
 class EditUserModal extends Component {
+
+  /**
+   * EditUserModal constuctor, here is where all states are initiated
+   * @param  {object} props [contains props parameters passed into Component]
+   * @return {null}       retruns nothing
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +28,20 @@ class EditUserModal extends Component {
     this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onChange = this.onChange.bind(this);
   }
+
+  /**
+   * This function changes intial states based on onChange events
+   * @param  {object} event [the events object parameter]
+   *@return {null}       retruns nothing
+   */
   onChange(event) {
     this.setState({ roleId: event.target.value });
   }
+
+  /**
+   * this function dispatches an action to update a user role id
+   * @return {[type]} [description]
+   */
   onUpdateUser() {
     this.props.updateUser({
       roleId: !Number(this.state.roleId) ? 2 : Number(this.state.roleId),
@@ -34,6 +55,11 @@ class EditUserModal extends Component {
       this.props.onCloseOpenEdit();
     });
   }
+
+  /**
+   * this function returns a single React element ie. native DOM component
+   * @return {React.Component} [A react component element]
+   */
   render() {
     const actions = [
       <FlatButton

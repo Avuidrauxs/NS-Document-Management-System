@@ -1,6 +1,12 @@
 import { DOCUMENT, USER } from '../constants/Constants';
 import initialState from '../utilities/initialState';
 
+/**
+ * Documents Reducer
+ * @param {object} [state=initialState.auth] [state object parameter]
+ * @param {object} action    object parameter contains action type and payload
+ * @returns {object}  returns a state object
+ */
 const DocumentReducer = (state = initialState.documents, action) => {
   const newDoc = action.document;
   let newState;
@@ -37,4 +43,23 @@ const DocumentReducer = (state = initialState.documents, action) => {
   }
 };
 
-export default DocumentReducer;
+/**
+ * Document Reducer
+ * @param {object} [state=initialState.auth] [state object parameter]
+ * @param {object} action    object parameter contains action type and payload
+ * @returns {object}  returns a state object
+ */
+const Document = (state = initialState.document, action) => {
+  switch (action.type) {
+  case DOCUMENT.GET_SUCCESS:
+    return action.document;
+
+  case DOCUMENT.GET_FAILURE:
+    return state;
+
+  default:
+    return state;
+  }
+};
+
+export { DocumentReducer, Document };
