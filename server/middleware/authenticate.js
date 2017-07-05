@@ -110,6 +110,14 @@ const Authenticate = {
     return res.status(403).send({ message: 'You dont have privileges' });
   },
 
+  /**
+   * Verify a user
+   *
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Function} next next function
+   * @returns {Response} response object
+   */
   checkUser(req, res, next) {
     const token = req.body.token
       || req.query.token

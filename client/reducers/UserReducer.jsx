@@ -16,6 +16,7 @@ const UserReducer = (state = initialState.users, action) => {
   case USER.GET_ALL_FAILURE:
   case USER.SEARCH_FAILURE:
   case USER.UPDATE_FAILURE:
+  case USER.GET_FAILURE:
     return action.error;
 
   case USER.UPDATE_SUCCESS:
@@ -25,6 +26,10 @@ const UserReducer = (state = initialState.users, action) => {
 
   case USER.SEARCH_SUCCESS:
     return Object.assign({}, state, { users: action.users });
+
+  case USER.GET_SUCCESS:
+    return Object.assign({}, state, { profile: action.profile });
+
 
   default:
     return state;

@@ -8,3 +8,4 @@ webpack.config.dev.babel.js
 webpack.config.prod.babel.js
 server/index.js
 api-docs/**
+jest.config.js

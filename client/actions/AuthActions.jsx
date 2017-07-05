@@ -28,7 +28,7 @@ export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwt-token');
     setHeader(null);
-    dispatch({ type: AUTH.SIGNOUT_SUCCESS });
+    return dispatch({ type: AUTH.SIGNOUT_SUCCESS });
   };
 }
 
