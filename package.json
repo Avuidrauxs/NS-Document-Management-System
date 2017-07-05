@@ -14,9 +14,9 @@
     "setup:test-server": "npm run reset:db:test && npm run refill:db:test",
     "server-test": "npm run setup:test-server && NODE_ENV=test nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register ./server/tests/**/*.js --timeout 90000",
     "coverage": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
-    "build:client": "webpack --config webpack.config.prod.babel.js --progress --colors",
+    "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.prod.babel.js --progress --colors",
     "test": "npm run setup:test-server && npm run server-test",
-    "build": "./node_modules/.bin/webpack --config webpack.config.prod.js --progress --colors",
+    "build": "./node_modules/.bin/webpack --config webpack.config.prod.babel.js --progress --colors",
     "postinstall": "cross-env NODE_ENV=production npm run reset:db && npm run refill:db && npm run build",
     "start": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node --presets es2015 ./server/index"
   },

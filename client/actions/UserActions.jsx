@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER } from '../constants/constants';
+import { USER } from '../constants/Constants';
 
 /**
  * This function fetches all users of the NSDMS sytem stored in the backend

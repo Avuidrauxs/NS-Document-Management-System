@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER, DOCUMENT } from '../constants/constants';
+import { USER, DOCUMENT } from '../constants/Constants';
 
 /**
  * Fetch all documents action
