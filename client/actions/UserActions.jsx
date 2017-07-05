@@ -70,6 +70,29 @@ export function deleteUser(id) {
 }
 
 /**
+* Get user profile
+*
+* @param {String} id user id
+* @returns {Object} dispatch object
+*/
+export function getUserDetails(id) {
+  return (dispatch) => {
+    return axios.get(`/api/users/${id}`)
+      .then((res) => {
+        dispatch({
+          type: USER.GET_SUCCESS,
+          profile: res.data
+        });
+      }, (err) => {
+        dispatch({
+          type: USER.GET_FAILURE,
+          error: { message: `Error: ${err}` }
+        });
+      });
+  };
+}
+
+/**
  * This function searches for users from the backend by username
  * @param  {string} query      [Username query string ]
  * @param  {Number} [offset=0] [offset parameter]
