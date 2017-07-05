@@ -107,7 +107,7 @@ export default {
         include: path.join(__dirname, 'client'),
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'stage-2', 'react']
+          presets: ['es2015', 'stage-0', 'react']
         }
       },
       {
