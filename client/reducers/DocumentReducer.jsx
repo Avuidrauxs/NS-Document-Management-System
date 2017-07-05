@@ -14,6 +14,7 @@ const DocumentReducer = (state = initialState.documents, action) => {
   case DOCUMENT.GET_ALL_SUCCESS:
     return action.documents;
 
+  case DOCUMENT.CREATE_FAILURE:
   case DOCUMENT.GET_ALL_FAILURE:
     return state;
 
@@ -22,8 +23,6 @@ const DocumentReducer = (state = initialState.documents, action) => {
     if (newState.length > 9) newState.pop();
     return newState;
 
-  case DOCUMENT.CREATE_FAILURE:
-    return state;
 
   case DOCUMENT.UPDATE_SUCCESS:
     return [Object.assign({}, newDoc),

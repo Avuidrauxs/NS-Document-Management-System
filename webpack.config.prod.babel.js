@@ -85,13 +85,6 @@ export default {
           options: 'window.$'
         }]
       },
-      // {
-      //   test: require.resolve('materialize-css/js/velocity.min'),
-      //   use: [{
-      //     loader: 'expose-loader',
-      //     options: 'window.Vel'
-      //   }]
-      // },
       {
         test: /\.js$/,
         loader: 'babel-loader?sourceMap',
@@ -145,6 +138,9 @@ export default {
           name: 'static/fonts/[name].[ext]'
         }
       },
-    ]
+    ],
+    // Shut off warnings about using pre-built javascript files
+  // as Quill.js unfortunately ships one as its `main`.
+  noParse: /node_modules\/quill\/dist/
   }
 };
