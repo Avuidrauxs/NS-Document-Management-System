@@ -7,6 +7,7 @@ import Avatar from 'material-ui/Avatar';
 import DashboardDrawer from './DashboardDrawer';
 import ProfilePic from '../../images/profile-placeholder.png';
 import SignOutModal from '../modals/SignOutModal';
+import EditProfileModal from '../modals/EditProfileModal';
 
 /**
  * DashboardAppBar React Componet
@@ -24,7 +25,8 @@ class DashboardAppBar extends Component {
     this.state = {
       open: false,
       menuOpen: false,
-      signOutOpen: false
+      signOutOpen: false,
+      openEdit: false
     };
     this.handleTouchTap = this.handleTouchTap.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
@@ -32,6 +34,8 @@ class DashboardAppBar extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleSignoutClose = this.handleSignoutClose.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
+    this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
   }
 
   /**
@@ -93,6 +97,24 @@ class DashboardAppBar extends Component {
   }
 
   /**
+   * This function opens the edit profile modal
+   * @return {null}       returns nothing
+   */
+  handleOpenEdit() {
+    this.setState({
+      openEdit: true
+    });
+  }
+
+  /**
+   * This function closes the edit profile modal
+   * @return {null}       returns nothing
+   */
+  onCloseOpenEdit() {
+    this.setState({ openEdit: false });
+  }
+
+  /**
    * this function returns a single React element ie. native DOM component
    * @return {React.Component} [A react componet element]
    */
@@ -128,15 +150,24 @@ onMouseLeave={this.handleRequestClose}
      animation={PopoverAnimationVertical}
     >
             <Menu>
-              <MenuItem primaryText="Edit Profile" />
-              <MenuItem primaryText="Read API Doc" />
-              <MenuItem primaryText="Sign out" onTouchTap={this.handleSignOut} />
+              <MenuItem
+                primaryText="Edit Profile"
+                onTouchTap={this.handleOpenEdit} />
+              <MenuItem
+                primaryText="Read API Doc" />
+              <MenuItem
+                primaryText="Sign out"
+                onTouchTap={this.handleSignOut} />
             </Menu>
           </Popover>
         </div>
         <SignOutModal
           openSignOut={this.state.signOutOpen}
           closeSignOut={this.handleSignoutClose} />
+        <EditProfileModal
+          openEdit={this.state.openEdit}
+          onCloseOpenEdit={this.onCloseOpenEdit}
+          />
       </div>
     }
     />

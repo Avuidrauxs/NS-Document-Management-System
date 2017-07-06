@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt from 'jwt-decode';
-import { AUTH } from '../constants/constants';
+import { AUTH } from '../constants/Constants';
 import setHeader from '../utilities/setHeader';
 
 /**

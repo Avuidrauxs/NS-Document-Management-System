@@ -27,8 +27,7 @@ class SignOutModal extends Component {
  * @return {null}       retruns nothing
  */
   onSignOut() {
-    this.props.logout()
-    .then(() => {
+    this.props.logout().then(() => {
       this.props.history.push('/');
     });
   }
