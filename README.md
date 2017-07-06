@@ -1,5 +1,5 @@
-[![Coverage Status](https://coveralls.io/repos/github/andela-aanchirinah/NS-Document-Management-System/badge.svg?branch=master)](https://coveralls.io/github/andela-aanchirinah/NS-Document-Management-System?branch=master)
-[![Build Status](https://travis-ci.org/andela-aanchirinah/NS-Document-Management-System.svg?branch=master)](https://travis-ci.org/andela-aanchirinah/NS-Document-Management-System)
+[![Coverage Status](https://coveralls.io/repos/github/andela-aanchirinah/NS-Document-Management-System/badge.svg?branch=chore%2F146922329%2FSetup-Webpack-Task-Runner)](https://coveralls.io/github/andela-aanchirinah/NS-Document-Management-System?branch=chore%2F146922329%2FSetup-Webpack-Task-Runner)
+[![Build Status](https://travis-ci.org/andela-aanchirinah/NS-Document-Management-System.svg?branch=develop)](https://travis-ci.org/andela-aanchirinah/NS-Document-Management-System)
 [![Code Climate](https://codeclimate.com/github/andela-aanchirinah/NS-Document-Management-System/badges/gpa.svg)](https://codeclimate.com/github/andela-aanchirinah/NS-Document-Management-System)
 
 # NS-Document-Management-System

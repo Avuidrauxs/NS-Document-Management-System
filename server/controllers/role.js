@@ -1,7 +1,13 @@
 import models from '../models';
 
 const rolee = {
-// Route: POST: /roles
+
+/**
+ * Route: POST: /roles
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   addRole(req, res) {
     return models.Role.create(req.body)
     .then(role => res.status(201).send({
@@ -12,7 +18,12 @@ const rolee = {
     .catch(error => res.status(400).send(error));
   },
 
-// Route: DELETE: /roles/:id
+/**
+ * Route: DELETE: /roles/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   removeRole(req, res) {
     return models.Role.findById(req.params.id)
       .then((role) => {
@@ -22,7 +33,13 @@ const rolee = {
       })
       .catch(error => res.status(400).send(error));
   },
-// Route: GET: /roles or GET: /roles
+
+/**
+ * Route: GET: /roles or GET: /roles
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   fetchRoles(req, res) {
     return models.Role.findAll({
       attributes: ['id', 'description'],
@@ -32,7 +49,12 @@ const rolee = {
     .catch(error => res.status(400).send(error));
   },
 
-// Route: PUT: /roles/:id
+/**
+ * Route: PUT: /roles/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   updateRole(req, res) {
     return models.Role.findById(req.params.id)
       .then((role) => {
@@ -44,7 +66,13 @@ const rolee = {
       })
       .catch(error => res.status(400).send(error));
   },
-  // Route: GET: /roles/:id
+
+  /**
+   * Route: GET: /roles/:id
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   fetchRole(req, res) {
     return models.Role.findById(req.params.id)
     .then((role) => {
