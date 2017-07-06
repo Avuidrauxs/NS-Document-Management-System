@@ -40,7 +40,7 @@ class EditUserModal extends Component {
 
   /**
    * this function dispatches an action to update a user role id
-   * @return {[type]} [description]
+   * @return {null} returns nothing
    */
   onUpdateUser() {
     this.props.updateUser({

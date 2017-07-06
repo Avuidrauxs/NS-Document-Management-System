@@ -13,12 +13,14 @@
     "refill:db:test": "NODE_ENV=test sequelize db:seed:all",
     "setup:test-server": "npm run reset:db:test && npm run refill:db:test",
     "server-test": "npm run setup:test-server && NODE_ENV=test nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register ./server/tests/**/*.js --timeout 90000",
-    "coverage": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.prod.babel.js --progress --colors",
     "test": "npm run setup:test-server && npm run server-test",
-    "build": "./node_modules/.bin/webpack --config webpack.config.prod.babel.js --progress --colors",
     "postinstall": "cross-env NODE_ENV=production npm run reset:db && npm run refill:db && npm run build",
-    "start": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node --presets es2015 ./server/index"
+    "start": "cross-env NODE_ENV=production node ./lib/server/index",
+    "clean": "rimraf lib && mkdir lib",
+    "build": "npm run clean && npm run build:server && npm run build:client",
+    "build:server": "babel server -d lib/server --copy-files --ignore test.js"
   },
   "dependencies": {
     "axios": "^0.16.1",
@@ -96,7 +98,6 @@
     "eslint-plugin-react": "^6.9.0",
     "events": "^1.1.1",
     "expect": "^1.14.0",
-    "foundation-sites": "^6.3.0",
     "istanbul": "^0.4.5",
     "jest": "^20.0.3",
     "jquery": "^2.2.1",
