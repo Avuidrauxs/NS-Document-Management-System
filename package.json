@@ -13,7 +13,7 @@
     "refill:db:test": "NODE_ENV=test sequelize db:seed:all",
     "setup:test-server": "npm run reset:db:test && npm run refill:db:test",
     "server-test": "npm run setup:test-server && NODE_ENV=test nyc --reporter=html --reporter=text mocha --compilers js:babel-core/register ./server/tests/**/*.js --timeout 90000",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.prod.babel.js --progress --colors",
     "test": "npm run setup:test-server && npm run server-test",
     "postinstall": "cross-env NODE_ENV=production npm run reset:db && npm run refill:db && npm run build",
