@@ -130,7 +130,7 @@ class AdminDocumentsList extends Component {
           marginTop: '80px',
           textAlign: 'center'
         }}>
-        <h1>Public Documents</h1>
+        <h1>All Documents</h1>
         <TextField
         hintText="Search Documents by Title"
         fullWidth
