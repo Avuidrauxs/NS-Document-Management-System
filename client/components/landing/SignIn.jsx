@@ -11,6 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 import { postLogin, postSignUp } from '../../actions/AuthActions';
 import GeneralSnackbar from '../snackbar/GeneralSnackbar';
+import ErrorSnackbar from '../snackbar/ErrorSnackbar';
 
 /**
  * SignIn Component
@@ -36,7 +37,9 @@ class SignIn extends Component {
       confirmPassword: '',
       isError: false,
       openSnackbar: false,
-      snackbarMsg: ''
+      snackbarMsg: '',
+      openError: false,
+      errorMessage: ''
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -109,7 +112,12 @@ class SignIn extends Component {
       this.handleClose();
       this.props.history.push('/dashboard');
     })
-    .catch((err) => { throw new Error(err); });
+    .catch((err) => {
+      this.setState({
+        openError: true,
+        errorMessage: `${err}`
+      });
+    });
   }
 
 /**
@@ -252,6 +260,10 @@ class SignIn extends Component {
             <GeneralSnackbar
               openSnackbar={this.state.openSnackbar}
               message={this.state.snackbarMsg}
+              />
+            <ErrorSnackbar
+              openErrorSnackbar={this.state.openError}
+              errorMessage={this.state.errorMessage}
               />
           </div>
         </div>

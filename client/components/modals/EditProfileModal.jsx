@@ -99,34 +99,41 @@ class EditProfileModal extends Component {
    */
   onUpdateUser() {
     const { username, email, fullName, id, password } = this.state;
-    if (password === '') {
-      this.props.updateUser({
-        username,
-        fullName,
-        email,
-        id
-      })
-      .then(() => {
-        this.setState({
-          openSnackbar: true,
-          snackbarMsg: 'profile updated'
+    if (username !== '' || email !== '' || fullName !== '') {
+      if (password === '') {
+        this.props.updateUser({
+          username,
+          fullName,
+          email,
+          id
+        })
+        .then(() => {
+          this.setState({
+            openSnackbar: true,
+            snackbarMsg: 'profile updated'
+          });
+          this.props.onCloseOpenEdit();
         });
-        this.props.onCloseOpenEdit();
-      });
+      } else {
+        this.props.updateUser({
+          username,
+          fullName,
+          email,
+          password,
+          id
+        })
+        .then(() => {
+          this.setState({
+            openSnackbar: true,
+            snackbarMsg: 'profile updated'
+          });
+          this.props.onCloseOpenEdit();
+        });
+      }
     } else {
-      this.props.updateUser({
-        username,
-        fullName,
-        email,
-        password,
-        id
-      })
-      .then(() => {
-        this.setState({
-          openSnackbar: true,
-          snackbarMsg: 'profile updated'
-        });
-        this.props.onCloseOpenEdit();
+      this.setState({
+        openSnackbar: true,
+        snackbarMsg: 'Please fill out all fields'
       });
     }
   }
@@ -251,9 +258,6 @@ EditProfileModal.propTypes = {
   onCloseOpenEdit: PropTypes.func.isRequired
 };
 
-EditProfileModal.defaultProps = {
-  userProfile: {}
-};
 
 export default connect(state => ({
   userProfile: state.UserReducer.profile

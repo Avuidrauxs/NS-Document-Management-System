@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import MenuItem from 'material-ui/MenuItem';
@@ -153,8 +154,8 @@ onMouseLeave={this.handleRequestClose}
               <MenuItem
                 primaryText="Edit Profile"
                 onTouchTap={this.handleOpenEdit} />
-              <MenuItem
-                primaryText="Read API Doc" />
+              <Link to='/api'><MenuItem
+                primaryText="Read API Doc" /></Link>
               <MenuItem
                 primaryText="Sign out"
                 onTouchTap={this.handleSignOut} />

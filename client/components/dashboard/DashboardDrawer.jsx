@@ -38,14 +38,14 @@ onRequestChange={() => props.closeDrawer()}
 >
       <List>
         <Subheader>Welcome, {decoded.username}</Subheader>
-        <Link to="/"><ListItem
+        <Link to="/dashboard"><ListItem
         primaryText="Home"
         leftIcon={<ActionHome />}
         /></Link>
-        <Link to="/create-document"><ListItem
+        <Link to="/dashboard/create-document"><ListItem
       primaryText="Create A Document"
       leftIcon={<ActionChromeReaderMode />} /></Link>
-        <Link to="/user-documents"><ListItem
+        <Link to="/dashboard/user-documents"><ListItem
       primaryText="View Your Documents"
       leftIcon={<ContentFilterList />}
       /></Link>
@@ -55,11 +55,11 @@ onRequestChange={() => props.closeDrawer()}
       leftIcon={<ContentInbox />}
       primaryTogglesNestedList
       nestedItems={[
-        <Link key={1} to="/dash-users"><ListItem
+        <Link key={1} to="/dashboard/dash-users"><ListItem
           primaryText="View All Users"
           leftIcon={<ActionList />}
         /></Link>,
-        <Link key={2} to="/admin-documents"><ListItem
+        <Link key={2} to="/dashboard/admin-documents"><ListItem
           primaryText="View All Documents"
           leftIcon={<ContentFilterList />}
         /></Link>,

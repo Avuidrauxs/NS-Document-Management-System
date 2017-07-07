@@ -27,9 +27,8 @@ class SignOutModal extends Component {
  * @return {null}       retruns nothing
  */
   onSignOut() {
-    this.props.logout().then(() => {
-      this.props.history.push('/');
-    });
+    this.props.logout();
+    this.props.history.push('/');
   }
 
   /**
@@ -64,7 +63,7 @@ onTouchTap={this.onSignOut}
 }
 SignOutModal.propTypes = {
   logout: PropTypes.func.isRequired,
-  history: PropTypes.object,
+  history: PropTypes.object.isRequired,
   openSignOut: PropTypes.bool.isRequired,
   closeSignOut: PropTypes.func.isRequired
 };
