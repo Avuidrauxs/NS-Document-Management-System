@@ -2,6 +2,10 @@ module.exports = {
   transform: {
     '.*': '<rootDir>/node_modules/babel-jest'
   },
+  moduleNameMapper: {
+    '\\.(jpg|jpeg|png|svg)$': '<rootDir>/client/tests/__mock__/jqueryMock.js',
+    '\\.(css|scss)$': 'identity-obj-proxy'
+  },
   moduleFileExtensions: [
     'es6',
     'js',
@@ -26,6 +30,7 @@ module.exports = {
   collectCoverageFrom: [
     '**/client/actions/**', '**/client/store/**', '**/client/components/**',
     '**/client/reducers/**','!**/node_modules/**', '!**/lcov-report/**',
-    '!**/client/utilities/**','!**/client/store/**', '!**/client/components/dashboard/routes.jsx'
+    '!**/client/utilities/**','!**/client/store/**', '!**/client/components/dashboard/routes.jsx',
+    '!**/client/reducers/PaginationReducer.jsx'
   ],
 };

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import swal from 'sweetalert2';
+import toast from 'toastr';
 import ReactQuill from 'react-quill';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -9,13 +11,12 @@ import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { saveDocument, fetchDocument } from '../../actions/DocumentActions';
-import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 /**
  * EditDocumentModal Component
  * @type {Object}
  */
-class EditDocumentModal extends Component {
+export class EditDocumentModal extends Component {
 
   /**
    * EditDocumentModal constuctor, here is where all states are initiated
@@ -30,8 +31,6 @@ class EditDocumentModal extends Component {
       body: '',
       checked: this.handlePropChecked(),
       hoverText: '',
-      openSnackbar: false,
-      snackbarMsg: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePropChecked = this.handlePropChecked.bind(this);
@@ -133,17 +132,11 @@ class EditDocumentModal extends Component {
         access
       }).then(() => {
         this.props.closeEdit();
-        this.setState({
-          openSnackbar: true,
-          snackbarMsg: `${title} updated`
-        });
+        swal('Yaaayyy!!', `${title} saved`, 'success');
       })
       .catch((err) => { throw new Error(err); });
     } else {
-      this.setState({
-        openSnackbar: true,
-        snackbarMsg: 'Please fill out all fields'
-      });
+      toast.warning('Please fill out all fields', 'Alert...');
     }
   }
 
@@ -226,10 +219,6 @@ onTouchTap={this.onDocumentUpdate}
                     formats={formats}
                    />
         </Dialog>
-        <GeneralSnackbar
-          openSnackbar={this.state.openSnackbar}
-          message={this.state.snackbarMsg}
-          />
       </div>
     );
   }
@@ -239,9 +228,7 @@ EditDocumentModal.propTypes = {
   openEdit: PropTypes.bool.isRequired,
   closeEdit: PropTypes.func.isRequired,
   doc: PropTypes.object.isRequired,
-  document: PropTypes.object.isRequired,
   saveDocument: PropTypes.func.isRequired,
-  fetchDocument: PropTypes.func.isRequired,
 };
 
 EditDocumentModal.defaultProps = {

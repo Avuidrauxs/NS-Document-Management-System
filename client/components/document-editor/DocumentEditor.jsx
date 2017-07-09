@@ -4,22 +4,21 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import jwt from 'jwt-decode';
+import toast from 'toastr';
 import Container from 'muicss/lib/react/container';
 import RaisedButton from 'material-ui/RaisedButton';
 import Input from 'muicss/lib/react/input';
 import Checkbox from 'material-ui/Checkbox';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import swal from 'sweetalert2';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import { saveDocument } from '../../actions/DocumentActions';
-import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 /**
  * DocumentEditor Component
  * @type {Object}
  */
-class DocumentEditor extends Component {
+export class DocumentEditor extends Component {
 
   /**
    * DocumentEditor constuctor, here is where all states are initiated
@@ -101,21 +100,16 @@ class DocumentEditor extends Component {
         access: this.state.access,
         authorId: decoded.id
       }).then(() => {
-        // setTimeout(this.props.history.push('/'), 5000);
         this.setState({
           title: '',
           editorHtml: '',
           access: 'public',
-          openSnackbar: true,
-          snackbarMsg: `${this.state.title} saved`,
         });
+        swal('Yaaayyy!!', `${this.state.title} saved`, 'success');
       })
       .catch((err) => { throw new Error(err); });
     } else {
-      this.setState({
-        openSnackbar: true,
-        snackbarMsg: 'Document save failed'
-      });
+      toast.warning('Please fill out all fields', 'Alert...');
     }
   }
 
@@ -192,24 +186,6 @@ class DocumentEditor extends Component {
           onClick={this.onDocumentSave} />
           </Container>
         </div>
-        <div>
-          <Dialog
-          title="Cant Save yet!!"
-          actions={<FlatButton
-        label="Cancel"
-        primary
-        onTouchTap={this.handleClose}
-      />}
-          modal
-          open={this.state.errorSave}
-        >
-          Please fill out both Title and Body
-        </Dialog>
-        </div>
-        <GeneralSnackbar
-          openSnackbar={this.state.openSnackbar}
-          message={this.state.snackbarMsg}
-          />
       </div>
     );
   }

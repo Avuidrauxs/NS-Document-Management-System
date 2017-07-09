@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import jwt from 'jwt-decode';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
@@ -17,7 +16,7 @@ import { fetchDocuments, searchDocuments } from '../../actions/DocumentActions';
  * DocumentsList component
  * @type {Object}
  */
-class DocumentsList extends Component {
+export class DocumentsList extends Component {
 
   /**
    * DocumentsList constuctor, here is where all states are initiated
@@ -102,9 +101,9 @@ class DocumentsList extends Component {
    */
   filteredSearch(documents) {
     let filteredSearch = documents;
-    const decoded = jwt(localStorage.getItem('jwt-token'));
     filteredSearch = filteredSearch.filter((source) => {
-      return source.access !== 'private' || source.User.roleId === decoded.roleId;
+      return source.access !== 'private' ||
+      source.User.roleId === this.props.user.roleId;
     });
     return filteredSearch;
   }
@@ -197,11 +196,13 @@ class DocumentsList extends Component {
 DocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
   documents: PropTypes.array.isRequired,
   pagination: PropTypes.object.isRequired,
 };
 
 export default connect(state => ({
   documents: state.DocumentReducer,
+  user: state.AuthReducer.user,
   pagination: state.PaginationReducer
 }), { fetchDocuments, searchDocuments })(DocumentsList);

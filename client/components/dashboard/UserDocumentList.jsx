@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import jwt from 'jwt-decode';
 import PropTypes from 'prop-types';
 import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
@@ -16,7 +15,7 @@ import DocumentCard from '../document-editor/DocumentCard';
  * UserDocumentsList component
  * @type {Object}
  */
-class UserDocumentsList extends Component {
+export class UserDocumentsList extends Component {
 
   /**
    * UserDocumentsList constuctor, here is where all states are initiated
@@ -97,9 +96,8 @@ class UserDocumentsList extends Component {
    * @return {null}       returns nothing
    */
   componentWillMount() {
-    const decoded = jwt(localStorage.getItem('jwt-token'));
     // disptching action to fetch documents here
-    this.props.fetchUserDocuments(decoded.id);
+    this.props.fetchUserDocuments(this.props.user.id);
   }
 
   /**
@@ -107,7 +105,6 @@ class UserDocumentsList extends Component {
    * @return {React.Component} [A react componet element]
    */
   render() {
-    const decoded = jwt(localStorage.getItem('jwt-token'));
     const { currentPage, itemsPerPage } = this.state;
     const documents = this.filteredSearch(
       this.props.documents,
@@ -143,7 +140,7 @@ class UserDocumentsList extends Component {
           }}>
         <h1
           style={{ textTransform: 'capitalize' }}>
-          {`${decoded.username}'s`} Documents
+          {`${this.props.user.username}'s`} Documents
         </h1>
         <TextField
           hintText="Search Documents"
@@ -193,9 +190,11 @@ class UserDocumentsList extends Component {
 
 UserDocumentsList.propTypes = {
   fetchUserDocuments: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
   documents: PropTypes.array.isRequired,
 };
 
 export default connect(state => ({
-  documents: state.DocumentReducer
+  documents: state.DocumentReducer,
+  user: state.AuthReducer.user
 }), { fetchUserDocuments })(UserDocumentsList);

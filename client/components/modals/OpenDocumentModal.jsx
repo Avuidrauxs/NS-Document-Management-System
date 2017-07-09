@@ -9,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
  * @param {object} props  this constains parameters passed into the component
  * @return {React.Component} [A react componet element]
  */
-const OpenDocumentModal = (props) => {
+export const OpenDocumentModal = (props) => {
   const { title, body } = props.doc;
   return (
     <div>
