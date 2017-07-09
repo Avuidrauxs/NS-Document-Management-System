@@ -33,8 +33,8 @@ export class DocumentEditor extends Component {
       access: 'public',
       checked: false,
       hoverText: '',
-      openSnackbar: false,
-      snackbarMsg: '',
+      roleChecked: false,
+      disableRole: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -42,6 +42,7 @@ export class DocumentEditor extends Component {
     this.handleMouseIn = this.handleMouseIn.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleChecked = this.handleChecked.bind(this);
+    this.handleRoleChecked = this.handleRoleChecked.bind(this);
   }
 
 /**
@@ -54,11 +55,27 @@ export class DocumentEditor extends Component {
     });
     if (this.state.checked) {
       this.setState({
-        access: 'private'
+        access: 'private',
+        disableRole: false
       });
     } else {
       this.setState({
-        access: 'public'
+        access: 'public',
+        disableRole: true
+      });
+    }
+  }
+  /**
+   * This function sets the access state based on the checkbox check events
+   * @return {null}       retruns nothing
+   */
+  handleRoleChecked() {
+    this.setState({
+      roleChecked: !this.state.roleChecked,
+    });
+    if (this.state.roleChecked) {
+      this.setState({
+        access: 'role'
       });
     }
   }
@@ -169,6 +186,13 @@ export class DocumentEditor extends Component {
        label={this.state.hoverText}
        style={styles.checkbox}
      />
+            <Checkbox
+              checked={this.state.roleChecked}
+              onClick={this.handleRoleChecked}
+              disabled={this.state.disableRole}
+              label="Allow Role Access"
+              style={styles.checkbox}
+              />
             <ReactQuill
           theme={'snow'}
           onChange={this.onChange}

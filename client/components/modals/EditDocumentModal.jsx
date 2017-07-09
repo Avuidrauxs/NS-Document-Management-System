@@ -31,14 +31,17 @@ export class EditDocumentModal extends Component {
       body: '',
       checked: this.handlePropChecked(),
       hoverText: '',
+      roleChecked: false,
+      disableRole: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePropChecked = this.handlePropChecked.bind(this);
-    this.onChecked = this.onChecked.bind(this);
+    this.handleChecked = this.handleChecked.bind(this);
     this.onBodyChanged = this.onBodyChanged.bind(this);
     this.handleMouseIn = this.handleMouseIn.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.onDocumentUpdate = this.onDocumentUpdate.bind(this);
+    this.handleRoleChecked = this.handleRoleChecked.bind(this);
   }
 
   /**
@@ -61,13 +64,11 @@ export class EditDocumentModal extends Component {
   handleMouseIn() {
     if (this.state.checked) {
       this.setState({
-        hoverText: 'Click to toggle Public',
-        access: 'public'
+        hoverText: 'Click to toggle Public'
       });
     } else {
       this.setState({
-        hoverText: 'Click to toggle Private',
-        access: 'private'
+        hoverText: 'Click to toggle Private'
       });
     }
   }
@@ -101,11 +102,38 @@ export class EditDocumentModal extends Component {
   }
 
   /**
-   * This function handles checkbox check events
+   * This function sets the access state based on the checkbox check events
    * @return {null}       retruns nothing
    */
-  onChecked() {
-    this.setState({ checked: !this.state.checked });
+  handleChecked() {
+    this.setState({
+      checked: !this.state.checked,
+    });
+    if (this.state.checked) {
+      this.setState({
+        access: 'private',
+        disableRole: false
+      });
+    } else {
+      this.setState({
+        access: 'public',
+        disableRole: true
+      });
+    }
+  }
+    /**
+     * This function sets the access state based on the checkbox check events
+     * @return {null}       retruns nothing
+     */
+  handleRoleChecked() {
+    this.setState({
+      roleChecked: !this.state.roleChecked,
+    });
+    if (this.state.roleChecked) {
+      this.setState({
+        access: 'role'
+      });
+    }
   }
 
   /**
@@ -204,12 +232,19 @@ onTouchTap={this.onDocumentUpdate}
                checkedIcon={<VisibilityOff />}
                uncheckedIcon={<Visibility />}
                checked={this.state.checked}
-               onClick={this.onChecked}
+               onClick={this.handleChecked}
                onMouseEnter={this.handleMouseIn}
                onMouseOut={this.handleMouseOut}
                label={this.state.hoverText}
                style={styles.checkbox}
              />
+          <Checkbox
+               checked={this.state.roleChecked}
+               onClick={this.handleRoleChecked}
+               disabled={this.state.disableRole}
+               label="Allow Role Access"
+               style={styles.checkbox}
+               />
           <ReactQuill
                     theme={'snow'}
                     name="body"
