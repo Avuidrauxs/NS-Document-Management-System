@@ -31,6 +31,6 @@ module.exports = {
     '**/client/actions/**', '**/client/store/**', '**/client/components/**',
     '**/client/reducers/**','!**/node_modules/**', '!**/lcov-report/**',
     '!**/client/utilities/**','!**/client/store/**', '!**/client/components/dashboard/routes.jsx',
-    '!**/client/reducers/PaginationReducer.jsx'
+    '!**/client/reducers/PaginationReducer.js'
   ],
 };
