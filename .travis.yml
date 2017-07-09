@@ -4,6 +4,5 @@ language: node_js
 node_js:
   - "stable"
 before_install:
-  npm install --ignore-scripts
 
 after_success: npm run coverage

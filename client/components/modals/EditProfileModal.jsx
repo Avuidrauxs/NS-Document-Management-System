@@ -110,7 +110,7 @@ export class EditProfileModal extends Component {
           swal('Yaayyy!!!', `${username} updated`, 'success');
           this.props.onCloseOpenEdit();
         });
-      } else {
+      } else if (this.state.password.length >= 8) {
         this.props.updateUser({
           username,
           fullName,
@@ -122,6 +122,8 @@ export class EditProfileModal extends Component {
           swal('Yaayyy!!!', `${username} password updated`, 'success');
           this.props.onCloseOpenEdit();
         });
+      } else {
+        toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
       }
     } else {
       toast.warning('Fill out all fileds', 'Alert!!');
@@ -134,12 +136,8 @@ export class EditProfileModal extends Component {
    * @return {null}       retruns nothing
    */
   comparePassword() {
-    if (this.state.password.length > 8) {
-      if (this.state.password !== this.state.confirmPassword) {
-        this.alertWrongPassword();
-      }
-    } else {
-      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
+    if (this.state.password !== this.state.confirmPassword) {
+      this.alertWrongPassword();
     }
   }
 

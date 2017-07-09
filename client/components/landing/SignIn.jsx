@@ -81,18 +81,22 @@ export class SignIn extends Component {
  */
   onSignUpSubmit(event) {
     event.preventDefault();
-    this.props.postSignUp({
-      username: this.state.signUpUsername,
-      password: this.state.signUpPassword,
-      fullName: this.state.fullName,
-      email: this.state.email,
-    })
+    if (this.state.signUpPassword.length >= 8) {
+      this.props.postSignUp({
+        username: this.state.signUpUsername,
+        password: this.state.signUpPassword,
+        fullName: this.state.fullName,
+        email: this.state.email,
+      })
     .then(() => {
       this.props.history.push('/dashboard');
     })
     .catch(() => {
       toast.error('User already exists', 'Oopps...!');
     });
+    } else {
+      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
+    }
   }
 
   /**
@@ -120,12 +124,8 @@ export class SignIn extends Component {
  * @return {null}       retruns nothing
  */
   comparePassword() {
-    if (this.state.signUpPassword.length > 8) {
-      if (this.state.signUpPassword !== this.state.confirmPassword) {
-        this.alertWrongPassword();
-      }
-    } else {
-      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
+    if (this.state.signUpPassword !== this.state.confirmPassword) {
+      this.alertWrongPassword();
     }
   }
 
