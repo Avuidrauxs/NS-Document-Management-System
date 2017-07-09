@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import toast from 'toastr';
 
 
 export default (ComposedComponent) => {
@@ -18,7 +19,7 @@ export default (ComposedComponent) => {
     componentWillMount() {
       if (!this.props.isAuthenticated) {
         this.props.history.push('/');
-        console.log('Wrong Credentials');
+        toast.error('Invalid username or password', 'Oopps...!');
         return (
           <Redirect
             to={{
@@ -39,7 +40,7 @@ export default (ComposedComponent) => {
     componentWillUpdate(nextProps) {
       if (!this.props.isAuthenticated || !nextProps.isAuthenticated) {
         this.props.history.push('/');
-        console.log('You must be signed in');
+        toast.info('You need to be signed in to proceed', 'Alert!');
         return (
           <Redirect
             to={{

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toast from 'toastr';
 import Form from 'muicss/lib/react/form';
 import Input from 'muicss/lib/react/input';
 import Button from 'muicss/lib/react/button';
@@ -10,14 +11,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 import { postLogin, postSignUp } from '../../actions/AuthActions';
-import GeneralSnackbar from '../snackbar/GeneralSnackbar';
-import ErrorSnackbar from '../snackbar/ErrorSnackbar';
+
 
 /**
  * SignIn Component
  * @type {Object}
  */
-class SignIn extends Component {
+export class SignIn extends Component {
 
   /**
    * SignIn constuctor, here is where all states are initiated
@@ -36,10 +36,6 @@ class SignIn extends Component {
       fullName: '',
       confirmPassword: '',
       isError: false,
-      openSnackbar: false,
-      snackbarMsg: '',
-      openError: false,
-      errorMessage: ''
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -58,7 +54,6 @@ class SignIn extends Component {
   onChange(event) {
     return this.setState({
       [event.target.name]: event.target.value,
-      openSnackbar: false
     });
   }
 
@@ -75,7 +70,7 @@ class SignIn extends Component {
    * @return {null}       retruns nothing
    */
   handleClose() {
-    this.setState({ open: false, openSnackbar: false });
+    this.setState({ open: false });
   }
 
 
@@ -95,7 +90,9 @@ class SignIn extends Component {
     .then(() => {
       this.props.history.push('/dashboard');
     })
-    .catch((err) => { throw new Error(err); });
+    .catch(() => {
+      toast.error('User already exists', 'Oopps...!');
+    });
   }
 
   /**
@@ -113,10 +110,7 @@ class SignIn extends Component {
       this.props.history.push('/dashboard');
     })
     .catch((err) => {
-      this.setState({
-        openError: true,
-        errorMessage: `${err}`
-      });
+      throw new Error(err);
     });
   }
 
@@ -126,8 +120,12 @@ class SignIn extends Component {
  * @return {null}       retruns nothing
  */
   comparePassword() {
-    if (this.state.signUpPassword !== this.state.confirmPassword) {
-      this.alertWrongPassword();
+    if (this.state.signUpPassword.length > 8) {
+      if (this.state.signUpPassword !== this.state.confirmPassword) {
+        this.alertWrongPassword();
+      }
+    } else {
+      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
     }
   }
 
@@ -140,9 +138,8 @@ class SignIn extends Component {
     this.setState({
       signUpPassword: '',
       confirmPassword: '',
-      openSnackbar: true,
-      snackbarMsg: 'Password mismatch'
     });
+    toast.error('Password mismatch', 'Oopps...!');
   }
 
   /**
@@ -158,12 +155,12 @@ class SignIn extends Component {
         onTouchTap={this.handleClose}
       />,
     ];
-
     return (
       <MuiThemeProvider>
         <div>
           <div className="sign-in">
             <Form
+              name="signInForm"
               style={{
                 marginTop: '180px',
                 textAlign: 'center' }}
@@ -171,6 +168,7 @@ class SignIn extends Component {
                 >
               <Input
                 label="username"
+                id="username"
                 floatingLabel
                 required
                 name="username"
@@ -185,11 +183,16 @@ class SignIn extends Component {
                 onChange={this.onChange}
                 />
 
-              <Button color="primary" variant="raised">SignIn</Button>
+              <Button
+                type="submit"
+                color="primary"
+                variant="raised"
+                className="signin-button">SignIn</Button>
 
               <br />
               <br />
               <p>Not registered? Click <a
+                id="signup"
                 onTouchTap={this.handleOpen}
                 style={{ cursor: 'pointer', color: 'black' }}
                         ><em>here
@@ -207,7 +210,7 @@ class SignIn extends Component {
             autoScrollBodyContent
           >
               <Container>
-                <Form onSubmit={this.onSignUpSubmit}>
+                <Form name="signUpForm" onSubmit={this.onSignUpSubmit}>
                   <Input
                     label="Full name"
                     floatingLabel
@@ -253,18 +256,14 @@ class SignIn extends Component {
                     onBlur={this.comparePassword}
                   />
 
-                  <Button color="primary" variant="raised">Sign Up</Button>
+                  <Button
+                  type="submit"
+                  color="primary"
+                  className="signup-button"
+                  variant="raised">Sign Up</Button>
                 </Form>
               </Container>
             </Dialog>
-            <GeneralSnackbar
-              openSnackbar={this.state.openSnackbar}
-              message={this.state.snackbarMsg}
-              />
-            <ErrorSnackbar
-              openErrorSnackbar={this.state.openError}
-              errorMessage={this.state.errorMessage}
-              />
           </div>
         </div>
       </MuiThemeProvider>

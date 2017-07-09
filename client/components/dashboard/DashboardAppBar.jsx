@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import AppBar from 'material-ui/AppBar';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import swal from 'sweetalert2';
 import MenuItem from 'material-ui/MenuItem';
 import Menu from 'material-ui/Menu';
 import Avatar from 'material-ui/Avatar';
 import DashboardDrawer from './DashboardDrawer';
 import ProfilePic from '../../images/profile-placeholder.png';
-import SignOutModal from '../modals/SignOutModal';
+import { logout } from '../../actions/AuthActions';
 import EditProfileModal from '../modals/EditProfileModal';
 
 /**
  * DashboardAppBar React Componet
  * @type {Object}
  */
-class DashboardAppBar extends Component {
+export class DashboardAppBar extends Component {
 
   /**
    * DashboardAppBar constuctor, here is where all states are initiated
@@ -33,26 +36,28 @@ class DashboardAppBar extends Component {
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleSignoutClose = this.handleSignoutClose.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
+    this.onSignOut = this.onSignOut.bind(this);
   }
-
   /**
-   * this function handles the signout modal close event
-   * @return {null} returns nothing
+   * This function disptaches an action to log a user out of NSDMS
+   * @return {null}       retruns nothing
    */
-  handleSignoutClose() {
-    this.setState({ signOutOpen: false });
-  }
-
-  /**
-   * This function handles opening the modal for signout
-   * @return {null} returns nothing
-   */
-  handleSignOut() {
-    this.setState({ signOutOpen: true });
+  onSignOut() {
+    swal({
+      title: 'You wanna leave?',
+      text: 'Stay for a while maybe?',
+      type: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "I'm staying",
+      confirmButtonText: 'Bye bye'
+    }).then(() => {
+      this.props.logout();
+      this.props.history.push('/');
+    });
   }
 
   /**
@@ -154,17 +159,14 @@ onMouseLeave={this.handleRequestClose}
               <MenuItem
                 primaryText="Edit Profile"
                 onTouchTap={this.handleOpenEdit} />
-              <Link to='/api'><MenuItem
+              <Link to="/api"><MenuItem
                 primaryText="Read API Doc" /></Link>
               <MenuItem
                 primaryText="Sign out"
-                onTouchTap={this.handleSignOut} />
+                onTouchTap={this.onSignOut} />
             </Menu>
           </Popover>
         </div>
-        <SignOutModal
-          openSignOut={this.state.signOutOpen}
-          closeSignOut={this.handleSignoutClose} />
         <EditProfileModal
           openEdit={this.state.openEdit}
           onCloseOpenEdit={this.onCloseOpenEdit}
@@ -177,5 +179,9 @@ onMouseLeave={this.handleRequestClose}
     );
   }
 }
+DashboardAppBar.propTypes = {
+  logout: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+};
 
-export default DashboardAppBar;
+export default withRouter(connect(null, { logout })(DashboardAppBar));

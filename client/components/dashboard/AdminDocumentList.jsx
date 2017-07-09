@@ -15,7 +15,7 @@ import DocumentCard from '../document-editor/DocumentCard';
  * Admins Document List Component
  * @type {Object}
  */
-class AdminDocumentsList extends Component {
+export class AdminDocumentsList extends Component {
 
 /**
  * AdminDocumentsList constuctor, here is where all states are initiated
@@ -159,7 +159,7 @@ class AdminDocumentsList extends Component {
             </li>
           </ul>
         </div>
-        <Container fluid>
+        <Container className="main-container" fluid>
           <Row>
             {paginateDocuments.map((document, index) => {
               return (

@@ -22,7 +22,7 @@ const AuthReducer = (state = initialState.auth, action) => {
     return action.error;
 
   case AUTH.SIGNOUT_SUCCESS:
-    return state;
+    return initialState.auth;
 
   default:
     return state;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import swal from 'sweetalert2';
 import { Card, CardActions, CardHeader } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
@@ -7,13 +9,14 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionOpen from 'material-ui/svg-icons/action/open-in-browser';
 import OpenDocumentModal from '../modals/OpenDocumentModal';
 import EditDocumentModal from '../modals/EditDocumentModal';
-import DeleteDocumentModal from '../modals/DeleteDocumentModal';
+import { deleteDocument } from '../../actions/DocumentActions';
+
 
 /**
  * DocumentCard Component
  * @type {Object}
  */
-export default class DocumentCard extends Component {
+export class DocumentCard extends Component {
 
   /**
    * DocumentCard constuctor, here is where all states are initiated
@@ -31,9 +34,33 @@ export default class DocumentCard extends Component {
     this.onCloseDocument = this.onCloseDocument.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.onCloseEdit = this.onCloseEdit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.onCloseDelete = this.onCloseDelete.bind(this);
+    this.onDocumentDelete = this.onDocumentDelete.bind(this);
   }
+
+  /**
+   * This function dispatches the action to delete a document
+   * @return {[type]} [description]
+   */
+  onDocumentDelete() {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(() => {
+      this.props.deleteDocument(this.props.document.id).then(() => {
+        swal(
+      'Deleted!',
+      'Your document has been deleted.',
+      'success'
+    );
+      }).catch((err) => { throw new Error(err); });
+    });
+  }
+
   /**
    * This function opens the view document modal
    * @return {null}       retruns nothing
@@ -51,14 +78,6 @@ export default class DocumentCard extends Component {
   }
 
   /**
-   * This function opens the delete document modal
-   * @return {null}       retruns nothing
-   */
-  handleDelete() {
-    this.setState({ openDelete: true });
-  }
-
-  /**
    * This function closes the view document modal
    * @return {null}       retruns nothing
    */
@@ -72,14 +91,6 @@ export default class DocumentCard extends Component {
    */
   onCloseEdit() {
     this.setState({ openEdit: false });
-  }
-
-  /**
-   * This function closes the delete document modal
-   * @return {null}       retruns nothing
-   */
-  onCloseDelete() {
-    this.setState({ openDelete: false });
   }
 
   /**
@@ -142,7 +153,7 @@ export default class DocumentCard extends Component {
               <IconButton
                 style={deleteStyle}
                 tooltip="Delete Document"
-                onTouchTap={this.handleDelete}>
+                onTouchTap={this.onDocumentDelete}>
                 <ActionDelete />
               </IconButton>
             </CardActions>
@@ -159,11 +170,6 @@ export default class DocumentCard extends Component {
             closeEdit={this.onCloseEdit}
             doc={this.props.document}
             />
-          <DeleteDocumentModal
-            openDelete={this.state.openDelete}
-            closeDelete={this.onCloseDelete}
-            doc={this.props.document}
-            />
         </div>
       </div>
     );
@@ -172,10 +178,13 @@ export default class DocumentCard extends Component {
 
 DocumentCard.propTypes = {
   document: PropTypes.object.isRequired,
-  ReadOnly: PropTypes.bool.isRequired
+  ReadOnly: PropTypes.bool.isRequired,
+  deleteDocument: PropTypes.func.isRequired
 };
 
 DocumentCard.defaultProps = {
   document: {},
   ReadOnly: false
 };
+
+export default connect(null, { deleteDocument })(DocumentCard);

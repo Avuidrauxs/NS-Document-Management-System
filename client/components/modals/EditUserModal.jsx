@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import swal from 'sweetalert2';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import { updateUser } from '../../actions/UserActions';
-import GeneralSnackbar from '../snackbar/GeneralSnackbar';
+
 
 /**
  * EditUserModal Component
  * @type {Object}
  */
-class EditUserModal extends Component {
+export class EditUserModal extends Component {
 
   /**
    * EditUserModal constuctor, here is where all states are initiated
@@ -22,8 +23,6 @@ class EditUserModal extends Component {
     super(props);
     this.state = {
       roleId: null,
-      openSnackbar: false,
-      snackbarMsg: ''
     };
     this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -48,10 +47,7 @@ class EditUserModal extends Component {
       id: this.props.id
     })
     .then(() => {
-      this.setState({
-        openSnackbar: true,
-        snackbarMsg: 'user updated'
-      });
+      swal('Yaaaay', 'User role updated', 'success');
       this.props.onCloseOpenEdit();
     });
   }
@@ -99,10 +95,6 @@ onTouchTap={this.onUpdateUser}
       />
           </RadioButtonGroup>
         </Dialog>
-        <GeneralSnackbar
-          openSnackbar={this.state.openSnackbar}
-          message={this.state.snackbarMsg}
-          />
       </div>
     );
   }

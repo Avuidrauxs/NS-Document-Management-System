@@ -1,7 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import jwt from 'jwt-decode';
 import Drawer from 'material-ui/Drawer';
 import { List, ListItem } from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
@@ -17,10 +17,9 @@ import Subheader from 'material-ui/Subheader';
  * @param {object} props this constains paramters passed into the Component
  * @return {React.Component} [A react componet element]
  */
-const DashboardDrawer = (props) => {
-  const decoded = jwt(localStorage.getItem('jwt-token'));
+export const DashboardDrawer = (props) => {
   let AdminStyle;
-  if (decoded.id === 1) {
+  if (props.user.id === 1) {
     AdminStyle = {
       display: ''
     };
@@ -37,7 +36,7 @@ open={props.open}
 onRequestChange={() => props.closeDrawer()}
 >
       <List>
-        <Subheader>Welcome, {decoded.username}</Subheader>
+        <Subheader>Welcome, {props.user.username}</Subheader>
         <Link to="/dashboard"><ListItem
         primaryText="Home"
         leftIcon={<ActionHome />}
@@ -73,6 +72,7 @@ onRequestChange={() => props.closeDrawer()}
 
 DashboardDrawer.propTypes = {
   open: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
   closeDrawer: PropTypes.func.isRequired
 };
 
@@ -80,4 +80,6 @@ DashboardDrawer.default = {
   open: false
 };
 
-export default DashboardDrawer;
+export default connect(state => ({
+  user: state.AuthReducer.user
+}))(DashboardDrawer);

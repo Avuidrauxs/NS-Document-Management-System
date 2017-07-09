@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import jwt from 'jwt-decode';
+import swal from 'sweetalert2';
+import toast from 'toastr';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import { updateUser, getUserDetails } from '../../actions/UserActions';
-import GeneralSnackbar from '../snackbar/GeneralSnackbar';
 
 /**
  * EditProfileModal Component
  * @type {Object}
  */
-class EditProfileModal extends Component {
+export class EditProfileModal extends Component {
   /**
    * EditProfileModal constuctor, here is where all states are initiated
    * @param  {object} props [contains props parameters passed into Component]
@@ -21,12 +21,11 @@ class EditProfileModal extends Component {
    */
   constructor(props) {
     super(props);
-    this.decoded = jwt(localStorage.getItem('jwt-token'));
     this.state = {
       username: '',
       fullName: '',
       email: '',
-      id: this.decoded.id,
+      id: props.user.id,
       password: '',
       confirmPassword: '',
       isDisabled: true,
@@ -84,7 +83,7 @@ class EditProfileModal extends Component {
    * @return {null}       returns nothing
    */
   componentWillMount() {
-    this.props.getUserDetails(this.decoded.id).then(() => {
+    this.props.getUserDetails(this.props.user.id).then(() => {
       this.setState({
         username: this.props.userProfile.username,
         fullName: this.props.userProfile.fullName,
@@ -108,10 +107,7 @@ class EditProfileModal extends Component {
           id
         })
         .then(() => {
-          this.setState({
-            openSnackbar: true,
-            snackbarMsg: 'profile updated'
-          });
+          swal('Yaayyy!!!', `${username} updated`, 'success');
           this.props.onCloseOpenEdit();
         });
       } else {
@@ -123,18 +119,12 @@ class EditProfileModal extends Component {
           id
         })
         .then(() => {
-          this.setState({
-            openSnackbar: true,
-            snackbarMsg: 'profile updated'
-          });
+          swal('Yaayyy!!!', `${username} password updated`, 'success');
           this.props.onCloseOpenEdit();
         });
       }
     } else {
-      this.setState({
-        openSnackbar: true,
-        snackbarMsg: 'Please fill out all fields'
-      });
+      toast.warning('Fill out all fileds', 'Alert!!');
     }
   }
 
@@ -144,8 +134,12 @@ class EditProfileModal extends Component {
    * @return {null}       retruns nothing
    */
   comparePassword() {
-    if (this.state.password !== this.state.confirmPassword) {
-      this.alertWrongPassword();
+    if (this.state.password.length > 8) {
+      if (this.state.password !== this.state.confirmPassword) {
+        this.alertWrongPassword();
+      }
+    } else {
+      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
     }
   }
 
@@ -158,9 +152,8 @@ class EditProfileModal extends Component {
     this.setState({
       password: '',
       confirmPassword: '',
-      openSnackbar: true,
-      snackbarMsg: 'Password mismatch'
     });
+    toast.error('Password mismatch', 'Oooopps...');
   }
 
   /**
@@ -241,10 +234,6 @@ onTouchTap={this.onUpdateUser}
         onBlur={this.comparePassword}
      />
         </Dialog>
-        <GeneralSnackbar
-    openSnackbar={this.state.openSnackbar}
-    message={this.state.snackbarMsg}
-    />
       </div>
     );
   }
@@ -255,10 +244,12 @@ EditProfileModal.propTypes = {
   updateUser: PropTypes.func.isRequired,
   userProfile: PropTypes.object.isRequired,
   openEdit: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
   onCloseOpenEdit: PropTypes.func.isRequired
 };
 
 
 export default connect(state => ({
-  userProfile: state.UserReducer.profile
+  userProfile: state.UserReducer.profile,
+  user: state.AuthReducer.user
 }), { getUserDetails, updateUser })(EditProfileModal);

@@ -9,22 +9,21 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import jwt from 'jwt-decode';
+import swal from 'sweetalert2';
 import TextField from 'material-ui/TextField';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
 import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import { fetchAllUsers, searchUsers } from '../../actions/UserActions';
+import { fetchAllUsers, searchUsers, deleteUser } from '../../actions/UserActions';
 import EditUserModal from '../modals/EditUserModal';
-import DeleteUserModal from '../modals/DeleteUserModal';
 
 /**
  * UsersTable component
  * @type {Object}
  */
-class UsersTable extends Component {
+export class UsersTable extends Component {
 
   /**
    * UsersTable constuctor, here is where all states are initiated
@@ -62,6 +61,32 @@ class UsersTable extends Component {
     this.onClickSearch = this.onClickSearch.bind(this);
     this.handleFirstClick = this.handleFirstClick.bind(this);
     this.handleLastClick = this.handleLastClick.bind(this);
+    this.onDeleteUser = this.onDeleteUser.bind(this);
+  }
+
+  /**
+   * This function dispatches the action to delte a user
+   * @param  {number} id [that is the user selected id parameter]
+   * @return {null}       retruns nothing
+   */
+  onDeleteUser(id) {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(() => {
+      this.props.deleteUser(id).then(() => {
+        swal(
+      'Deleted!',
+      'User has been deleted.',
+      'success'
+    );
+      }).catch((err) => { throw new Error(err); });
+    });
   }
 
   /**
@@ -193,7 +218,6 @@ class UsersTable extends Component {
    */
   render() {
     const { currentPage, itemsPerPage } = this.state;
-    const decoded = jwt(localStorage.getItem('jwt-token'));
 
     // Logic for pagination
     const indexOfLastUser = currentPage * itemsPerPage;
@@ -279,7 +303,7 @@ class UsersTable extends Component {
             stripedRows={this.state.stripedRows}
           >
             {paginatedUsers.map((user, index) => {
-              if (user.id !== decoded.id) {
+              if (user.id !== this.props.user.id) {
                 return (
                   <TableRow key={index}>
                     <TableRowColumn>{index}</TableRowColumn>
@@ -295,7 +319,7 @@ class UsersTable extends Component {
                       <IconButton
                           key={user.id}
                           tooltip="Remove User"
-                          onTouchTap={() => this.handleOpenDelete(user.id)}>
+                          onTouchTap={() => this.onDeleteUser(user.id)}>
                         <ActionDelete />
                       </IconButton>
                     </TableRowColumn>
@@ -311,11 +335,6 @@ class UsersTable extends Component {
           openEdit={this.state.openEdit}
           onCloseOpenEdit={this.onCloseOpenEdit}
           />
-        <DeleteUserModal
-          id={this.state.currentUserID}
-          openDelete={this.state.openDelete}
-          onCloseOpenDelete={this.onCloseOpenDelete}
-          />
       </div>
     );
   }
@@ -325,10 +344,13 @@ UsersTable.propTypes = {
   fetchAllUsers: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  deleteUser: PropTypes.func.isRequired,
   pagination: PropTypes.object.isRequired
 };
 
 export default connect(state => ({
   users: state.UserReducer.users,
+  user: state.AuthReducer.user,
   pagination: state.PaginationReducer
-}), { fetchAllUsers, searchUsers })(UsersTable);
+}), { fetchAllUsers, searchUsers, deleteUser })(UsersTable);
