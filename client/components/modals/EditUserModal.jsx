@@ -100,7 +100,7 @@ onTouchTap={this.onUpdateUser}
   }
 }
 EditUserModal.propTypes = {
-  id: PropTypes.any.isRequired,
+  id: PropTypes.number.isRequired,
   updateUser: PropTypes.func.isRequired,
   openEdit: PropTypes.bool.isRequired,
   onCloseOpenEdit: PropTypes.func.isRequired
