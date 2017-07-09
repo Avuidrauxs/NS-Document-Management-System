@@ -169,7 +169,7 @@ export class UserDocumentsList extends Component {
             </li>
           </ul>
         </div>
-        <Container fluid>
+        <Container className="main-container" fluid>
           <Row>
 
             {pagiDocuments.map((document, index) => {

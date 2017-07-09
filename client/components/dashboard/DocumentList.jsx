@@ -145,7 +145,7 @@ export class DocumentsList extends Component {
           marginTop: '80px',
           textAlign: 'center'
         }}>
-          <h1>Public Documents</h1>
+          <h1 className="main-heading">Public Documents</h1>
           <TextField
         hintText="Search Documents"
         fullWidth
@@ -174,7 +174,7 @@ export class DocumentsList extends Component {
               </li>
             </ul>
           </div>
-          <Container fluid>
+          <Container className="main-container" fluid>
             <Row>
               {pagiDocuments.map((document, index) => {
                 return (
@@ -198,7 +198,6 @@ DocumentsList.propTypes = {
   searchDocuments: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   documents: PropTypes.array.isRequired,
-  pagination: PropTypes.object.isRequired,
 };
 
 export default connect(state => ({

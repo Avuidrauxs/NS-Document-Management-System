@@ -90,7 +90,7 @@ export class SignIn extends Component {
     .then(() => {
       this.props.history.push('/dashboard');
     })
-    .catch((err) => {
+    .catch(() => {
       toast.error('User already exists', 'Oopps...!');
     });
   }
@@ -168,6 +168,7 @@ export class SignIn extends Component {
                 >
               <Input
                 label="username"
+                id="username"
                 floatingLabel
                 required
                 name="username"
@@ -182,11 +183,16 @@ export class SignIn extends Component {
                 onChange={this.onChange}
                 />
 
-              <Button type="submit" color="primary" variant="raised">SignIn</Button>
+              <Button
+                type="submit"
+                color="primary"
+                variant="raised"
+                className="signin-button">SignIn</Button>
 
               <br />
               <br />
               <p>Not registered? Click <a
+                id="signup"
                 onTouchTap={this.handleOpen}
                 style={{ cursor: 'pointer', color: 'black' }}
                         ><em>here
@@ -250,9 +256,10 @@ export class SignIn extends Component {
                     onBlur={this.comparePassword}
                   />
 
-                <Button
+                  <Button
                   type="submit"
                   color="primary"
+                  className="signup-button"
                   variant="raised">Sign Up</Button>
                 </Form>
               </Container>

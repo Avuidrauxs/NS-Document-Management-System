@@ -40,7 +40,7 @@ export default (ComposedComponent) => {
     componentWillUpdate(nextProps) {
       if (!this.props.isAuthenticated || !nextProps.isAuthenticated) {
         this.props.history.push('/');
-        toast.error('You need to be signed in to proceed', 'Oopps...!');
+        toast.info('You need to be signed in to proceed', 'Alert!');
         return (
           <Redirect
             to={{

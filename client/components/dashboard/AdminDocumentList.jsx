@@ -159,7 +159,7 @@ export class AdminDocumentsList extends Component {
             </li>
           </ul>
         </div>
-        <Container fluid>
+        <Container className="main-container" fluid>
           <Row>
             {paginateDocuments.map((document, index) => {
               return (
