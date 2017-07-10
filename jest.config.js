@@ -28,9 +28,9 @@ module.exports = {
     'client/'
   ],
   collectCoverageFrom: [
-    '**/client/actions/**', '**/client/store/**', '**/client/components/**',
+    '**/client/actions/**', '!**/client/store/**', '**/client/components/**',
     '**/client/reducers/**','!**/node_modules/**', '!**/lcov-report/**',
-    '!**/client/utilities/**','!**/client/store/**', '!**/client/components/dashboard/routes.jsx',
+    '!**/client/utilities/**','!**/client/components/dashboard/routes.jsx',
     '!**/client/reducers/PaginationReducer.js'
   ],
 };
