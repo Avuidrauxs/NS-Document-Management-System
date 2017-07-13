@@ -2,7 +2,7 @@ import faker from 'faker';
 import bcrypt from 'bcrypt';
 
 export default {
-  sampleUser1: {
+  fakeJojo: {
     username: 'jojo',
     fullName: 'Jonathan Joestar',
     email: 'jojo@hot.com',
@@ -11,7 +11,7 @@ export default {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  sampleUser2: {
+  fakeDio: {
     username: 'dio',
     fullName: 'Dio Brando',
     email: 'dio@hot.com',
@@ -20,7 +20,8 @@ export default {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  sampleUser3: {
+  fakeEsther: {
+    username: 'Esther',
     fullName: 'Falayi',
     email: 'efalayi@hot.com',
     password: bcrypt.hashSync('poundedYam', bcrypt.genSaltSync(8)),
@@ -28,7 +29,7 @@ export default {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  sampleUser4: {
+  fakeJohnson: {
     username: faker.internet.userName(),
     fullName: faker.name.findName(),
     email: faker.internet.email(),
@@ -37,7 +38,7 @@ export default {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  sampleAdmin: {
+  fakeAdmin: {
     username: 'Mark',
     fullName: 'Edom',
     email: 'edom@hot.com',
@@ -105,13 +106,13 @@ export default {
     createdAt: new Date(),
     updatedAt: new Date()
   },
-  roleOne: {
+  editor: {
     description: 'editor',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  roleTwo: {
-    description: 'publisher',
+  chief: {
+    description: 'chief',
     createdAt: new Date(),
     updatedAt: new Date(),
   },

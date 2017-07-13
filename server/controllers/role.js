@@ -25,13 +25,20 @@ const rolee = {
  * @return {object}    returns a response object
  */
   removeRole(req, res) {
-    return models.Role.findById(req.params.id)
-      .then((role) => {
-        if (!role) return res.status(404).send({ message: 'Role not found' });
-        role.destroy(req.body)
-          .then(() => res.status(203).send({ message: 'Role deleted' }));
-      })
-      .catch(error => res.status(400).send(error));
+    if (Number(req.body.id) === 1 ||
+    Number(req.params.id) === 1 ||
+    Number(req.body.id) === 2 ||
+    Number(req.params.id) === 2) {
+      return res.status(403).send({ message: 'Illegal Operation' });
+    } else {
+      return models.Role.findById(req.params.id)
+        .then((role) => {
+          if (!role) return res.status(404).send({ message: 'Role not found' });
+          role.destroy(req.body)
+            .then(() => res.status(203).send({ message: 'Role deleted' }));
+        })
+        .catch(error => res.status(400).send(error));
+    }
   },
 
 /**
@@ -58,10 +65,12 @@ const rolee = {
   updateRole(req, res) {
     return models.Role.findById(req.params.id)
       .then((role) => {
-        if (!role) return res.status(404).send({ message: 'Non existent role' });
+        if (!role) return res.status(404)
+        .send({ message: 'Non existent role' });
         role.update(req.body)
           .then(updatedRole =>
-          res.status(200).send({ id: updatedRole.id, description: updatedRole.description }))
+          res.status(200)
+          .send({ id: updatedRole.id, description: updatedRole.description }))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));

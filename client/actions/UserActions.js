@@ -9,11 +9,11 @@ import { USER } from '../constants/Constants';
  */
 export function fetchAllUsers(offset = 0, limit = 20) {
   return (dispatch) => {
-    return axios.get(`/api/users?limit=${limit}&offset=${offset}`)
+    return axios.get(`/api/v1/users?limit=${limit}&offset=${offset}`)
     .then((res) => {
       dispatch({
         type: USER.GET_ALL_SUCCESS,
-        users: res.data.rows,
+        users: res.data.users,
         metaData: res.data.metaData,
         offset,
         query: ''
@@ -33,7 +33,7 @@ export function fetchAllUsers(offset = 0, limit = 20) {
  */
 export function updateUser(user) {
   return (dispatch) => {
-    return axios.put(`/api/users/${user.id}`, user)
+    return axios.put(`/api/v1/users/${user.id}`, user)
       .then((res) => {
         dispatch({
           type: USER.UPDATE_SUCCESS,
@@ -50,15 +50,16 @@ export function updateUser(user) {
 
 /**
  * Deletes a user from the NSDMS backend
- * @param  {number} id [The user's id parameter]
+ * @param  {object} user [The user's id parameter]
  * @return {object}    [action object with type and payload]
  */
-export function deleteUser(id) {
+export function deleteUser(user) {
   return (dispatch) => {
-    return axios.delete(`/api/users/${id}`)
+    return axios.delete(`/api/v1/users/${user.id}`)
       .then(() => {
         dispatch({
           type: USER.DELETE_SUCCESS,
+          user
         });
       }, (err) => {
         dispatch({
@@ -77,7 +78,7 @@ export function deleteUser(id) {
 */
 export function getUserDetails(id) {
   return (dispatch) => {
-    return axios.get(`/api/users/${id}`)
+    return axios.get(`/api/v1/users/${id}`)
       .then((res) => {
         dispatch({
           type: USER.GET_SUCCESS,
@@ -101,11 +102,12 @@ export function getUserDetails(id) {
  */
 export function searchUsers(query, offset = 0, limit = 20) {
   return (dispatch) => {
-    return axios.get(`/api/search/users?q=${query}&limit=${limit}&offset=${offset}`)
+    return axios
+    .get(`/api/v1/search/users?q=${query}&limit=${limit}&offset=${offset}`)
       .then((res) => {
         dispatch({
           type: USER.SEARCH_SUCCESS,
-          users: res.data.rows,
+          users: res.data.users,
           metaData: res.data.metaData,
           query,
           offset

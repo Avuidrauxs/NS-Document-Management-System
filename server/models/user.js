@@ -32,7 +32,7 @@ export default (sequelize, DataTypes) => {
       associate(models) {
         User.hasMany(models.Document, {
           foreignKey: 'authorId',
-          as: 'documents',
+          onDelete: 'SET NULL',
         });
         User.belongsTo(models.Role, {
           foreignKey: 'roleId',

@@ -110,19 +110,25 @@ export class DocumentEditor extends Component {
  */
   onDocumentSave() {
     const decoded = jwt(localStorage.getItem('jwt-token'));
-    if (this.state.title !== '' && this.state.editorHtml !== '') {
+    const isBodyEmpty = this.state.editorHtml !== '';
+    const isBodySpaced = this.state.editorHtml !== '<p><br></p>';
+    if (this.state.title !== '' && isBodyEmpty && isBodySpaced) {
       this.props.saveDocument({
         title: this.state.title,
         body: this.state.editorHtml,
         access: this.state.access,
         authorId: decoded.id
       }).then(() => {
-        this.setState({
-          title: '',
-          editorHtml: '',
-          access: 'public',
-        });
-        swal('Yaaayyy!!', `${this.state.title} saved`, 'success');
+        if (this.props.error) {
+          toast.error('Title already exists', 'Error...');
+        } else {
+          this.setState({
+            title: '',
+            editorHtml: '',
+            access: 'public',
+          });
+          swal('Success!!', `${this.state.title} saved`, 'success');
+        }
       })
       .catch((err) => { throw new Error(err); });
     } else {
@@ -245,7 +251,10 @@ DocumentEditor.formats = [
  * PropType validation
  */
 DocumentEditor.propTypes = {
-  saveDocument: PropTypes.func.isRequired
+  saveDocument: PropTypes.func.isRequired,
+  error: PropTypes.object
 };
 
-export default withRouter(connect(null, { saveDocument })(DocumentEditor));
+export default withRouter(connect(state => ({
+  error: state.DocumentReducer.message
+}), { saveDocument })(DocumentEditor));

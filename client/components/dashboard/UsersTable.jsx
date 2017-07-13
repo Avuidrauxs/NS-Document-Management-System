@@ -14,9 +14,10 @@ import TextField from 'material-ui/TextField';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import IconButton from 'material-ui/IconButton';
-import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import { fetchAllUsers, searchUsers, deleteUser } from '../../actions/UserActions';
+import Pagination from 'material-ui-pagination';
+import { fetchAllUsers,
+  searchUsers,
+  deleteUser } from '../../actions/UserActions';
 import EditUserModal from '../modals/EditUserModal';
 
 /**
@@ -47,11 +48,8 @@ export class UsersTable extends Component {
       openEdit: false,
       openDelete: false,
       currentUserID: '',
-      currentPage: props.pagination.pageCount,
-      pageNumbers: [],
       itemsPerPage: 9
     };
-    this.handleClick = this.handleClick.bind(this);
     this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
@@ -59,17 +57,26 @@ export class UsersTable extends Component {
     this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
     this.onCloseOpenDelete = this.onCloseOpenDelete.bind(this);
     this.onClickSearch = this.onClickSearch.bind(this);
-    this.handleFirstClick = this.handleFirstClick.bind(this);
-    this.handleLastClick = this.handleLastClick.bind(this);
     this.onDeleteUser = this.onDeleteUser.bind(this);
+    this.handleRoles = this.handleRoles.bind(this);
+    this.getMoreUsers = this.getMoreUsers.bind(this);
+  }
+
+  /**
+  * [getMoreDocuments description]
+  * @param  {number} offset [description]
+  * @return {[type]}        [description]
+  */
+  getMoreUsers(offset) {
+    return this.props.fetchAllUsers(offset, this.state.itemsPerPage);
   }
 
   /**
    * This function dispatches the action to delte a user
-   * @param  {number} id [that is the user selected id parameter]
+   * @param  {object} user [that is the user selected id parameter]
    * @return {null}       retruns nothing
    */
-  onDeleteUser(id) {
+  onDeleteUser(user) {
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -77,46 +84,15 @@ export class UsersTable extends Component {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: `Yes delete ${user.username}`
     }).then(() => {
-      this.props.deleteUser(id).then(() => {
+      this.props.deleteUser(user).then(() => {
         swal(
       'Deleted!',
-      'User has been deleted.',
+      `${user.username} deleted successfully`,
       'success'
     );
       }).catch((err) => { throw new Error(err); });
-    });
-  }
-
-  /**
-   * This function handles the click events of the pagination numbers
-   * @param  {object} event [event object paramter]
-   * @return {null}       returns nothing
-   */
-  handleClick(event) {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
-  }
-
-  /**
-   * This handles resetting the pagination to the first page
-   * @return {null}       returns nothing
-   */
-  handleFirstClick() {
-    this.setState({
-      currentPage: 1
-    });
-  }
-
-  /**
-   * This function handles going to the last pagination page
-   * @return {null}       returns nothing
-   */
-  handleLastClick() {
-    this.setState({
-      currentPage: this.state.pageNumbers.length
     });
   }
 
@@ -125,7 +101,8 @@ export class UsersTable extends Component {
    * @return {null}       returns nothing
    */
   componentWillMount() {
-    this.props.fetchAllUsers();
+    this.props.fetchAllUsers(this.props.pagination.offset,
+      this.state.itemsPerPage);
   }
 
 /**
@@ -133,7 +110,8 @@ export class UsersTable extends Component {
  * @return {null}       returns nothing
  */
   onClickSearch() {
-    this.props.searchUsers(this.state.searchText);
+    this.props.searchUsers(this.state.searchText,
+      this.props.pagination.offset, this.state.itemsPerPage);
   }
 
   /**
@@ -194,6 +172,22 @@ export class UsersTable extends Component {
     this.setState({ height: event.target.value });
   }
 
+/**
+ * This function handles displaying actual role names
+ * @param  {number} id [role id]
+ * @return {string}    returns string of role description
+ */
+  handleRoles(id) {
+    switch (Number(id)) {
+    case 1:
+      return 'admin';
+    case 2:
+      return 'user';
+    default:
+      return 'role';
+    }
+  }
+
   /**
    * This function filters through the users list
    * @param  {array} users [array of user objects]
@@ -217,31 +211,6 @@ export class UsersTable extends Component {
    * @return {React.Component} [A react componet element]
    */
   render() {
-    const { currentPage, itemsPerPage } = this.state;
-
-    // Logic for pagination
-    const indexOfLastUser = currentPage * itemsPerPage;
-    const indexofFirstUser = indexOfLastUser - itemsPerPage;
-    const paginatedUsers = this.props.users.slice(indexofFirstUser, indexOfLastUser);
-
-    // Logic for displaying page numbers
-    const { pageNumbers } = this.state;
-    for (let i = 1; i <= Math.ceil(this.props.users.length / itemsPerPage); i += 1) {
-      pageNumbers.push(i);
-    }
-
-    const renderPageNumbers = pageNumbers.map((number) => {
-      return (
-        <li
-             key={number}
-             id={number}
-             onClick={this.handleClick}
-             style={{ marginTop: '12px' }}
-           >
-          {number}
-        </li>
-      );
-    });
     return (
       <div
         style={{
@@ -260,23 +229,12 @@ export class UsersTable extends Component {
           textAlign: 'center'
         }}
       />
-        <div style={{ marginLeft: '500px' }}>
-          <ul className="page-numbers">
-            <li><IconButton
-              onTouchTap={this.handleFirstClick}
-              tooltip="Go to First">
-              <IconLeft />
-            </IconButton>
-            </li>
-            {renderPageNumbers}
-            <li><IconButton
-              onTouchTap={this.handleLastClick}
-              tooltip="Go to Last">
-              <IconRight />
-            </IconButton>
-            </li>
-          </ul>
-        </div>
+        <Pagination
+  total={this.props.pagination.pageCount}
+  current={this.props.pagination.page}
+  display={this.props.pagination.pageCount}
+  onChange={number => this.getMoreUsers((number - 1) * 9)}
+   />
         <Table
           height={this.state.height}
           fixedHeader={this.state.fixedHeader}
@@ -302,13 +260,14 @@ export class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {paginatedUsers.map((user, index) => {
+            {this.props.users.map((user, index) => {
               if (user.id !== this.props.user.id) {
                 return (
                   <TableRow key={index}>
                     <TableRowColumn>{index}</TableRowColumn>
                     <TableRowColumn>{user.username}</TableRowColumn>
-                    <TableRowColumn>{user.roleId}</TableRowColumn>
+                    <TableRowColumn>{this.handleRoles(user.roleId)}
+                    </TableRowColumn>
                     <TableRowColumn>
                       <IconButton
                           id={user.id}
@@ -319,7 +278,7 @@ export class UsersTable extends Component {
                       <IconButton
                           key={user.id}
                           tooltip="Remove User"
-                          onTouchTap={() => this.onDeleteUser(user.id)}>
+                          onTouchTap={() => this.onDeleteUser(user)}>
                         <ActionDelete />
                       </IconButton>
                     </TableRowColumn>
@@ -331,7 +290,7 @@ export class UsersTable extends Component {
           </TableBody>
         </Table>
         <EditUserModal
-          id={this.state.currentUserID}
+          id={Number(this.state.currentUserID)}
           openEdit={this.state.openEdit}
           onCloseOpenEdit={this.onCloseOpenEdit}
           />

@@ -12,6 +12,7 @@ const PaginationReducer = (state = initialState.pagination, action) => {
   case DOCUMENT.GET_DOCS_SUCCESS:
   case USER.GET_ALL_SUCCESS:
   case USER.SEARCH_SUCCESS:
+  case DOCUMENT.GET_ALL_SUCCESS:
     return Object.assign(
       {}, action.metaData, { offset: action.offset, query: action.query }
     );

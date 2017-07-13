@@ -24,6 +24,10 @@ const UserReducer = (state = initialState.users, action) => {
       ...state.users.filter(item => item.id !== action.user.id)];
     return Object.assign({}, state, { users: newState });
 
+  case USER.DELETE_SUCCESS:
+    newState = [...state.users.filter(item => item.id !== action.user.id)];
+    return Object.assign({}, state, { users: newState });
+
   case USER.SEARCH_SUCCESS:
     return Object.assign({}, state, { users: action.users });
 

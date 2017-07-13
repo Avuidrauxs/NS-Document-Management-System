@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert2';
-import { Card, CardActions, CardHeader } from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import ActionEdit from 'material-ui/svg-icons/image/edit';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -49,9 +49,9 @@ export class DocumentCard extends Component {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: `Yes delete ${this.props.document.title}`
     }).then(() => {
-      this.props.deleteDocument(this.props.document.id).then(() => {
+      this.props.deleteDocument(this.props.document).then(() => {
         swal(
       'Deleted!',
       'Your document has been deleted.',
@@ -98,7 +98,7 @@ export class DocumentCard extends Component {
    * @return {React.Component} [A react componet element]
    */
   render() {
-    const { title, User } = this.props.document;
+    const { title, User, createdAt } = this.props.document;
     let openStyle, editStyle, deleteStyle;
     if (this.props.ReadOnly) {
       openStyle = {
@@ -129,14 +129,21 @@ export class DocumentCard extends Component {
               className="CustomCard"
               title={`${title.substring(0, 15)}...`}
               titleColor="white"
-              subtitle={`Created by ${User.username}`}
               subtitleColor="grey"
+              titleStyle={{
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '20px'
+              }}
               style={{
                 backgroundColor: '#00bcd4',
-                textTransform: 'capitalize',
-                fontWeight: 'bold'
               }}
             />
+            <CardText style={{ textAlign: 'left' }}>
+              <strong>Author: </strong> {User.username}
+              <br />
+              <strong>Date created: </strong>{`${createdAt.split('T')[0]}`}
+            </CardText>
             <CardActions>
               <IconButton
                 style={openStyle}

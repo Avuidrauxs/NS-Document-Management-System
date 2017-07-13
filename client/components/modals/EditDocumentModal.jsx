@@ -152,15 +152,21 @@ export class EditDocumentModal extends Component {
   onDocumentUpdate() {
     const { title, body, access } = this.state;
     const { id } = this.props.doc;
-    if (this.state.title !== '' && this.state.body !== '') {
+    const isBodyEmpty = this.state.body !== '';
+    const isBodySpaced = this.state.body !== '<p><br></p>';
+    if (this.state.title !== '' && isBodyEmpty && isBodySpaced) {
       this.props.saveDocument({
         title,
         id,
         body,
         access
       }).then(() => {
-        this.props.closeEdit();
-        swal('Yaaayyy!!', `${title} saved`, 'success');
+        if (this.props.error) {
+          toast.error('Document Update Error', 'Error...');
+        } else {
+          this.props.closeEdit();
+          swal('Success!!', `${title} saved`, 'success');
+        }
       })
       .catch((err) => { throw new Error(err); });
     } else {
@@ -263,6 +269,7 @@ EditDocumentModal.propTypes = {
   openEdit: PropTypes.bool.isRequired,
   closeEdit: PropTypes.func.isRequired,
   doc: PropTypes.object.isRequired,
+  error: PropTypes.object,
   saveDocument: PropTypes.func.isRequired,
 };
 
@@ -271,5 +278,6 @@ EditDocumentModal.defaultProps = {
 };
 
 export default connect(state => ({
-  document: state.Document
+  document: state.Document,
+  error: state.DocumentReducer.message
 }), { saveDocument, fetchDocument })(EditDocumentModal);

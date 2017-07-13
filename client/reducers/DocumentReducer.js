@@ -11,12 +11,9 @@ const DocumentReducer = (state = initialState.documents, action) => {
   const newDoc = action.document;
   let newState;
   switch (action.type) {
+
   case DOCUMENT.GET_ALL_SUCCESS:
     return action.documents;
-
-  case DOCUMENT.CREATE_FAILURE:
-  case DOCUMENT.GET_ALL_FAILURE:
-    return state;
 
   case DOCUMENT.CREATE_SUCCESS:
     newState = [Object.assign({}, newDoc), ...state];
@@ -34,7 +31,15 @@ const DocumentReducer = (state = initialState.documents, action) => {
   case USER.GET_DOCS_SUCCESS:
     return action.documents;
 
+  case DOCUMENT.DELETE_SUCCESS:
+    return [...state.filter(item => item.id !== newDoc.id)];
+
+
   case USER.GET_DOCS_FAILURE:
+  case DOCUMENT.CREATE_FAILURE:
+  case DOCUMENT.UPDATE_FAILURE:
+  case DOCUMENT.GET_ALL_FAILURE:
+  case DOCUMENT.DELETE_FAILURE:
     return action.error;
 
   default:

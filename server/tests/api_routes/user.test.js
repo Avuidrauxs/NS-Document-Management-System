@@ -7,9 +7,9 @@ import data from '../mockData';
 const expect = chai.expect;
 chai.use(http);
 let adminToken, userToken, fakeId;
-const { pepper, fakeUserDetails, sampleAdmin,
-  sampleUser1, sampleUser2, sampleUser3,
-  sampleUser4, admin, user } = data;
+const { fakeUserDetails, fakeAdmin,
+  fakeJojo, fakeDio,
+  fakeJohnson, admin, user } = data;
 
 describe('Users', () => {
   after((done) => {
@@ -20,7 +20,7 @@ describe('Users', () => {
   describe('Users login route', () => {
     it('should log in a user and return a token', (done) => {
       chai.request(app)
-        .post('/api/users/login')
+        .post('/api/v1/users/login')
         .send(admin)
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -32,7 +32,7 @@ describe('Users', () => {
 
     it('should deny access for wrong credentials', (done) => {
       chai.request(app)
-        .post('/api/users/login')
+        .post('/api/v1/users/login')
         .send({ username: admin.username, password: 'soup' })
         .end((err, res) => {
           expect(res.status).to.equal(401);
@@ -45,7 +45,7 @@ describe('Users', () => {
 
   before((done) => {
     chai.request(app)
-        .post('/api/users/login')
+        .post('/api/v1/users/login')
         .send(admin)
         .end((err, res) => {
           adminToken = res.body.token;
@@ -55,7 +55,7 @@ describe('Users', () => {
 
   before((done) => {
     chai.request(app)
-    .post('/api/users/login')
+    .post('/api/v1/users/login')
     .send(user)
     .end((err, res) => {
       userToken = res.body.token;
@@ -67,25 +67,25 @@ describe('Users', () => {
   describe('Create new users route ', () => {
     it('should be able to create and add a new user', (done) => {
       chai.request(app)
-      .post('/api/users')
-      .send(sampleUser1)
+      .post('/api/v1/users')
+      .send(fakeJojo)
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body).to.have.keys(
           ['id', 'username', 'fullName', 'email',
             'roleId', 'message', 'token']
         );
-        expect(res.body.message).to.eql(`Created ${sampleUser1.username}`);
-        sampleUser1.userId = res.body.id;
+        expect(res.body.message).to.eql(`Created ${fakeJojo.username}`);
+        fakeJojo.userId = res.body.id;
         done();
       });
     });
 
     it('should fail if email alreay exists', (done) => {
-      sampleUser2.email = sampleUser1.email;
+      fakeDio.email = fakeJojo.email;
       chai.request(app)
-      .post('/api/users')
-      .send(sampleUser2)
+      .post('/api/v1/users')
+      .send(fakeDio)
       .end((err, res) => {
         expect(res.status).to.equal(400);
         expect(res.body.message).to.eql('Email already exist');
@@ -95,8 +95,8 @@ describe('Users', () => {
 
     it('should not allow the creation of a user with admin role', (done) => {
       chai.request(app)
-      .post('/api/users')
-      .send(sampleAdmin)
+      .post('/api/v1/users')
+      .send(fakeAdmin)
       .end((err, res) => {
         expect(res.status).to.equal(401);
         expect(res.body.message).to.eql('Invalid Privilege');
@@ -106,24 +106,25 @@ describe('Users', () => {
 
     it('should return a token after successfully creating a user', (done) => {
       chai.request(app)
-      .post('/api/users')
-      .send(sampleUser4)
+      .post('/api/v1/users')
+      .send(fakeJohnson)
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body.token).to.not.be.undefined;
-        expect(res.body.message).to.eql(`Created ${sampleUser4.username}`);
-        sampleUser4.userId = res.body.id;
+        expect(res.body.message).to.eql(`Created ${fakeJohnson.username}`);
+        fakeJohnson.userId = res.body.id;
         done();
       });
     });
 
     it('should fail for fake user details', (done) => {
       chai.request(app)
-      .post('/api/users')
+      .post('/api/v1/users')
       .send(fakeUserDetails)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body.message).to.eql('Validation error: Please enter a valid email');
+        expect(res.body.message)
+        .to.eql('Validation error: Please enter a valid email');
         done();
       });
     });
@@ -133,19 +134,19 @@ describe('Users', () => {
   describe('Fetching Users', () => {
     it('should return all users', (done) => {
       chai.request(app)
-        .get('/api/users')
+        .get('/api/v1/users')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.rows).to.be.a('array');
-          expect(res.body.rows.length).to.be.greaterThan(2);
+          expect(res.body.users).to.be.a('array');
+          expect(res.body.users.length).to.be.greaterThan(2);
           done();
         });
     });
 
     it('should deny access if user is not admin', (done) => {
       chai.request(app)
-      .get('/api/users')
+      .get('/api/v1/users')
       .set({ 'x-access-token': userToken })
       .end((err, res) => {
         expect(res.status).to.equal(403);
@@ -157,7 +158,7 @@ describe('Users', () => {
 
     it('should deny access if no token was provided', (done) => {
       chai.request(app)
-      .get('/api/users')
+      .get('/api/v1/users')
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body).to.be.a('object');
@@ -168,37 +169,37 @@ describe('Users', () => {
 
     it('should return correct user(s) for a query', (done) => {
       chai.request(app)
-        .get('/api/users?q=admin')
+        .get('/api/v1/users?q=admin')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.rows).to.be.a('array');
-          expect(res.body.rows[0].username).to.eql('admin');
+          expect(res.body.users).to.be.a('array');
+          expect(res.body.users[0].username).to.eql('admin');
           done();
         });
     });
 
     it('can limit the number of users returned', (done) => {
       chai.request(app)
-        .get('/api/users?limit=2')
+        .get('/api/v1/users?limit=2')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.rows).to.be.a('array');
-          expect(res.body.rows.length).to.equal(2);
-          fakeId = res.body.rows[1].id;
+          expect(res.body.users).to.be.a('array');
+          expect(res.body.users.length).to.equal(2);
+          fakeId = res.body.users[1].id;
           done();
         });
     });
 
     it('can offset the starting position of returned data', (done) => {
       chai.request(app)
-        .get('/api/users?offset=1')
+        .get('/api/v1/users?offset=1')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          expect(res.body.rows).to.be.a('array');
-          expect(res.body.rows[0].id).to.eql(fakeId);
+          expect(res.body.users).to.be.a('array');
+          expect(res.body.users[0].id).to.eql(fakeId);
           done();
         });
     });
@@ -208,7 +209,7 @@ describe('Users', () => {
   describe('Fetching user by id', () => {
     it('should return a user based on id', (done) => {
       chai.request(app)
-          .get('/api/users/2')
+          .get('/api/v1/users/2')
           .set({ 'x-access-token': userToken })
           .end((err, res) => {
             expect(res.status).to.equal(200);
@@ -226,7 +227,7 @@ describe('Users', () => {
 
     it('should deny access if no token was provided', (done) => {
       chai.request(app)
-        .get('/api/users/2')
+        .get('/api/v1/users/2')
         .end((err, res) => {
           expect(res.status).to.equal(403);
           expect(res.body).to.be.a('object');
@@ -237,7 +238,7 @@ describe('Users', () => {
 
     it('should send "User not found" for invalid id', (done) => {
       chai.request(app)
-        .get('/api/users/250')
+        .get('/api/v1/users/250')
         .set({ 'x-access-token': userToken })
         .end((err, res) => {
           expect(res.status).to.equal(404);
@@ -250,7 +251,7 @@ describe('Users', () => {
     it('should fail if the provided id is out of range',
       (done) => {
         chai.request(app)
-        .get('/api/users/3000000000')
+        .get('/api/v1/users/3000000000')
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(400);
@@ -267,7 +268,7 @@ describe('Users', () => {
   describe('Updating User details', () => {
     it('should allow a user to update his/her details', (done) => {
       chai.request(app)
-      .put('/api/users/2')
+      .put('/api/v1/users/2')
       .set({ 'x-access-token': userToken })
       .send({ fullName: 'Pito Soup' })
       .end((err, res) => {
@@ -286,7 +287,7 @@ describe('Users', () => {
 
     it("should allow admin to update a user's details", (done) => {
       chai.request(app)
-      .put('/api/users/2')
+      .put('/api/v1/users/2')
       .set({ 'x-access-token': adminToken })
       .send({ fullName: 'Pepper Soup' })
       .end((err, res) => {
@@ -306,7 +307,7 @@ describe('Users', () => {
     it('should not allow a user to use an existing email',
     (done) => {
       chai.request(app)
-      .put('/api/users/2')
+      .put('/api/v1/users/2')
       .set({ 'x-access-token': userToken })
       .send({ email: 'admin@nsdms.org' })
       .end((err, res) => {
@@ -319,7 +320,7 @@ describe('Users', () => {
 
     it('should not allow a user to upgrade his/her role to admin', (done) => {
       chai.request(app)
-      .put('/api/users/2')
+      .put('/api/v1/users/2')
       .set({ 'x-access-token': userToken })
       .send({ roleId: 1 })
       .end((err, res) => {
@@ -335,7 +336,7 @@ describe('Users', () => {
     it("should deny access if a user tries to update another user's profile",
     (done) => {
       chai.request(app)
-      .put(`/api/users/${sampleUser1.userId}`)
+      .put(`/api/v1/users/${fakeJojo.userId}`)
       .set({ 'x-access-token': userToken })
       .send({ fullName: 'Al Tahir' })
       .end((err, res) => {
@@ -351,7 +352,7 @@ describe('Users', () => {
   describe('Logging out a User', () => {
     it('should logout a user', (done) => {
       chai.request(app)
-      .post('/api/users/logout')
+      .post('/api/v1/users/logout')
       .send(admin)
       .end((err, res) => {
         expect(res.status).to.equal(203);
@@ -364,13 +365,13 @@ describe('Users', () => {
   });
 
 
-  // DELETE /api/users/:id
+  // DELETE /api/v1/users/:id
   describe('Deleting a User', () => {
     let dummyToken;
     before((done) => {
       chai.request(app)
-        .post('/api/users/login')
-        .send(sampleUser4)
+        .post('/api/v1/users/login')
+        .send(fakeJohnson)
         .end((err, res) => {
           dummyToken = res.body.token;
           done();
@@ -380,7 +381,7 @@ describe('Users', () => {
     it("should deny access if a user tries to delete another user's profile",
     (done) => {
       chai.request(app)
-      .delete(`/api/users/${sampleUser1.userId}`)
+      .delete(`/api/v1/users/${fakeJojo.userId}`)
       .set({ 'x-access-token': userToken })
       .end((err, res) => {
         expect(res.status).to.equal(403);
@@ -393,7 +394,7 @@ describe('Users', () => {
 
     it('should allow a user to delete his/her profile', (done) => {
       chai.request(app)
-      .delete(`/api/users/${sampleUser4.userId}`)
+      .delete(`/api/v1/users/${fakeJohnson.userId}`)
       .set({ 'x-access-token': dummyToken })
       .end((err, res) => {
         expect(res.status).to.equal(203);
@@ -405,7 +406,7 @@ describe('Users', () => {
 
     it('should send "User not found" for invalid id', (done) => {
       chai.request(app)
-      .delete('/api/users/250')
+      .delete('/api/v1/users/250')
       .set({ 'x-access-token': adminToken })
       .end((err, res) => {
         expect(res.status).to.equal(404);
@@ -418,9 +419,9 @@ describe('Users', () => {
 
 
   describe('Fetching a user\'s documnets', () => {
-  it("should return a user's document(s) given the user's id", (done) => {
-    chai.request(app)
-      .get('/api/users/1/documents')
+    it("should return a user's document(s) given the user's id", (done) => {
+      chai.request(app)
+      .get('/api/v1/users/1/documents')
       .set({ 'x-access-token': adminToken })
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -428,11 +429,11 @@ describe('Users', () => {
         expect(res.body.length).to.be.greaterThan(0);
         done();
       });
-  });
+    });
 
-  it('should send "User not found" for invalid id', (done) => {
-    chai.request(app)
-    .get('/api/users/250/documents')
+    it('should send "User not found" for invalid id', (done) => {
+      chai.request(app)
+    .get('/api/v1/users/250/documents')
     .set({ 'x-access-token': adminToken })
     .end((err, res) => {
       expect(res.status).to.equal(404);
@@ -440,12 +441,12 @@ describe('Users', () => {
       expect(res.body.message).to.eql('User not found');
       done();
     });
-  });
+    });
 
-  it('should fail if the provided id is out of range',
+    it('should fail if the provided id is out of range',
   (done) => {
     chai.request(app)
-    .get('/api/users/3000000000/documents')
+    .get('/api/v1/users/3000000000/documents')
     .set({ 'x-access-token': adminToken })
     .end((err, res) => {
       expect(res.status).to.equal(400);

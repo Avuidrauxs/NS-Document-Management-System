@@ -24,7 +24,7 @@ describe('Authentication actions', () => {
     afterEach(() => moxios.uninstall());
 
     it('fetches user token and logs the user in returning SIGNIN_SUCCESS', (done) => {
-      moxios.stubRequest('/api/users/login', {
+      moxios.stubRequest('/api/v1/users/login', {
         status: 200,
         response: {
           token,
@@ -44,7 +44,7 @@ describe('Authentication actions', () => {
     });
 
     it('should tell user Invalid password or username in returning SIGNIN_FAILURE', (done) => {
-      moxios.stubRequest('/api/users/login', {
+      moxios.stubRequest('/api/v1/users/login', {
         status: 200,
         response: {
           token,
@@ -69,7 +69,7 @@ describe('Authentication actions', () => {
     afterEach(() => moxios.uninstall());
 
     it(' should register and logs in a user dispatching LOGIN_SUCCESS', (done) => {
-      moxios.stubRequest('/api/users', {
+      moxios.stubRequest('/api/v1/users', {
         status: 200,
         response: {
           token,
@@ -90,7 +90,7 @@ describe('Authentication actions', () => {
     });
 
     it('should not register a user with wrong information dispatching LOGIN_FAILURE', (done) => {
-      moxios.stubRequest('/api/users', {
+      moxios.stubRequest('/api/v1/users', {
         status: 400,
       });
 
