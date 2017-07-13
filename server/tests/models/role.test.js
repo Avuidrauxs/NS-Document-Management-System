@@ -4,16 +4,16 @@ import data from '../mockData';
 
 const expect = chai.expect;
 
-const { roleOne } = data;
+const { editor } = data;
 
 let dummyId;
 
 describe('Role Model', () => {
   describe('Create Role', () => {
     it('should create a role', (done) => {
-      models.Role.create(roleOne)
+      models.Role.create(editor)
         .then((role) => {
-          expect(role.dataValues.description).to.equal(roleOne.description);
+          expect(role.dataValues.description).to.equal(editor.description);
           dummyId = role.dataValues.id;
           done();
         });
@@ -23,7 +23,8 @@ describe('Role Model', () => {
     //   models.Role.create({ description: 'editor' })
     //     .then()
     //     .catch((error) => {
-    //       expect(error.errors[0].message).to.equal('Role description already exist');
+    //       expect(error.errors[0].message)
+    //       .to.equal('Role description already exist');
     //       expect(error.errors[0].type).to.equal('unique violation');
     //       done();
     //     });
@@ -42,7 +43,8 @@ describe('Role Model', () => {
       models.Role.create({ description: null })
         .then()
         .catch((error) => {
-          expect(error.errors[0].message).to.equal('description cannot be null');
+          expect(error.errors[0].message)
+          .to.equal('description cannot be null');
           expect(error.errors[0].type).to.equal('notNull Violation');
           expect(error.errors[0].value).to.equal(null);
           done();

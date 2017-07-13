@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import Pagination from 'material-ui-pagination';
 import { fetchUserDocuments } from '../../actions/DocumentActions';
 import DocumentCard from '../document-editor/DocumentCard';
 
@@ -27,6 +28,7 @@ export class UserDocumentsList extends Component {
     this.state = {
       searchText: '',
       pageNumbers: [],
+      notFound: 'none',
       currentPage: 1,
       itemsPerPage: 9
     };
@@ -36,6 +38,24 @@ export class UserDocumentsList extends Component {
     this.handleFirstClick = this.handleFirstClick.bind(this);
     this.handleLastClick = this.handleLastClick.bind(this);
   }
+
+  /**
+   * This function is invoked before a mounted component receives new props
+   * @param  {object} nextProps new prop object after new changes
+   * @return {null}           returns nothing
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.documents.length === 0) {
+      this.setState({
+        notFound: ''
+      });
+    } else {
+      this.setState({
+        notFound: 'none'
+      });
+    }
+  }
+
   /**
    * This function handles the click events of the pagination numbers
    * @param  {object} event [event object paramter]
@@ -112,7 +132,8 @@ export class UserDocumentsList extends Component {
     // Logic for pagination
     const indexOfLastDocument = currentPage * itemsPerPage;
     const indexofFirstDocument = indexOfLastDocument - itemsPerPage;
-    const pagiDocuments = documents.slice(indexofFirstDocument, indexOfLastDocument);
+    const pagiDocuments = documents
+    .slice(indexofFirstDocument, indexOfLastDocument);
 
     // Logic for displaying page numbers
     const { pageNumbers } = this.state;
@@ -152,7 +173,7 @@ export class UserDocumentsList extends Component {
             textAlign: 'center'
           }}
         />
-        <div style={{ marginLeft: '500px' }}>
+        <div style={{ marginLeft: '500px', display: 'none' }}>
           <ul className="page-numbers">
             <li><IconButton
               onTouchTap={this.handleFirstClick}
@@ -169,9 +190,20 @@ export class UserDocumentsList extends Component {
             </li>
           </ul>
         </div>
+        <Pagination
+  total={this.state.itemsPerPage}
+  current={this.state.currentPage}
+  display={this.state.currentPage}
+  onChange={this.handleClick}
+   />
         <Container className="main-container" fluid>
           <Row>
-
+            <div
+style={{
+  marginTop: '9em',
+  color: 'rgba(8, 8, 8, 0.19)',
+  display: `${this.state.notFound}`
+}}><h1>NO DOCUMENTS AVAILABLE</h1></div>
             {pagiDocuments.map((document, index) => {
               return (
                 <Col xs="6" md="4" key={index}>

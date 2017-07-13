@@ -89,13 +89,16 @@ export class SignIn extends Component {
         email: this.state.email,
       })
     .then(() => {
-      this.props.history.push('/dashboard');
-    })
-    .catch(() => {
-      toast.error('User already exists', 'Oopps...!');
+      if (this.props.error) {
+        toast.error('Username or email is taken',
+        'Unaccepatable...!');
+      } else {
+        this.props.history.push('/dashboard');
+      }
     });
     } else {
-      toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
+      toast.error('Password should be at least 8 characters',
+      'Unaccepatable...!');
     }
   }
 
@@ -274,8 +277,11 @@ export class SignIn extends Component {
 SignIn.propTypes = {
   postLogin: PropTypes.func.isRequired,
   postSignUp: PropTypes.func.isRequired,
+  error: PropTypes.object,
   history: PropTypes.object
 };
 
 
-export default withRouter(connect(null, { postLogin, postSignUp })(SignIn));
+export default withRouter(connect(state => ({
+  error: state.AuthReducer.message
+}), { postLogin, postSignUp })(SignIn));

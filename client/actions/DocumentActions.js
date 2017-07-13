@@ -5,15 +5,16 @@ import { USER, DOCUMENT } from '../constants/Constants';
  * Fetch all documents action
  * @param  {Number} [offset=0] [Offset variable]
  * @param  {Number} [limit=20]  [limit variable]
- * @return {object}            [action object with metadata, type description and documents]
+ * @return {object}         [action object with metadata,
+ * type description and documents]
  */
-export function fetchDocuments(offset = 0, limit = 20) {
+export function fetchDocuments(offset = 0, limit = 9) {
   return (dispatch) => {
-    return axios.get(`/api/documents?limit=${limit}&offset=${offset}`)
+    return axios.get(`/api/v1/documents?limit=${limit}&offset=${offset}`)
     .then((res) => {
       dispatch({
         type: DOCUMENT.GET_ALL_SUCCESS,
-        documents: res.data.rows,
+        documents: res.data.documents,
         metaData: res.data.metaData,
         offset,
         query: ''
@@ -31,12 +32,13 @@ export function fetchDocuments(offset = 0, limit = 20) {
 /**
  * [Save document action description]
  * @param  {object} doc [document object eith document details]
- * @return {object}     [action object with newly saved document and type description]
+ * @return {object}     [action object with newly saved
+ * document and type description]
  */
 export function saveDocument(doc) {
   if (!doc.id) {
     return (dispatch) => {
-      return axios.post('/api/documents', doc)
+      return axios.post('/api/v1/documents', doc)
     .then((res) => {
       dispatch({
         type: DOCUMENT.CREATE_SUCCESS,
@@ -52,7 +54,7 @@ export function saveDocument(doc) {
     };
   }
   return (dispatch) => {
-    return axios.put(`/api/documents/${doc.id}`, doc)
+    return axios.put(`/api/v1/documents/${doc.id}`, doc)
     .then((res) => {
       dispatch({
         type: DOCUMENT.UPDATE_SUCCESS,
@@ -70,15 +72,16 @@ export function saveDocument(doc) {
 
 /**
  * Delete document from backend method
- * @param  {number} id [The id of the document to be deleted]
+ * @param  {object} doc [The id of the document to be deleted]
  * @return {object}    [action object with type and payload]
  */
-export function deleteDocument(id) {
+export function deleteDocument(doc) {
   return (dispatch) => {
-    return axios.delete(`/api/documents/${id}`)
+    return axios.delete(`/api/v1/documents/${doc.id}`)
     .then(() => {
       dispatch({
-        type: DOCUMENT.DELETE_SUCCESS
+        type: DOCUMENT.DELETE_SUCCESS,
+        document: doc
       });
     },
   (err) => {
@@ -97,14 +100,15 @@ export function deleteDocument(id) {
  * @param  {Number} [limit=9]  [limit parameter]
  * @return {object}    [action object with type and payload]
  */
-export function searchDocuments(query, offset = 0, limit = 20) {
+export function searchDocuments(query, offset = 0, limit = 9) {
   return (dispatch) => {
     return axios
-      .get(`/api/search/documents?q=${query}&limit=${limit}&offset=${offset}`)
+      .get(
+        `/api/v1/search/documents?q=${query}&limit=${limit}&offset=${offset}`)
       .then((res) => {
         dispatch({
           type: DOCUMENT.SEARCH_SUCCESS,
-          documents: res.data.rows,
+          documents: res.data.documents,
           metaData: res.data.metaData,
           query,
           offset
@@ -126,7 +130,7 @@ export function searchDocuments(query, offset = 0, limit = 20) {
  */
 export function fetchDocument(id) {
   return (dispatch) => {
-    return axios.get(`/api/documents/${id}`)
+    return axios.get(`/api/v1/documents/${id}`)
       .then((res) => {
         dispatch({
           type: DOCUMENT.GET_SUCCESS,
@@ -147,7 +151,7 @@ export function fetchDocument(id) {
  */
 export function fetchUserDocuments(id) {
   return (dispatch) => {
-    return axios.get(`/api/users/${id}/documents`)
+    return axios.get(`/api/v1/users/${id}/documents`)
       .then((res) => {
         dispatch({
           type: USER.GET_DOCS_SUCCESS,

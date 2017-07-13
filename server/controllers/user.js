@@ -65,7 +65,8 @@ const User = {
   },
 
   /**
-   * Route: GET: /users or GET: /search/users/?limit=[integer]&offset=[integer]&q=[username]
+   * Route: GET: /users or
+   * GET: /search/users/?limit=[integer]&offset=[integer]&q=[username]
    * @param  {object} req [request object parameter]
    * @param  {object} res [response object paramter]
    * @return {object}    returns a response object
@@ -75,7 +76,7 @@ const User = {
     if (req.query.q) searchQuery = `%${req.query.q}%`;
 
     const offset = Number(req.query.offset) || 0;
-    const limit = Number(req.query.limit) || 20;
+    const limit = Number(req.query.limit) || 9;
 
     return models.User.findAndCount({
       offset,
@@ -88,7 +89,7 @@ const User = {
     })
     .then((users) => {
       const response = {
-        rows: users.rows,
+        users: users.rows,
         metaData: Paginate(users.count, limit, offset)
       };
       return res.status(200).send(response);
@@ -103,7 +104,8 @@ const User = {
  * @return {object}    returns a response object
  */
   deleteUser(req, res) {
-    if (res.header.decoded.roleId === req.params.id && res.header.decoded.roleId !== 1) {
+    if (res.header.decoded.roleId === req.params.id
+      && res.header.decoded.roleId !== 1) {
       return res.status(403).send({ message: 'You dont have that privilege' });
     }
     return res.header.user.destroy()

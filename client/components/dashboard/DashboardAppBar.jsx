@@ -50,8 +50,8 @@ export class DashboardAppBar extends Component {
       text: 'Stay for a while maybe?',
       type: 'info',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#CCDBDC',
+      cancelButtonColor: '#3085d6',
       cancelButtonText: "I'm staying",
       confirmButtonText: 'Bye bye'
     }).then(() => {
@@ -174,7 +174,9 @@ onMouseLeave={this.handleRequestClose}
       </div>
     }
     />
-        <DashboardDrawer open={this.state.open} closeDrawer={this.handleClose} />
+        <DashboardDrawer
+          open={this.state.open}
+          closeDrawer={this.handleClose} />
       </div>
     );
   }

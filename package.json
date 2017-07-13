@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "description": "This is the Non Sucking Document Management System which is unlike other document management systems that suck",
   "main": "index.js",
+  "engines": {
+    "node": "7.9.0",
+    "npm": "4.2.0"
+  },
   "scripts": {
     "start:client:dev": "webpack-dev-server --config webpack.config.dev.babel.js --progress --colors",
     "start:api:dev": "nodemon --exec babel-node --presets es2015 ./server/index",
     "start:web:dev": "cross-env npm-run-all --parallel start:client:dev start:api:dev",
     "reset:db": "./node_modules/.bin/sequelize db:migrate:undo:all && sequelize db:migrate",
     "refill:db": "./node_modules/.bin/sequelize db:seed:all",
+    "respawn:db": "npm run reset:db && npm run refill:db",
     "reset:db:test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "refill:db:test": "NODE_ENV=test sequelize db:seed:all",
     "setup:test-server": "npm run reset:db:test && npm run refill:db:test",
@@ -84,6 +89,7 @@
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
     "style-loader": "^0.13.0",
+    "swagger-jsdoc": "^1.3.0",
     "sweetalert2": "^6.6.5",
     "toastr": "^2.1.2",
     "validator": "^7.0.0",

@@ -19,7 +19,8 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'public',
-      validate: { isIn: { args: [['public', 'private', 'role']], msg: 'Use a valid privilege' } }
+      validate: { isIn: { args: [['public', 'private', 'role']],
+        msg: 'Use a valid privilege' } }
     },
   }, {
     classMethods: {

@@ -6,7 +6,6 @@ import DocumentsList from './components/dashboard/DocumentList';
 import AdminDocumentsList from './components/dashboard/AdminDocumentList';
 import DocumentEditor from './components/document-editor/DocumentEditor';
 import UserDocumentsList from './components/dashboard/UserDocumentList';
-// import NotFoundPage from './components/NotFound';
 
 /**
  * This is the Routes array that contains components for the React Router

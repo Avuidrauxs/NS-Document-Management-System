@@ -4,7 +4,7 @@ import data from '../mockData';
 
 const expect = chai.expect;
 
-const { sampleUser1 } = data;
+const { fakeJojo } = data;
 
 let dummyId;
 
@@ -12,16 +12,16 @@ let dummyId;
 describe('User Model', () => {
   describe('Create a new User', () => {
     it('should create a user', (done) => {
-      models.User.create(sampleUser1)
+      models.User.create(fakeJojo)
       .then((user) => {
-        expect(user.dataValues.title).to.equal(sampleUser1.title);
+        expect(user.dataValues.title).to.equal(fakeJojo.title);
         dummyId = user.dataValues.id;
         done();
       });
     });
 
   // it('should fail if username already exist', (done) => {
-  //   models.User.create(sampleUser1)
+  //   models.User.create(fakeJojo)
   //     .then()
   //     .catch((error) => {
   //       expect(error.errors[0].message).to.equal('Username already exist');
@@ -31,8 +31,8 @@ describe('User Model', () => {
   // });
 
     it('should fail if username was not provided', (done) => {
-      sampleUser1.username = '';
-      models.User.create(sampleUser1)
+      fakeJojo.username = '';
+      models.User.create(fakeJojo)
       .then()
       .catch((error) => {
         expect(error.errors[0].message).to.equal('Please enter username');
@@ -41,8 +41,8 @@ describe('User Model', () => {
     });
 
     it('should fail if username is invalid', (done) => {
-      sampleUser1.username = 'po   op';
-      models.User.create(sampleUser1)
+      fakeJojo.username = 'po   op';
+      models.User.create(fakeJojo)
       .then()
       .catch((error) => {
         expect(error.errors[0].message).to.equal('Use a valid username');
@@ -51,8 +51,8 @@ describe('User Model', () => {
     });
 
     it('should fail if email already exist', (done) => {
-      sampleUser1.username = 'Poop';
-      models.User.create(sampleUser1)
+      fakeJojo.username = 'Poop';
+      models.User.create(fakeJojo)
     .then()
     .catch((error) => {
       expect(error.errors[0].message).to.equal('Email already exist');
@@ -62,9 +62,9 @@ describe('User Model', () => {
     });
 
     it('should fail if email is invalid', (done) => {
-      sampleUser1.username = 'Poop';
-      sampleUser1.email = 'I am an email';
-      models.User.create(sampleUser1)
+      fakeJojo.username = 'Poop';
+      fakeJojo.email = 'I am an email';
+      models.User.create(fakeJojo)
     .then()
     .catch((error) => {
       expect(error.errors[0].message).to.equal('Please enter a valid email');
@@ -74,10 +74,10 @@ describe('User Model', () => {
 
 
     it('should fail if password is null', (done) => {
-      sampleUser1.username = 'Poop';
-      sampleUser1.email = 'I am an email';
-      sampleUser1.password = null;
-      models.User.create(sampleUser1)
+      fakeJojo.username = 'Poop';
+      fakeJojo.email = 'I am an email';
+      fakeJojo.password = null;
+      models.User.create(fakeJojo)
     .then()
     .catch((error) => {
       expect(error.errors[0].message).to.equal('password cannot be null');

@@ -29,7 +29,7 @@ const Authenticate = {
   */
   createToken(userDetails) {
     return jwt.sign(userDetails, secretKey, {
-      expiresIn: 14400
+      expiresIn: '1 day'
     });
   },
 
@@ -63,7 +63,8 @@ const Authenticate = {
           }
 
           if (res.header.decoded.id !== document.authorId) {
-            return res.status(403).send({ message: 'You dont have privileges' });
+            return res.status(403)
+            .send({ message: 'You dont have privileges' });
           }
 
           res.header.document = document;
@@ -87,7 +88,8 @@ const Authenticate = {
 
         if (res.header.decoded.roleId !== 1
           && res.header.decoded.id !== user.id) {
-          return res.status(403).send({ message: 'You dont have privileges yet!' });
+          return res
+          .status(403).send({ message: 'You dont have privileges yet!' });
         }
         res.header.user = user;
         return next();

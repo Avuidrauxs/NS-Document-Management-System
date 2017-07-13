@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/andela-aanchirinah/NS-Document-Management-System/branch/develop/graph/badge.svg)](https://codecov.io/gh/andela-aanchirinah/NS-Document-Management-System)
 
 # NS-Document-Management-System
-This is the Non Sucking Document Management System which unlike other document management systems that suck.
+This is the Non Sucking Document Management System which unlike other document management systems that suck. You can try it out [here](https://staging-nsdms.herokuapp.com/)
 So the system has the following features
 
  - Landing page with a sign-in and sign-up form
@@ -92,11 +92,11 @@ Add additional notes about how to deploy this on a live system
 * [Redux](http://redux.js.org/#) - Used as a container for my states
 * [Axios](https://rometools.github.io/rome/) - Library used to make my HTTP Client requests
 * [Webpack](https://rometools.github.io/rome/) - Used to bundle modules
-* [Material-UI](http://www.material-ui.com/) - Used to style my frontend intefaces
+* [Material-UI](http://www.material-ui.com/) - Used to style my frontend interfaces
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on code of conduct, and the process for submitting pull requests to me.
+Please read [here](https://github.com/andela-aanchirinah/NS-Document-Management-System/wiki/How-to-Contribute-To-NSDMS) for details on code of conduct, and the process for submitting pull requests to me.
 
 
 ## Authors
@@ -105,7 +105,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 
 
-####License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 

@@ -7,7 +7,8 @@ import { List, ListItem } from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import ActionList from 'material-ui/svg-icons/action/list';
-import ActionChromeReaderMode from 'material-ui/svg-icons/action/chrome-reader-mode';
+import ActionChromeReaderMode
+from 'material-ui/svg-icons/action/chrome-reader-mode';
 import ContentFilterList from 'material-ui/svg-icons/content/filter-list';
 import Subheader from 'material-ui/Subheader';
 
@@ -19,7 +20,7 @@ import Subheader from 'material-ui/Subheader';
  */
 export const DashboardDrawer = (props) => {
   let AdminStyle;
-  if (props.user.id === 1) {
+  if (props.user.roleId === 1) {
     AdminStyle = {
       display: ''
     };

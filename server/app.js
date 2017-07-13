@@ -3,11 +3,43 @@ import logger from 'morgan';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
+import swaggerJSDoc from 'swagger-jsdoc';
 import routes from './routes';
 
 
 // Set up the express app
 const app = express();
+// swagger definition
+const swaggerDefinition = {
+  info: {
+    title: 'NSDMS API',
+    version: '1.0.0',
+    description: `Non-sucking Document Management System,
+                  a document management system that manages a registered user
+                  documents`,
+  },
+  host: 'localhost:5000',
+  basePath: '/',
+};
+
+const swaggerPath = path.join(__dirname, 'routes/*.js');
+// options for the swagger docs
+const options = {
+  // import swaggerDefinitions
+  swaggerDefinition,
+  // path to the API docs
+  apis: [swaggerPath],
+};
+
+// initialize swagger-jsdoc
+const swaggerSpec = swaggerJSDoc(options);
+
+// serve swagger
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 app.use((req, res, next) => {
   if (req.headers['x-forwarded-proto'] === 'https') {
     res.redirect(`http://${req.hostname}${req.url}`);

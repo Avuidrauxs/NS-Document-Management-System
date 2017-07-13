@@ -15,7 +15,7 @@ describe('Document Actions', () => {
 
   describe('Fetch Documents', () => {
     it('should fetch documents and dispatches GET_ALL_DOCS_SUCCESS', (done) => {
-      moxios.stubRequest('/api/documents?limit=9&offset=0', {
+      moxios.stubRequest('/api/v1/documents?limit=9&offset=0', {
         status: 200,
         response: {
           rows: [{ title: 'backend' }],
@@ -39,7 +39,7 @@ describe('Document Actions', () => {
 
   describe('Search Document', () => {
     it('should search for documents and dispatches GET_ALL_DOCS_SUCCESS', (done) => {
-      moxios.stubRequest('/api/search/documents?q=dms&limit=9&offset=0', {
+      moxios.stubRequest('/api/v1/search/documents?q=dms&limit=9&offset=0', {
         status: 200,
         response: {
           rows: [{ title: 'frontend' }],
@@ -64,7 +64,7 @@ describe('Document Actions', () => {
 
   describe('Save new Document', () => {
     it('should save a new document and dispatches DOCUMENT_CREATE_SUCCESS', (done) => {
-      moxios.stubRequest('/api/documents', {
+      moxios.stubRequest('/api/v1/documents', {
         status: 200,
         response: { title: 'audax is awesome' }
       });
@@ -81,7 +81,7 @@ describe('Document Actions', () => {
     });
 
     it(' should update a document dispatching DOCUMENT_UPDATE_SUCCESS', (done) => {
-      moxios.stubRequest('/api/documents/5', {
+      moxios.stubRequest('/api/v1/documents/5', {
         status: 200,
         response: { title: 'audax is awesome' }
       });
@@ -101,7 +101,7 @@ describe('Document Actions', () => {
 
   describe('Delete a Document', () => {
     it('should delete a document and dispatches DOCUMENT_DELETE_SUCCESS', (done) => {
-      moxios.stubRequest('/api/documents/5', {
+      moxios.stubRequest('/api/v1/documents/5', {
         status: 200
       });
       const expectedActions = [
@@ -118,7 +118,7 @@ describe('Document Actions', () => {
 
   describe('Fetch a Document', () => {
     it('should fetche a document and dispatches GET_DOCUMENT_SUCCESS', (done) => {
-      moxios.stubRequest('/api/documents/3', {
+      moxios.stubRequest('/api/v1/documents/3', {
         status: 200,
         response: { title: 'page 7' }
       });
@@ -137,7 +137,7 @@ describe('Document Actions', () => {
 
   describe('Fetch a User Documents', () => {
     it("should fetche a user's documents and dispatches GET_USER_DOCS_SUCCESS", (done) => {
-      moxios.stubRequest('/api/users/69/documents', {
+      moxios.stubRequest('/api/v1/users/69/documents', {
         status: 200,
         response: [{ title: 'NSDMS' }]
       });

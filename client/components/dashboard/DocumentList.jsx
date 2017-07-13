@@ -6,9 +6,7 @@ import Container from 'muicss/lib/react/container';
 import Row from 'muicss/lib/react/row';
 import Col from 'muicss/lib/react/col';
 import TextField from 'material-ui/TextField';
-import IconButton from 'material-ui/IconButton';
-import IconRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-import IconLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
+import Pagination from 'material-ui-pagination';
 import DocumentCard from '../document-editor/DocumentCard';
 import { fetchDocuments, searchDocuments } from '../../actions/DocumentActions';
 
@@ -27,46 +25,22 @@ export class DocumentsList extends Component {
     super(props);
     this.state = {
       searchText: '',
-      currentPage: 1,
-      pageNumbers: [],
+      notFound: 'none',
       itemsPerPage: 9
     };
-    this.handleClick = this.handleClick.bind(this);
     this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onClickSearch = this.onClickSearch.bind(this);
-    this.handleFirstClick = this.handleFirstClick.bind(this);
-    this.handleLastClick = this.handleLastClick.bind(this);
-  }
-  /**
-   * This function handles the click events of the pagination numbers
-   * @param  {object} event [event object paramter]
-   * @return {null}       returns nothing
-   */
-  handleClick(event) {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
+    this.getMoreDocuments = this.getMoreDocuments.bind(this);
   }
 
-  /**
-   * This handles resetting the pagination to the first page
-   * @return {null}       returns nothing
-   */
-  handleFirstClick() {
-    this.setState({
-      currentPage: 1
-    });
-  }
-
-  /**
-   * This function handles going to the last pagination page
-   * @return {null}       returns nothing
-   */
-  handleLastClick() {
-    this.setState({
-      currentPage: this.state.pageNumbers.length
-    });
+/**
+ * [getMoreDocuments description]
+ * @param  {number} offset [description]
+ * @return {[type]}        [description]
+ */
+  getMoreDocuments(offset) {
+    return this.props.fetchDocuments(offset, this.state.itemsPerPage);
   }
 
   /**
@@ -83,7 +57,9 @@ export class DocumentsList extends Component {
    * @return {null}       returns nothing
    */
   onClickSearch() {
-    this.props.searchDocuments(this.state.searchText);
+    this.props
+    .searchDocuments(this.state.searchText,
+      this.props.pagination.offset, this.state.itemsPerPage);
   }
 
   /**
@@ -91,7 +67,8 @@ export class DocumentsList extends Component {
    * @return {null}       returns nothing
    */
   componentWillMount() {
-    this.props.fetchDocuments();
+    this.props
+    .fetchDocuments(this.props.pagination.offset, this.state.itemsPerPage);
   }
 
   /**
@@ -109,35 +86,29 @@ export class DocumentsList extends Component {
   }
 
   /**
+   * This function is invoked before a mounted component receives new props
+   * @param  {object} nextProps new prop object after new changes
+   * @return {null}           returns nothing
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.documents.length === 0) {
+      this.setState({
+        notFound: ''
+      });
+    } else {
+      this.setState({
+        notFound: 'none'
+      });
+    }
+  }
+
+  /**
    * this function returns a single React element ie. native DOM component
    * @return {React.Component} [A react componet element]
    */
   render() {
-    const { currentPage, itemsPerPage } = this.state;
     const documents = this.filteredSearch(this.props.documents);
-    // Logic for pagination
-    const indexOfLastDocument = currentPage * itemsPerPage;
-    const indexofFirstDocument = indexOfLastDocument - itemsPerPage;
-    const pagiDocuments = documents.slice(indexofFirstDocument, indexOfLastDocument);
 
-    // Logic for displaying page numbers
-    const { pageNumbers } = this.state;
-    for (let i = 1; i <= Math.ceil(documents.length / itemsPerPage); i += 1) {
-      pageNumbers.push(i);
-    }
-
-    const renderPageNumbers = pageNumbers.map((number) => {
-      return (
-        <li
-             key={number}
-             id={number}
-             onClick={this.handleClick}
-             style={{ marginTop: '12px' }}
-           >
-          {number}
-        </li>
-      );
-    });
     return (
       <MuiThemeProvider>
         <div
@@ -157,26 +128,21 @@ export class DocumentsList extends Component {
           textAlign: 'center'
         }}
       />
-          <div style={{ marginLeft: '500px' }}>
-            <ul className="page-numbers">
-              <li><IconButton
-            onTouchTap={this.handleFirstClick}
-            tooltip="Go to First">
-                <IconLeft />
-              </IconButton>
-              </li>
-              {renderPageNumbers}
-              <li><IconButton
-            onTouchTap={this.handleLastClick}
-            tooltip="Go to Last">
-                <IconRight />
-              </IconButton>
-              </li>
-            </ul>
-          </div>
+          <Pagination
+      total={this.props.pagination.pageCount}
+      current={this.props.pagination.page}
+      display={this.props.pagination.pageCount}
+      onChange={number => this.getMoreDocuments((number - 1) * 9)}
+       />
           <Container className="main-container" fluid>
+            <div
+style={{
+  marginTop: '9em',
+  color: 'rgba(8, 8, 8, 0.19)',
+  display: `${this.state.notFound}`
+}}><h1>NO DOCUMENTS AVAILABLE</h1></div>
             <Row>
-              {pagiDocuments.map((document, index) => {
+              {documents.map((document, index) => {
                 return (
                   <Col xs="6" md="4" key={index}>
                     <DocumentCard document={document} ReadOnly />
@@ -197,6 +163,7 @@ DocumentsList.propTypes = {
   fetchDocuments: PropTypes.func.isRequired,
   searchDocuments: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  pagination: PropTypes.object.isRequired,
   documents: PropTypes.array.isRequired,
 };
 
