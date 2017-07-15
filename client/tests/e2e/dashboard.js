@@ -9,7 +9,8 @@ module.exports = {
       .setValue('input[name=username]', 'admin')
       .setValue('input[name=password]', 'admin')
       .click('.signin-button')
-      .waitForElementVisible('.main-container', 3000)
-      .assert.urlEquals(`${config.url}dashboard`);
+      .waitForElementVisible('.main-container', config.waitFor)
+      .assert.urlEquals(`${config.url}dashboard`)
+      .end();
   }
 };

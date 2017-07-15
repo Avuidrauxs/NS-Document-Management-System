@@ -40,6 +40,7 @@ const DocumentReducer = (state = initialState.documents, action) => {
   case DOCUMENT.UPDATE_FAILURE:
   case DOCUMENT.GET_ALL_FAILURE:
   case DOCUMENT.DELETE_FAILURE:
+  case DOCUMENT.GET_FAILURE:
     return action.error;
 
   default:
@@ -58,8 +59,6 @@ const Document = (state = initialState.document, action) => {
   case DOCUMENT.GET_SUCCESS:
     return action.document;
 
-  case DOCUMENT.GET_FAILURE:
-    return state;
 
   default:
     return state;

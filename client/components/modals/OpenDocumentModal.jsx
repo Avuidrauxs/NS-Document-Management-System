@@ -18,6 +18,7 @@ export const OpenDocumentModal = (props) => {
     actions={<FlatButton
   label="Close"
   primary
+  className="openDoc"
   onTouchTap={() => props.closeDocument()}
 />}
     modal

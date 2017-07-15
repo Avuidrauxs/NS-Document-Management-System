@@ -15,7 +15,7 @@ module.exports = {
       .setValue('input[name=username]', 'fffggf')
       .setValue('input[name=password]', 'fgdfgfdgfd')
       .click('.signin-button')
-      .waitForElementVisible('.toast-message', 3000)
+      .waitForElementVisible('.toast-message', config.waitFor)
       .assert.containsText('.toast-message', 'Invalid username or password')
       .assert.urlEquals(config.url);
   },
@@ -26,7 +26,7 @@ module.exports = {
       .setValue('input[name=username]', 'admin')
       .setValue('input[name=password]', 'admin')
       .click('.signin-button')
-      .waitForElementVisible('.main-heading', 3000)
+      .waitForElementVisible('.main-heading', config.waitFor)
       .assert.urlEquals(`${config.url}dashboard`);
   },
   'User sign in with correct credentials': (browser) => {
@@ -36,7 +36,7 @@ module.exports = {
       .setValue('input[name=username]', 'PepperSoup')
       .setValue('input[name=password]', 'soup')
       .click('.signin-button')
-      .waitForElementVisible('.main-heading', 3000)
+      .waitForElementVisible('.main-heading', config.waitFor)
       .assert.urlEquals(`${config.url}dashboard`);
   },
   'New user cant register if passwords mismatch': (browser) => {
@@ -50,7 +50,7 @@ module.exports = {
       .setValue('input[name=confirmPassword]', wrongPassword)
       .setValue('input[name=email]', email)
       .click('.signup-button')
-      .waitForElementVisible('.toast-message', 3000)
+      .waitForElementVisible('.toast-message', config.waitFor)
       .assert.containsText('.toast-message', 'Password mismatch')
       .assert.containsText('input[name=signUpPassword]', '')
       .assert.containsText('input[name=confirmPassword]', '');
@@ -66,7 +66,8 @@ module.exports = {
     .setValue('input[name=confirmPassword]', password)
     .setValue('input[name=email]', email)
     .click('.signup-button')
-    .waitForElementVisible('.main-heading', 3000)
-    .assert.urlEquals(`${config.url}dashboard`);
+    .waitForElementVisible('.main-heading', config.waitFor)
+    .assert.urlEquals(`${config.url}dashboard`)
+    .end();
   }
 };

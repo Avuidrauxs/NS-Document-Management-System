@@ -163,6 +163,7 @@ onMouseLeave={this.handleRequestClose}
                 primaryText="Read API Doc" /></Link>
               <MenuItem
                 primaryText="Sign out"
+                className="sign-out-btn"
                 onTouchTap={this.onSignOut} />
             </Menu>
           </Popover>

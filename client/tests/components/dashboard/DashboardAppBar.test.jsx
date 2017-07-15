@@ -22,20 +22,100 @@ describe('Dashboard App Bar', () => {
     });
   });
   describe('Actual <DashboardAppBar />', () => {
+    const props = {
+      logout: sinon.spy(() => new Promise(() => {})),
+    };
     it('should render once with props', () => {
-      const component = shallow(<DashboardAppBar />);
+      const component = shallow(<DashboardAppBar {...props} />);
       expect(component.length).toEqual(1);
     });
-    // it('Should call logout when called', () => {
-    //   const logoutSpy = sinon.spy(() => new Promise(() => {}));
-    //   const component = mount(<DashboardAppBar logout={logoutSpy} />);
-    //
-    //   const button = component.find('button[type="click"]');
-    //   button.simulate('click');
-    //
-    //   expect(logoutSpy.calledOnce).toEqual(true);
-    //   expect(typeof logoutSpy.args[0]).toEqual('object');
-    // });
+    it('should call `signOut` clicked', () => {
+      const onSignOutSpy = sinon.spy(() => new Promise(() => {}));
+      const component = shallow(
+        <DashboardAppBar
+          onSignOut={onSignOutSpy}
+          {...props} />);
+      const button = component.find('MenuItem').at(1);
+      button.simulate('click', onSignOutSpy());
+      component.instance().onSignOut();
+
+      expect(onSignOutSpy.calledOnce).toEqual(true);
+      expect(onSignOutSpy.callCount).toEqual(1);
+    });
+    it('should toggle DashboardDrawer', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().handleToggle();
+      component.setState({
+        open: true
+      });
+
+      expect(component.state('open')).toEqual(true);
+    });
+    it('should close DashboardDrawer', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().handleClose();
+      component.setState({
+        open: false
+      });
+
+      expect(component.state('open')).toEqual(false);
+    });
+    it('should handle Touch tap for Avatar menu', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().handleTouchTap({
+        preventDefault: () => {},
+        currentTarget: 1 });
+      component.setState({
+        menuOpen: true,
+        anchorEl: 1,
+      });
+
+      expect(component.state('menuOpen')).toEqual(true);
+      expect(component.state('anchorEl')).toEqual(1);
+    });
+    it('should handle request close for Avatar menu', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().handleRequestClose();
+      component.setState({
+        menuOpen: false,
+      });
+
+      expect(component.state('menuOpen')).toEqual(false);
+    });
+    it('should handle open edit user for Avatar menu', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().handleOpenEdit();
+      component.setState({
+        openEdit: true,
+      });
+      expect(component.state('openEdit')).toEqual(true);
+    });
+    it('should handle close edit user for Avatar menu', () => {
+      const component = shallow(
+        <DashboardAppBar
+          {...props} />);
+
+      component.instance().onCloseOpenEdit();
+      component.setState({
+        openEdit: false,
+      });
+      expect(component.state('openEdit')).toEqual(false);
+    });
   });
   describe('<DashboardDrawer /> presentation component', () => {
     it('should render with valid props', () => {

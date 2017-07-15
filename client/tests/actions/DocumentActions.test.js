@@ -9,13 +9,21 @@ import * as DocumentActions from '../../actions/DocumentActions';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
+const limit = 9;
+const offset = 0;
+const doc = {
+  id: 1,
+  title: 'Im here',
+  body: 'Am a banana'
+};
+const query = 'Front';
 describe('Document Actions', () => {
   beforeEach(() => moxios.install());
   afterEach(() => moxios.uninstall());
 
   describe('Fetch Documents', () => {
     it('should fetch documents and dispatches GET_ALL_DOCS_SUCCESS', (done) => {
-      moxios.stubRequest('/api/v1/documents?limit=9&offset=0', {
+      moxios.stubRequest(`/api/v1/documents?limit=${limit}&offset=${offset}`, {
         status: 200,
         response: {
           rows: [{ title: 'backend' }],
@@ -26,9 +34,24 @@ describe('Document Actions', () => {
         type: DOCUMENT.GET_ALL_SUCCESS,
         documents: [{ title: 'backend' }],
         metaData: {},
-        offset: 0,
+        offset,
         query: '' }];
-      const store = mockStore();
+      const store = mockStore({});
+      done();
+      return store.dispatch(DocumentActions.fetchDocuments())
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+    it('should not fetch documents and dispatches GET_ALL_DOCS_FAILURE', (done) => {
+      moxios.stubRequest(`/api/v1/documents?limit=${limit}&offset=${offset}`, {
+        status: 400,
+        response: {}
+      });
+      const expectedActions = [{
+        type: DOCUMENT.GET_ALL_FAILURE,
+        error: { message: '[object Object]' } }];
+      const store = mockStore({});
       done();
       return store.dispatch(DocumentActions.fetchDocuments())
         .then(() => {
@@ -39,10 +62,10 @@ describe('Document Actions', () => {
 
   describe('Search Document', () => {
     it('should search for documents and dispatches GET_ALL_DOCS_SUCCESS', (done) => {
-      moxios.stubRequest('/api/v1/search/documents?q=dms&limit=9&offset=0', {
+      moxios.stubRequest(`/api/v1/search/documents?q=${query}&limit=${limit}&offset=${offset}`, {
         status: 200,
         response: {
-          rows: [{ title: 'frontend' }],
+          rows: [{ title: 'Front' }],
           metaData: {}
         }
       });
@@ -50,11 +73,26 @@ describe('Document Actions', () => {
         type: DOCUMENT.SEARCH_SUCCESS,
         searchResult: [{ title: 'frontend' }],
         metaData: {},
-        offset: 0,
-        query: 'front' }];
+        offset,
+        query }];
       const store = mockStore();
       done();
-      return store.dispatch(DocumentActions.searchDocuments('front'))
+      return store.dispatch(DocumentActions.searchDocuments(query, offset, limit))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+    it('should not search for documents and dispatches GET_ALL_DOCS_FAILURE', (done) => {
+      moxios.stubRequest(`/api/v1/search/documents?q=${query}&limit=${limit}&offset=${offset}`, {
+        status: 400,
+        response: {}
+      });
+      const expectedActions = [{
+        type: DOCUMENT.SEARCH_FAILURE,
+        error: { message: '[object Object]' } }];
+      const store = mockStore({});
+      done();
+      return store.dispatch(DocumentActions.searchDocuments(query, offset, limit))
         .then(() => {
           expect(store.getActions()).toEqual(expectedActions);
         });
@@ -72,7 +110,23 @@ describe('Document Actions', () => {
       const expectedActions = [
         { type: DOCUMENT.CREATE_SUCCESS,
           document: { title: 'audax is awesome' } }];
-      const store = mockStore({ loggedIn: false, user: {} });
+      const store = mockStore({ loggedIn: true, user: {} });
+      done();
+      return store.dispatch(DocumentActions.saveDocument({}))
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+          });
+    });
+    it('should not save a new document and dispatches DOCUMENT_CREATE_FAILURE', (done) => {
+      moxios.stubRequest('/api/v1/documents', {
+        status: 400,
+        response: {}
+      });
+
+      const expectedActions = [
+        { type: DOCUMENT.CREATE_FAILURE,
+          error: { message: '[object Object]' } }];
+      const store = mockStore({ loggedIn: true, user: {} });
       done();
       return store.dispatch(DocumentActions.saveDocument({}))
           .then(() => {
@@ -81,7 +135,7 @@ describe('Document Actions', () => {
     });
 
     it(' should update a document dispatching DOCUMENT_UPDATE_SUCCESS', (done) => {
-      moxios.stubRequest('/api/v1/documents/5', {
+      moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
         status: 200,
         response: { title: 'audax is awesome' }
       });
@@ -92,7 +146,23 @@ describe('Document Actions', () => {
       ];
       done();
       const store = mockStore({});
-      return store.dispatch(DocumentActions.saveDocument({ updateId: 5 }))
+      return store.dispatch(DocumentActions.saveDocument(doc))
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+          });
+    });
+    it(' should not update a document dispatching DOCUMENT_UPDATE_FAILURE', (done) => {
+      moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
+        status: 400,
+        response: {}
+      });
+
+      const expectedActions = [
+        { type: DOCUMENT.UPDATE_FAILURE,
+          error: { message: '[object Object]' } }];
+      done();
+      const store = mockStore({});
+      return store.dispatch(DocumentActions.saveDocument(doc))
           .then(() => {
             expect(store.getActions()).toEqual(expectedActions);
           });
@@ -101,15 +171,29 @@ describe('Document Actions', () => {
 
   describe('Delete a Document', () => {
     it('should delete a document and dispatches DOCUMENT_DELETE_SUCCESS', (done) => {
-      moxios.stubRequest('/api/v1/documents/5', {
+      moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
         status: 200
       });
       const expectedActions = [
-        { type: DOCUMENT.DELETE_SUCCESS }
+        { type: DOCUMENT.DELETE_SUCCESS, document: doc }
       ];
-      const store = mockStore();
+      const store = mockStore({});
       done();
-      return store.dispatch(DocumentActions.deleteDocument(5))
+      return store.dispatch(DocumentActions.deleteDocument(doc))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+    it('should not delete a document and dispatches DOCUMENT_DELETE_FAILURE', (done) => {
+      moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
+        status: 400
+      });
+      const expectedActions = [
+        { type: DOCUMENT.DELETE_FAILURE,
+          error: { message: '[object Object]' } }];
+      const store = mockStore({});
+      done();
+      return store.dispatch(DocumentActions.deleteDocument(doc))
         .then(() => {
           expect(store.getActions()).toEqual(expectedActions);
         });
@@ -133,10 +217,27 @@ describe('Document Actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
+    it('should not fetch a document and dispatches GET_DOCUMENT_FAILURE', (done) => {
+      moxios.stubRequest('/api/v1/documents/3', {
+        status: 400,
+        response: {}
+      });
+
+      const expectedActions = [
+      { type: DOCUMENT.GET_FAILURE,
+        error: { message: '[object Object]' } }];
+
+      const store = mockStore({});
+      done();
+      return store.dispatch(DocumentActions.fetchDocument(3))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
   });
 
   describe('Fetch a User Documents', () => {
-    it("should fetche a user's documents and dispatches GET_USER_DOCS_SUCCESS", (done) => {
+    it("should fetch a user's documents and dispatches GET_USER_DOCS_SUCCESS", (done) => {
       moxios.stubRequest('/api/v1/users/69/documents', {
         status: 200,
         response: [{ title: 'NSDMS' }]
@@ -145,7 +246,23 @@ describe('Document Actions', () => {
       const expectedActions = [
         { type: USER.GET_DOCS_SUCCESS, documents: [{ title: 'NSDMS' }] }
       ];
-      const store = mockStore();
+      const store = mockStore({});
+      done();
+      return store.dispatch(DocumentActions.fetchUserDocuments(69))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
+    });
+    it("should not fetch a user's documents and dispatches GET_USER_DOCS_FAILURE", (done) => {
+      moxios.stubRequest('/api/v1/users/69/documents', {
+        status: 400,
+        response: {}
+      });
+
+      const expectedActions = [
+        { type: USER.GET_DOCS_FAILURE,
+          error: { message: '[object Object]' } }];
+      const store = mockStore({});
       done();
       return store.dispatch(DocumentActions.fetchUserDocuments(69))
         .then(() => {

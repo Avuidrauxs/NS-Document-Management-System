@@ -74,6 +74,7 @@ onTouchTap={this.onUpdateUser}
     return (
       <div>
         <Dialog
+          className="updateRole"
       title="Update user information?"
       actions={actions}
       modal

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import jwt from 'jwt-decode';
 import toast from 'toastr';
 import Container from 'muicss/lib/react/container';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -109,7 +108,6 @@ export class DocumentEditor extends Component {
  * @return {null}       retruns nothing
  */
   onDocumentSave() {
-    const decoded = jwt(localStorage.getItem('jwt-token'));
     const isBodyEmpty = this.state.editorHtml !== '';
     const isBodySpaced = this.state.editorHtml !== '<p><br></p>';
     if (this.state.title !== '' && isBodyEmpty && isBodySpaced) {
@@ -117,7 +115,7 @@ export class DocumentEditor extends Component {
         title: this.state.title,
         body: this.state.editorHtml,
         access: this.state.access,
-        authorId: decoded.id
+        authorId: this.props.user.id
       }).then(() => {
         if (this.props.error) {
           toast.error('Title already exists', 'Error...');
@@ -143,8 +141,7 @@ export class DocumentEditor extends Component {
    */
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
-      openSnackbar: false
+      [event.target.name]: event.target.value
     });
   }
 
@@ -252,9 +249,11 @@ DocumentEditor.formats = [
  */
 DocumentEditor.propTypes = {
   saveDocument: PropTypes.func.isRequired,
-  error: PropTypes.object
+  error: PropTypes.object,
+  user: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(state => ({
+  user: state.AuthReducer.user,
   error: state.DocumentReducer.message
 }), { saveDocument })(DocumentEditor));

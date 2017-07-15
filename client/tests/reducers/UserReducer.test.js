@@ -62,6 +62,51 @@ describe('User Reducer', () => {
     // assert
     expect(newState).toEqual(expectedState);
   });
+  it('should not update user when passed USER_UPDATE_FAILURE', () => {
+    // arrange
+    const initialState = {
+      users: [
+        { id: '1', username: 'Jotaro' },
+        { id: '2', username: 'Deku' },
+        { id: '3', username: 'Aomine' }
+      ],
+      profile: { username: '' }
+    };
+    const error = { message: 'Error' };
+    const action = { type: USER.UPDATE_FAILURE, error };
+
+    // act
+    const newState = UserReducer(initialState, action);
+
+    // assert
+    expect(newState).toEqual(error);
+  });
+  it('should delete user when passed USER_DELETE_SUCCESS', () => {
+    // arrange
+    const initialState = {
+      users: [
+        { id: '1', username: 'Jotaro' },
+        { id: '2', username: 'Deku' },
+        { id: '3', username: 'Aomine' }
+      ],
+      profile: { username: '' }
+    };
+    const action = { type: USER.DELETE_SUCCESS, user: { id: '2', username: 'Deku' } };
+
+    const expectedState = {
+      users: [
+        { id: '1', username: 'Jotaro' },
+        { id: '3', username: 'Aomine' }
+      ],
+      profile: { username: '' }
+    };
+
+    // act
+    const newState = UserReducer(initialState, action);
+
+    // assert
+    expect(newState).toEqual(expectedState);
+  });
   it('should set users when passed USERS_SEARCH_SUCCESS', () => {
     // arrange
     const initialState = {
