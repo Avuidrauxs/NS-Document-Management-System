@@ -50,12 +50,9 @@ export class UsersTable extends Component {
       currentUserID: '',
       itemsPerPage: 9
     };
-    this.filteredSearch = this.filteredSearch.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
-    this.handleOpenDelete = this.handleOpenDelete.bind(this);
     this.onCloseOpenEdit = this.onCloseOpenEdit.bind(this);
-    this.onCloseOpenDelete = this.onCloseOpenDelete.bind(this);
     this.onClickSearch = this.onClickSearch.bind(this);
     this.onDeleteUser = this.onDeleteUser.bind(this);
     this.handleRoles = this.handleRoles.bind(this);
@@ -127,31 +124,11 @@ export class UsersTable extends Component {
   }
 
   /**
-   * This function opens the delete user modal
-   * @param  {number} id [that is the user selected id parameter]
-   * @return {null}       returns nothing
-   */
-  handleOpenDelete(id) {
-    this.setState({
-      openDelete: true,
-      currentUserID: id
-    });
-  }
-
-  /**
    * This function closes the edit user modal
    * @return {null}       returns nothing
    */
   onCloseOpenEdit() {
     this.setState({ openEdit: false });
-  }
-
-  /**
-   * This function closes the delete user modal
-   * @return {null}       returns nothing
-   */
-  onCloseOpenDelete() {
-    this.setState({ openDelete: false });
   }
 
   /**
@@ -189,24 +166,6 @@ export class UsersTable extends Component {
   }
 
   /**
-   * This function filters through the users list
-   * @param  {array} users [array of user objects]
-   * @param {string} searchText string paramter from search textfield
-   * @return {array}           [array of filtered user objects]
-   */
-  filteredSearch(users, searchText) {
-    let filteredSearch = users;
-    if (searchText === '') {
-      return filteredSearch;
-    }
-    filteredSearch = filteredSearch.filter((source) => {
-      const text = source.username.toLowerCase();
-      return searchText.length === 0 || text.indexOf(searchText) > -1;
-    });
-    return filteredSearch;
-  }
-
-  /**
    * this function returns a single React element ie. native DOM component
    * @return {React.Component} [A react componet element]
    */
@@ -230,6 +189,7 @@ export class UsersTable extends Component {
         }}
       />
         <Pagination
+          className="pagination-component"
   total={this.props.pagination.pageCount}
   current={this.props.pagination.page}
   display={this.props.pagination.pageCount}

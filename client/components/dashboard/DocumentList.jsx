@@ -118,6 +118,7 @@ export class DocumentsList extends Component {
         }}>
           <h1 className="main-heading">Public Documents</h1>
           <TextField
+            className="search-field"
         hintText="Search Documents"
         fullWidth
         name="searchText"
@@ -129,6 +130,7 @@ export class DocumentsList extends Component {
         }}
       />
           <Pagination
+            className="pagination-component"
       total={this.props.pagination.pageCount}
       current={this.props.pagination.page}
       display={this.props.pagination.pageCount}

@@ -43,17 +43,31 @@ describe('Authentication actions', () => {
         });
     });
 
+    it('should dispath SIGNIN_FAILURE when bad request', (done) => {
+      moxios.stubRequest('/api/v1/users/login', {
+        status: 400,
+      });
+      const expectedAction = [{
+        type: AUTH.SIGNIN_FAILURE,
+        error: { message: 'Error' }
+      }];
+      const store = mockStore({ loggedIn: false, user: {} }, done);
+      done();
+      return store.dispatch(AuthActions.postLogin({ username: 'ad', password: 'ad' }))
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedAction);
+        });
+    });
     it('should tell user Invalid password or username in returning SIGNIN_FAILURE', (done) => {
       moxios.stubRequest('/api/v1/users/login', {
-        status: 200,
+        status: 401,
         response: {
-          token,
           message: 'Invalid password or username'
         }
       });
       const expectedAction = [{
         type: AUTH.SIGNIN_FAILURE,
-        user: { id: 1, roleId: 1, username: 'admon' }
+        error: { message: 'Error' }
       }];
       const store = mockStore({ loggedIn: false, user: {} }, done);
       done();
@@ -68,7 +82,7 @@ describe('Authentication actions', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
-    it(' should register and logs in a user dispatching LOGIN_SUCCESS', (done) => {
+    it(' should register and logs in a user dispatching SIGNUP_SUCCESS', (done) => {
       moxios.stubRequest('/api/v1/users', {
         status: 200,
         response: {
@@ -94,7 +108,8 @@ describe('Authentication actions', () => {
         status: 400,
       });
 
-      const expectedActions = [{ type: AUTH.SIGNUP_FAILURE }];
+      const expectedActions = [{ type: AUTH.SIGNUP_FAILURE,
+      error: { message: 'Error' } }];
       const store = mockStore({ loggedIn: false, user: {} });
       done();
       return store.dispatch(AuthActions.postSignUp({}))

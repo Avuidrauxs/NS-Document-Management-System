@@ -177,6 +177,7 @@ onTouchTap={this.onUpdateUser}
     return (
       <div>
         <Dialog
+          className="updateProfile"
     title="Update Profile information?"
     actions={actions}
     modal
@@ -222,6 +223,7 @@ onTouchTap={this.onUpdateUser}
       />
           <br />
           <TextField
+            id="confirmPassword"
         name="confirmPassword"
         type="password"
         value={confirmPassword}

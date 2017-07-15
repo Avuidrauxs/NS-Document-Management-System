@@ -100,6 +100,7 @@ export class AdminDocumentsList extends Component {
         }}>
         <h1>All Documents</h1>
         <TextField
+          className="search-field"
         hintText="Search Documents by Title"
         fullWidth
         name="searchText"
@@ -111,6 +112,7 @@ export class AdminDocumentsList extends Component {
         }}
       />
         <Pagination
+          className="pagination-component"
   total={this.props.pagination.pageCount}
   current={this.props.pagination.page}
   display={this.props.pagination.pageCount}

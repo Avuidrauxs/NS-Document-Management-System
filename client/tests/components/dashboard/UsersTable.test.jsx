@@ -13,7 +13,6 @@ describe('UsersTable Component', () => {
 
     fetchAllUsers: sinon.spy(() => new Promise(() => {})),
     deleteUser: sinon.spy(() => new Promise(() => {})),
-    updateUser: sinon.spy(() => new Promise(() => {})),
     searchUsers: sinon.spy(() => new Promise(() => {})),
     user: { username: 'admin', roleId: 1, id: 1 },
     users: [
@@ -44,35 +43,102 @@ describe('UsersTable Component', () => {
     expect(spyProps.fetchAllUsers.calledOnce).toEqual(true);
     expect(spyProps.fetchAllUsers.callCount).toEqual(1);
   });
-  it('should not call `deleteUser` on component render', () => {
+  it('Should call getMoreUsers when called', () => {
+    const getMoreUsersSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
-          {...spyProps}
-        />
-      );
+        getMoreUsers={getMoreUsersSpy}
+        {...spyProps} />);
 
-    expect(spyProps.deleteUser.calledOnce).toEqual(false);
-    expect(spyProps.deleteUser.callCount).toEqual(0);
+    const button = component.find('.pagination-component');
+    button.simulate('change', getMoreUsersSpy());
+
+    expect(getMoreUsersSpy.calledOnce).toEqual(true);
+    expect(typeof getMoreUsersSpy.args[0]).toEqual('object');
   });
-  it('should not call `updateUser` on component render', () => {
+  it('should call `deleteUser` on component render', () => {
+    const onDeleteUserSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
+        onDeleteUser={onDeleteUserSpy}
           {...spyProps}
         />
       );
+      const button = component.find('IconButton').at(1);
+      component.instance().onDeleteUser({});
 
-    expect(spyProps.updateUser.calledOnce).toEqual(false);
-    expect(spyProps.updateUser.callCount).toEqual(0);
+    button.simulate('click', onDeleteUserSpy());
+    component.instance().props.deleteUser({});
+    expect(onDeleteUserSpy.calledOnce).toEqual(true);
+    expect(onDeleteUserSpy.callCount).toEqual(1);
   });
-  it('should not call `searchUsers` on component render', () => {
+  it('should update state via onChange method', () => {
+    const component = shallow(
+      <UsersTable {...spyProps} />
+);
+
+    component.instance().onChange({
+      target: { value: 'vooks', name: 'searchText' } });
+
+    expect(component.state('searchText')).toEqual('vooks');
+  });
+  it('should update state via handleChange method', () => {
+    const component = shallow(
+      <UsersTable {...spyProps} />
+);
+
+    component.instance().handleChange({
+      target: { value: 90, name: 'height' } });
+
+    expect(component.state('height')).toEqual(90);
+  });
+  it('should open EditModal on change', () => {
+    const handleOpenEditSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
+        handleOpenEdit={handleOpenEditSpy}
+          {...spyProps}
+        />
+      );
+      const button = component.find('IconButton').at(0);
+      button.simulate('click', handleOpenEditSpy(1));
+      component.instance().handleOpenEdit(1);
+      component.setState({
+        openEdit: true,
+        currentUserID: 1
+      })
+      expect(component.state().openEdit).toBe(true);
+    expect(handleOpenEditSpy.calledOnce).toEqual(true);
+    expect(handleOpenEditSpy.callCount).toEqual(1);
+  });
+  it('should close EditModal on change', () => {
+    const onCloseOpenEditSpy = sinon.spy(() => new Promise(() => {}));
+    const component = shallow(
+      <UsersTable
+        onCloseOpenEdit={onCloseOpenEditSpy}
           {...spyProps}
         />
       );
 
-    expect(spyProps.searchUsers.calledOnce).toEqual(false);
-    expect(spyProps.searchUsers.callCount).toEqual(0);
+      component.instance().onCloseOpenEdit();
+      component.setState({
+        openEdit: false,
+      })
+      expect(component.state().openEdit).toBe(false);
+  });
+  it('Should call onClickSearch when called', () => {
+    const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
+    const component = shallow(
+      <UsersTable
+        onClickSearch={onClickSearchSpy}
+        {...spyProps} />);
+
+    const button = component.find('TextField').at(0);
+
+    button.simulate('keyUp', onClickSearchSpy());
+
+    expect(onClickSearchSpy.calledOnce).toEqual(true);
+    expect(typeof onClickSearchSpy.args[0]).toEqual('object');
   });
   describe('<EditUserModal /> presentation component', () => {
     it('should render with valid props', () => {

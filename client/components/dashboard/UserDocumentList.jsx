@@ -164,6 +164,7 @@ export class UserDocumentsList extends Component {
           {`${this.props.user.username}'s`} Documents
         </h1>
         <TextField
+          className="search-field"
           hintText="Search Documents"
           fullWidth
           name="searchText"
@@ -191,6 +192,7 @@ export class UserDocumentsList extends Component {
           </ul>
         </div>
         <Pagination
+          className="pagination-component"
   total={this.state.itemsPerPage}
   current={this.state.currentPage}
   display={this.state.currentPage}

@@ -163,6 +163,7 @@ export class SignIn extends Component {
         <div>
           <div className="sign-in">
             <Form
+              className="signInForm"
               name="signInForm"
               style={{
                 marginTop: '180px',
@@ -213,7 +214,10 @@ export class SignIn extends Component {
             autoScrollBodyContent
           >
               <Container>
-                <Form name="signUpForm" onSubmit={this.onSignUpSubmit}>
+                <Form
+                  className="signUpForm"
+                  name="signUpForm"
+                  onSubmit={this.onSignUpSubmit}>
                   <Input
                     label="Full name"
                     floatingLabel
