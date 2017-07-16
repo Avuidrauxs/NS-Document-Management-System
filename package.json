@@ -27,7 +27,8 @@
     "build": "npm run clean && npm run build:server && npm run build:client",
     "build:server": "babel server -d lib/server --copy-files --ignore test.js",
     "e2e-setup": "selenium-standalone install",
-    "test-e2e": "nightwatch"
+    "test-e2e": "nightwatch",
+    "E2E": "npm run e2e-setup  && npm run test-e2e"
   },
   "dependencies": {
     "axios": "^0.16.1",

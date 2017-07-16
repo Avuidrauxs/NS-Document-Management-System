@@ -170,6 +170,7 @@ export class UsersTable extends Component {
    * @return {React.Component} [A react componet element]
    */
   render() {
+    const { users } = this.props;
     return (
       <div
         style={{
@@ -220,7 +221,7 @@ export class UsersTable extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.users.map((user, index) => {
+            {users.map((user, index) => {
               if (user.id !== this.props.user.id) {
                 return (
                   <TableRow key={index}>
@@ -230,12 +231,14 @@ export class UsersTable extends Component {
                     </TableRowColumn>
                     <TableRowColumn>
                       <IconButton
+                        className="editRole"
                           id={user.id}
                           tooltip="Edit User Role"
                           onTouchTap={() => this.handleOpenEdit(user.id)}>
                         <ActionEdit />
                       </IconButton>
                       <IconButton
+                        className="deleteUser"
                           key={user.id}
                           tooltip="Remove User"
                           onTouchTap={() => this.onDeleteUser(user)}>

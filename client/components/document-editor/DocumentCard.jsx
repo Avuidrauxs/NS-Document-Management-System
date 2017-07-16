@@ -146,18 +146,21 @@ export class DocumentCard extends Component {
             </CardText>
             <CardActions>
               <IconButton
+                className="openCard"
                 style={openStyle}
                 tooltip="Open Document"
                 onTouchTap={this.handleOpen}>
                 <ActionOpen />
               </IconButton>
               <IconButton
+                className="editCard"
                 style={editStyle}
                 tooltip="Edit Document"
                 onTouchTap={this.handleOpenEdit}>
                 <ActionEdit />
               </IconButton>
               <IconButton
+                className="deleteCard"
                 style={deleteStyle}
                 tooltip="Delete Document"
                 onTouchTap={this.onDocumentDelete}>

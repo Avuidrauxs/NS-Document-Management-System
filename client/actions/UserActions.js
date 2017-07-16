@@ -4,7 +4,10 @@ import { USER } from '../constants/Constants';
 
 export const fetchAllUsersSuccess = users => ({
   type: USER.GET_ALL_SUCCESS,
-  users
+  users: users.users,
+  metaData: users.metaData,
+  offset: users.offset,
+  query: ''
 });
 
 export const fetchAllUsersFailure = error => ({

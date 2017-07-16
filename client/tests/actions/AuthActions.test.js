@@ -23,7 +23,8 @@ describe('Authentication actions', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
-    it('fetches user token and logs the user in returning SIGNIN_SUCCESS', (done) => {
+    it('fetches user token and logs the user in returning SIGNIN_SUCCESS',
+    (done) => {
       moxios.stubRequest('/api/v1/users/login', {
         status: 200,
         response: {
@@ -37,7 +38,9 @@ describe('Authentication actions', () => {
       }];
       const store = mockStore({ loggedIn: false, user: {} }, done);
       done();
-      return store.dispatch(AuthActions.postLogin({ username: 'admin', password: 'admin' }))
+      return store.dispatch(AuthActions.postLogin({
+        username: 'admin',
+        assword: 'admin' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
@@ -53,12 +56,15 @@ describe('Authentication actions', () => {
       }];
       const store = mockStore({ loggedIn: false, user: {} }, done);
       done();
-      return store.dispatch(AuthActions.postLogin({ username: 'ad', password: 'ad' }))
+      return store.dispatch(AuthActions.postLogin({
+        username: 'ad',
+        password: 'ad' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
     });
-    it('should tell user Invalid password or username in returning SIGNIN_FAILURE', (done) => {
+    it('should show Invalid password or username in returning SIGNIN_FAILURE',
+    (done) => {
       moxios.stubRequest('/api/v1/users/login', {
         status: 401,
         response: {
@@ -71,7 +77,9 @@ describe('Authentication actions', () => {
       }];
       const store = mockStore({ loggedIn: false, user: {} }, done);
       done();
-      return store.dispatch(AuthActions.postLogin({ username: 'ad', password: 'ad' }))
+      return store.dispatch(AuthActions.postLogin({
+        username: 'ad',
+        password: 'ad' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
@@ -82,7 +90,8 @@ describe('Authentication actions', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
-    it(' should register and logs in a user dispatching SIGNUP_SUCCESS', (done) => {
+    it(' should register and logs in a user dispatching SIGNUP_SUCCESS',
+    (done) => {
       moxios.stubRequest('/api/v1/users', {
         status: 200,
         response: {
@@ -109,7 +118,7 @@ describe('Authentication actions', () => {
       });
 
       const expectedActions = [{ type: AUTH.SIGNUP_FAILURE,
-      error: { message: 'Error' } }];
+        error: { message: 'Error' } }];
       const store = mockStore({ loggedIn: false, user: {} });
       done();
       return store.dispatch(AuthActions.postSignUp({}))

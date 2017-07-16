@@ -45,6 +45,7 @@ export class DashboardAppBar extends Component {
    * @return {null}       retruns nothing
    */
   onSignOut() {
+    this.handleRequestClose();
     swal({
       title: 'You wanna leave?',
       text: 'Stay for a while maybe?',
@@ -107,6 +108,7 @@ export class DashboardAppBar extends Component {
    * @return {null}       returns nothing
    */
   handleOpenEdit() {
+    this.handleRequestClose();
     this.setState({
       openEdit: true
     });
@@ -140,13 +142,13 @@ export class DashboardAppBar extends Component {
     iconElementRight={
       <div>
         <Avatar
+          className="avatarHere"
           src={ProfilePic}
           onMouseEnter={this.handleTouchTap}
            />
-        <div
-onMouseLeave={this.handleRequestClose}
-              onMouseOut={this.handleRequestClose}>
+        <div>
           <Popover
+            className="popMenu"
      open={this.state.menuOpen}
      anchorEl={this.state.anchorEl}
      anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
@@ -157,6 +159,7 @@ onMouseLeave={this.handleRequestClose}
     >
             <Menu>
               <MenuItem
+                className="userModal"
                 primaryText="Edit Profile"
                 onTouchTap={this.handleOpenEdit} />
               <Link to="/api"><MenuItem

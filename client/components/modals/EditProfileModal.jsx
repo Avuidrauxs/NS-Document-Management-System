@@ -107,7 +107,7 @@ export class EditProfileModal extends Component {
           id
         })
         .then(() => {
-          swal('Yaayyy!!!', `${username} updated`, 'success');
+          swal('Success!!', `${username} updated`, 'success');
           this.props.onCloseOpenEdit();
         });
       } else if (this.state.password.length >= 8) {
@@ -123,7 +123,7 @@ export class EditProfileModal extends Component {
           this.props.onCloseOpenEdit();
         });
       } else {
-        toast.error('Password should be at least 8 characters', 'Unaccepatable...!');
+        toast.error('Password should be at least 8 characters', 'Error!');
       }
     } else {
       toast.warning('Fill out all fileds', 'Alert!!');
@@ -168,6 +168,7 @@ export class EditProfileModal extends Component {
     onTouchTap={() => this.props.onCloseOpenEdit()}
   />,
       <FlatButton
+        className="profileEdit"
         key="2"
 label="Update"
 primary

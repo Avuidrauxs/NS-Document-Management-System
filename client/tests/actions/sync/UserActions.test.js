@@ -11,7 +11,10 @@ describe('User Actions', () => {
     };
     const expectedAction = {
       type: USER.GET_ALL_SUCCESS,
-      users
+      users: {},
+      metaData: {},
+      offset: 0,
+      query: ''
     };
     expect(UserActions.fetchAllUsersSuccess(users)).toEqual(expectedAction);
   });

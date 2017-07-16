@@ -224,8 +224,8 @@ describe('Document Actions', () => {
       });
 
       const expectedActions = [
-      { type: DOCUMENT.GET_FAILURE,
-        error: { message: '[object Object]' } }];
+        { type: DOCUMENT.GET_FAILURE,
+          error: { message: '[object Object]' } }];
 
       const store = mockStore({});
       done();
