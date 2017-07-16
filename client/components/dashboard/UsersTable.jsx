@@ -211,7 +211,7 @@ export class UsersTable extends Component {
             <TableRow>
               <TableHeaderColumn tooltip="Number">No.</TableHeaderColumn>
               <TableHeaderColumn tooltip="Username">Username</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Role ID">Role ID</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Role">Role</TableHeaderColumn>
               <TableHeaderColumn tooltip="Actions">Actions</TableHeaderColumn>
             </TableRow>
           </TableHeader>
