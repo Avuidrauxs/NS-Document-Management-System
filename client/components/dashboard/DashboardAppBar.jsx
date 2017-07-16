@@ -162,7 +162,7 @@ export class DashboardAppBar extends Component {
                 className="userModal"
                 primaryText="Edit Profile"
                 onTouchTap={this.handleOpenEdit} />
-              <Link to="/api"><MenuItem
+              <Link to="/api-docs"><MenuItem
                 primaryText="Read API Doc" /></Link>
               <MenuItem
                 primaryText="Sign out"
