@@ -204,6 +204,7 @@ export class EditDocumentModal extends Component {
     onTouchTap={() => this.props.closeEdit()}
   />,
       <FlatButton
+        className="saveEdit"
         key="2"
 label="Save"
 primary
@@ -221,6 +222,7 @@ onTouchTap={this.onDocumentUpdate}
     return (
       <div>
         <Dialog
+                        className="editModal"
                         actions={actions}
                         modal
                         autoScrollBodyContent

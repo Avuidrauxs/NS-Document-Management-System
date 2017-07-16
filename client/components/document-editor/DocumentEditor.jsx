@@ -197,6 +197,7 @@ export class DocumentEditor extends Component {
               style={styles.checkbox}
               />
             <ReactQuill
+              className="Quill"
           theme={'snow'}
           onChange={this.onChange}
           name="editorHtml"
@@ -207,6 +208,7 @@ export class DocumentEditor extends Component {
           style={{ height: '400px' }}
          />
             <RaisedButton
+              className="save-doc"
           label="SAVE"
           primary
           style={{ textAlign: 'center' }}

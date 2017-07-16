@@ -14,6 +14,7 @@ export const OpenDocumentModal = (props) => {
   return (
     <div>
       <Dialog
+        className="openModal"
     title={title}
     actions={<FlatButton
   label="Close"

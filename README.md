@@ -4,7 +4,8 @@
 [![codecov](https://codecov.io/gh/andela-aanchirinah/NS-Document-Management-System/branch/develop/graph/badge.svg)](https://codecov.io/gh/andela-aanchirinah/NS-Document-Management-System)
 
 # NS-Document-Management-System
-This is the Non Sucking Document Management System which unlike other document management systems that suck. You can try it out [here](https://staging-nsdms.herokuapp.com/)
+This is the Non Sucking Document Management System which unlike other document management systems that suck. You can try it out [here](https://staging-nsdms.herokuapp.com/).
+
 So the system has the following features
 
  - Landing page with a sign-in and sign-up form
@@ -44,12 +45,7 @@ apt-get install nodejs
 ### Installing
 
 To get the project running in your environment
-First of all you need to run the build script
-```
-npm run build
-```
-
-then install all the needed dependencies
+First run the command below
 
 ```
 npm install
@@ -77,13 +73,29 @@ npm run test:client
 
 To perform End to End testing
 ```
-npm run e2e-setup  && npm run test-e2e
+npm run E2E
 ```
 
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+This is how to deploy this on a live system
+
+First of all you need to run the build script
+```
+npm run build
+```
+
+then install all the needed dependencies
+
+```
+npm install
+```
+
+Then you can run the NS-DMS app with the following
+```
+npm start
+```
 
 ## Built With
 

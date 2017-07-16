@@ -47,7 +47,7 @@ export class EditUserModal extends Component {
       id: this.props.id
     })
     .then(() => {
-      swal('Yaaaay', 'User role updated', 'success');
+      swal('Success!', 'User role updated', 'success');
       this.props.onCloseOpenEdit();
     });
   }
@@ -65,6 +65,7 @@ export class EditUserModal extends Component {
     onTouchTap={() => this.props.onCloseOpenEdit()}
   />,
       <FlatButton
+        className="updateUserRole"
         key="2"
 label="Update"
 primary

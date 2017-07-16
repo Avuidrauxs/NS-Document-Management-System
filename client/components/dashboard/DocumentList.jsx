@@ -142,7 +142,7 @@ style={{
   marginTop: '9em',
   color: 'rgba(8, 8, 8, 0.19)',
   display: `${this.state.notFound}`
-}}><h1>NO DOCUMENTS AVAILABLE</h1></div>
+}}><h1 className="no-doc">NO DOCUMENTS AVAILABLE</h1></div>
             <Row>
               {documents.map((document, index) => {
                 return (
