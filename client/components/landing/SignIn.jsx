@@ -165,9 +165,6 @@ export class SignIn extends Component {
             <Form
               className="signInForm"
               name="signInForm"
-              style={{
-                marginTop: '180px',
-                textAlign: 'center' }}
                 onSubmit={this.onSignInSubmit}
                 >
               <Input

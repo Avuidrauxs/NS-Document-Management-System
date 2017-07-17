@@ -144,7 +144,7 @@ export class DashboardAppBar extends Component {
         <Avatar
           className="avatarHere"
           src={ProfilePic}
-          onMouseEnter={this.handleTouchTap}
+          onClick={this.handleTouchTap}
            />
         <div>
           <Popover
