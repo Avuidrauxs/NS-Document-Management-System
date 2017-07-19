@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import sinon from 'sinon';
 import { AdminDocumentsList }
@@ -36,16 +36,6 @@ describe('AdminDocumentsList Component', () => {
       offset: 0,
     },
   };
-  it('should not call `fetchDocuments` on component render', () => {
-    const component = shallow(
-      <AdminDocumentsList
-          {...spyProps}
-        />
-      );
-
-    expect(spyProps.fetchDocuments.calledOnce).toEqual(false);
-    expect(spyProps.fetchDocuments.callCount).toEqual(0);
-  });
   it('should update state via onChange method', () => {
     const component = shallow(
       <AdminDocumentsList {...spyProps} />
@@ -87,8 +77,6 @@ describe('AdminDocumentsList Component', () => {
       <AdminDocumentsList {...spyProps} />
 );
     component.instance().componentDidMount();
-
-    // expect(component.instance().props.componentDidMount.calledOnce).toEqual(true);
   });
   it('Should call onClickSearch when called', () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));

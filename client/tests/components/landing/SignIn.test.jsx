@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import sinon from 'sinon';
 import { SignIn } from '../../../components/landing/SignIn';

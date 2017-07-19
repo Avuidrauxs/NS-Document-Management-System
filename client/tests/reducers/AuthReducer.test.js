@@ -18,7 +18,7 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set user when passed SIGNIN_FAILURE', () => {
+  it('should not set user when passed SIGNIN_FAILURE', () => {
     // arrange
     const error = {};
     const action = { type: AUTH.SIGNIN_FAILURE, error };
@@ -30,19 +30,21 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set user when passed SIGNUP_FAILURE', () => {
+  it('should not register user when passed SIGNUP_FAILURE', () => {
     // arrange
-    const error = { message: 'Error: Error: Request failed with status code 400' };
+    const error = {
+      message: 'Error: Error: Request failed with status code 400' };
     const action = { type: AUTH.SIGNUP_FAILURE, error };
 
-    const expectedState = { message: 'Error: Error: Request failed with status code 400' };
+    const expectedState = {
+      message: 'Error: Error: Request failed with status code 400' };
 
     // act
     const newState = AuthReducer(initialState.auth, action);
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set user when passed SIGNUP_SUCCESS', () => {
+  it('should register user when passed SIGNUP_SUCCESS', () => {
     // arrange
     const user = { id: 1, username: 'admin', roleId: 1 };
     const action = { type: AUTH.SIGNUP_SUCCESS, user };

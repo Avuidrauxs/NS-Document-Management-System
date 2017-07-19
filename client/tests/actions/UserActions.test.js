@@ -59,13 +59,15 @@ describe('User Actions', () => {
     const limit = 9;
     const offset = 0;
     it('searches for users and dispatches USER_SEARCH_SUCCESS', (done) => {
-      moxios.stubRequest(`/api/v1/search/users?q=${query}&limit=${limit}&offset=${offset}`, {
-        status: 200,
-        response: {
-          rows: [{ username: 'Neo' }],
-          metaData: {}
-        }
-      });
+      moxios
+      .stubRequest(
+        `/api/v1/search/users?q=${query}&limit=${limit}&offset=${offset}`, {
+          status: 200,
+          response: {
+            rows: [{ username: 'Neo' }],
+            metaData: {}
+          }
+        });
 
       const expectedActions = [{ type:
         USER.SEARCH_SUCCESS,
@@ -84,11 +86,14 @@ describe('User Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it('searches] for users error should dispatche USER_SEARCH_FAILURE', (done) => {
-      moxios.stubRequest(`/api/v1/search/users?q=${query}&limit=${limit}&offset=${offset}`, {
-        status: 400,
-        response: {}
-      });
+    it('searches] for users error should dispatche USER_SEARCH_FAILURE',
+    (done) => {
+      moxios
+      .stubRequest(
+        `/api/v1/search/users?q=${query}&limit=${limit}&offset=${offset}`, {
+          status: 400,
+          response: {}
+        });
 
       const expectedActions = [{ type:
         USER.SEARCH_FAILURE,
@@ -120,7 +125,8 @@ describe('User Actions', () => {
 
       const store = mockStore({});
       done();
-      return store.dispatch(UserActions.updateUser({ id: 2, username: 'PepperSoup' }))
+      return store
+      .dispatch(UserActions.updateUser({ id: 2, username: 'PepperSoup' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
@@ -134,7 +140,8 @@ describe('User Actions', () => {
 
       const store = mockStore({});
       done();
-      return store.dispatch(UserActions.updateUser({ id: 2, username: 'PepperSoup' }))
+      return store
+      .dispatch(UserActions.updateUser({ id: 2, username: 'PepperSoup' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
@@ -157,7 +164,8 @@ describe('User Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it("fetching user's profile error and dispatches GET_USER_FAILURE", (done) => {
+    it("fetching user's profile error and dispatches GET_USER_FAILURE",
+    (done) => {
       moxios.stubRequest('/api/v1/users/4', {
         status: 400
       });
@@ -175,7 +183,8 @@ describe('User Actions', () => {
 
   describe('Deletes a User by id', () => {
     const user = { id: 2, username: 'PepperSoup' };
-    it("deletes a user's profile and dispatches DELETE_USER_SUCCESS", (done) => {
+    it("deletes a user's profile and dispatches DELETE_USER_SUCCESS",
+    (done) => {
       moxios.stubRequest(`/api/v1/users/${user.id}`, {
         status: 200
       });
@@ -189,7 +198,8 @@ describe('User Actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
-    it("failure to delete a user's profile and dispatches DELETE_USER_FAILURE", (done) => {
+    it("failure to delete a user's profile and dispatches DELETE_USER_FAILURE",
+    (done) => {
       moxios.stubRequest(`/api/v1/users/${user.id}`, {
         status: 400
       });

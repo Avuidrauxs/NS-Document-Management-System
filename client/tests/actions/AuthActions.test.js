@@ -7,10 +7,12 @@ import * as AuthActions from '../../actions/AuthActions';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGVJZCI6MSwiaWF0IjoxNDk5MTIyMjk3LCJleHAiOjE0OTkxMzY2OTd9.MiqArbAiDB5LYIpO_MQDqbx_kh4XsQAUIK1-ZYQNYGI';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW' +
+'UiOiJhZG1pbiIsInJvbGVJZCI6MSwiaWF0IjoxNDk5MTIyMjk3LCJleHAiOjE0OTkxMzY2O' +
+'Td9.MiqArbAiDB5LYIpO_MQDqbx_kh4XsQAUIK1-ZYQNYGI';
 
-describe('Authentication actions', () => {
-  describe('User Login', () => {
+describe('Authentication actions ', () => {
+  describe('User Login ', () => {
     const expectedAction = {
       type: AUTH.SIGNIN_SUCCESS,
       user: { id: 1, roleId: 1, username: 'admin' }
@@ -40,7 +42,7 @@ describe('Authentication actions', () => {
       done();
       return store.dispatch(AuthActions.postLogin({
         username: 'admin',
-        assword: 'admin' }))
+        password: 'admin' }))
         .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
@@ -112,7 +114,8 @@ describe('Authentication actions', () => {
         });
     });
 
-    it('should not register a user with wrong information dispatching LOGIN_FAILURE', (done) => {
+    it(`should not register a user with wrong information dispatching
+      LOGIN_FAILURE`, (done) => {
       moxios.stubRequest('/api/v1/users', {
         status: 400,
       });

@@ -138,7 +138,7 @@ module.exports = {
     browser
     .url(`${config.url}dashboard`)
     .waitForElementVisible('body', config.waitFor)
-    .moveToElement('.avatarHere', 10, 10)
+    .click('.avatarHere')
     .pause(1000)
     .waitForElementVisible('.popMenu', config.waitFor)
     .click('.sign-out-btn')
