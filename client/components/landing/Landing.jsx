@@ -9,8 +9,9 @@ import background from '../../images/background_spots_lines.jpg';
 
 const sectionStyle = {
   width: '100%',
-  height: '100%',
+  height: '100vh',
   backgroundImage: `url(${background})`,
+  backgroundSize: 'cover',
   position: 'absolute',
   left: '-10px',
   right: '-10px'
@@ -25,8 +26,8 @@ const Landing = () => (
   <Container fluid style={sectionStyle}>
     <Row>
       <Col xs="12" md="8"><Welcome /></Col>
-      <div className="custom-divider"><span /></div>
-      <Col xs="6" md="4"><SignIn /></Col>
+      <div className="custom-divider mui--hidden-sm"><span /></div>
+      <Col xs="12" md="4"><SignIn /></Col>
     </Row>
   </Container>
 

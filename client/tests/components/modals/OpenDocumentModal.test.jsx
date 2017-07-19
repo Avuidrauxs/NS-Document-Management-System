@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import { OpenDocumentModal } from '../../../components/modals/OpenDocumentModal';
+import { OpenDocumentModal } from
+'../../../components/modals/OpenDocumentModal';
 
 const props = {
   openDocument: true,

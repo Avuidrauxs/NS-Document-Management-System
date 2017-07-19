@@ -31,6 +31,16 @@ export default (app) => {
 *            example: 2016-08-29T09:12:33.001Z
 */
 
+// Security Schema definition
+ /**
+  * @swagger
+  * securityDefinitions:
+  *   x-access-token:
+  *     type: apiKey
+  *     description: JWT Authentication
+  *     in: header
+  *     name: x-access-token
+  */
 
 /**
   * @swagger
@@ -42,12 +52,19 @@ export default (app) => {
   *        - Document
   *      produces:
   *        - application/json
+  *      consumes:
+  *        - application/x-www-form-urlencoded
   *      parameters:
-  *        - name: x-access-token
-  *          in: header
-  *          description: an authorization header
+  *        - name: offset
+  *          in: formData
+  *          description: offset
   *          required: false
-  *          type: string
+  *          type: integer
+  *        - name: limit
+  *          in: formData
+  *          description: limit
+  *          required: false
+  *          type: integer
   *      responses:
   *          200:
   *              description: documents
@@ -86,6 +103,8 @@ export default (app) => {
      *         description: documents
      *         schema:
      *          type: object
+     *     security:
+     *     - x-access-token: []
      */
   app.post('/api/v1/documents', Authenticate.checkUser,
   Controller.documents.createDocument);
@@ -155,6 +174,8 @@ export default (app) => {
      *            type: array
      *            items:
      *              $ref: '#/definitions/Document'
+     *     security:
+     *     - x-access-token: []
      */
   app.put('/api/v1/documents/:id', Authenticate.checkUser,
   Authenticate.allowAuthor, Controller.documents.updateDocument);
@@ -187,6 +208,8 @@ export default (app) => {
    *            type: array
    *            items:
    *              $ref: '#/definitions/Document'
+   *     security:
+   *     - x-access-token: []
    */
   app.delete('/api/v1/documents/:id', Authenticate.checkUser,
   Authenticate.allowAuthor, Controller.documents.deleteDocument);
@@ -200,12 +223,19 @@ export default (app) => {
      *        - Document
      *      produces:
      *        - application/json
+     *      consumes:
+     *        - application/x-www-form-urlencoded
      *      parameters:
-     *        - name: x-access-token
-     *          in: header
-     *          description: an authorization header
-     *          required: true
-     *          type: string
+     *        - name: offset
+     *          in: formData
+     *          description: offset
+     *          required: false
+     *          type: integer
+     *        - name: limit
+     *          in: formData
+     *          description: limit
+     *          required: false
+     *          type: integer
      *        - in: query
      *          name: q
      *          description: title of a document

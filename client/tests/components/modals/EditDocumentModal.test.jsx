@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import { EditDocumentModal } from '../../../components/modals/EditDocumentModal';
+import { EditDocumentModal } from
+'../../../components/modals/EditDocumentModal';
 
 describe('The container component <EditDocumentModal />', () => {
   const props = {
@@ -14,9 +15,8 @@ describe('The container component <EditDocumentModal />', () => {
       User: { id: 3, username: 'ajudensi' }
     },
     saveDocument: sinon.spy(() => new Promise(() => {})),
-  }
+  };
   it('should render with props', () => {
-
     expect(
       shallow(
         <EditDocumentModal {...props} />
@@ -91,16 +91,16 @@ describe('The container component <EditDocumentModal />', () => {
     expect(component.state().roleChecked).toBe(true);
   });
   it('should not call `saveDocument` on component render', () => {
-      const onDocumentUpdateSpy = sinon.spy(() => new Promise(() => {}));
+    const onDocumentUpdateSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditDocumentModal
         onDocumentUpdate={onDocumentUpdateSpy}
           {...props}
         />
       );
-      const button = component.find('FlatButton').at(1);
-      button.simulate('click', onDocumentUpdateSpy());
-      component.instance().onDocumentUpdate()
+    const button = component.find('FlatButton').at(1);
+    button.simulate('click', onDocumentUpdateSpy());
+    component.instance().onDocumentUpdate();
 
     expect(onDocumentUpdateSpy.calledOnce).toEqual(true);
     expect(onDocumentUpdateSpy.callCount).toEqual(1);

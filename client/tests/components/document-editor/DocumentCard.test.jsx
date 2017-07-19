@@ -1,10 +1,13 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import sinon from 'sinon';
-import { DocumentCard } from '../../../components/document-editor/DocumentCard';
-import { EditDocumentModal } from '../../../components/modals/EditDocumentModal';
-import { OpenDocumentModal } from '../../../components/modals/OpenDocumentModal';
+import { DocumentCard } from
+'../../../components/document-editor/DocumentCard';
+import { EditDocumentModal } from
+'../../../components/modals/EditDocumentModal';
+import { OpenDocumentModal } from
+'../../../components/modals/OpenDocumentModal';
 
 injectTapEventPlugin();
 

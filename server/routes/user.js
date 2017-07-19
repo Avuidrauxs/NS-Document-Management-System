@@ -38,6 +38,17 @@ export default (app) => {
    *        example: 2016-08-29T09:12:33.001Z
    */
 
+   // Security Schema definition
+  /**
+    * @swagger
+    * securityDefinitions:
+    *  x-access-token:
+    *    type: apiKey
+    *    description: JWT Authentication
+    *    in: header
+    *    name: x-access-token
+    */
+
    /**
     * @swagger
     * /api/v1/users/login:
@@ -50,14 +61,16 @@ export default (app) => {
     *       access other routes where required
     *     produces:
     *       - application/json
+    *     consumes:
+    *       - application/x-www-form-urlencoded
     *     parameters:
     *       - name: username
-    *         in: body
+    *         in: formData
     *         description: The user name for login
     *         required: true
     *         type: string
     *       - name: password
-    *         in: body
+    *         in: formData
     *         description: The password for login in clear text
     *         required: true
     *         type: string
@@ -142,10 +155,10 @@ export default (app) => {
    *       - name: x-access-token
    *         in: header
    *         description: an authorization header
-   *         required: true
+   *         required: false
    *         type: string
    *       - in: query
-   *         name: searchString
+   *         name: q
    *         description: pass an optional search string
    *           for looking up users by username
    *         required: false
@@ -155,6 +168,8 @@ export default (app) => {
    *         description: search results matching criteria
    *         schema:
    *           $ref: '#/definitions/User'
+   *     security:
+   *     - x-access-token: []
    */
   app.get('/api/v1/users', Authenticate.checkUser, Authenticate.allowAdmin,
     Controller.user.fetchAllUsers);
@@ -170,6 +185,8 @@ export default (app) => {
      *     description: Get user by user name
      *     produces:
      *       - application/json
+     *     consumes:
+     *       - x-www-form-urlencoded
      *     parameters:
      *       - name: x-access-token
      *         in: header
@@ -189,6 +206,8 @@ export default (app) => {
      *           $ref: '#/definitions/User'
      *       400:
      *         description: Invalid username supplied
+     *     security:
+     *     - x-access-token: []
      */
   app.get('/api/v1/search/users', Authenticate.checkUser,
   Authenticate.allowAdmin,
@@ -224,6 +243,8 @@ export default (app) => {
        *         description: Invalid id supplied
        *       404:
        *         description: User not found
+       *     security:
+       *     - x-access-token: []
        */
   app.get('/api/v1/users/:id', Authenticate.checkUser,
   Controller.user.fetchUser);
@@ -264,6 +285,8 @@ export default (app) => {
        *         description: users
        *       403:
        *         description: users
+       *     security:
+       *     - x-access-token: []
        */
   app.put('/api/v1/users/:id', Authenticate.checkUser,
   Authenticate.allowUser,
@@ -295,6 +318,8 @@ export default (app) => {
        *         description: users
        *         schema:
        *          type: array
+       *     security:
+       *     - x-access-token: []
        */
   app.delete('/api/v1/users/:id', Authenticate.checkUser,
   Authenticate.allowUser,
@@ -366,6 +391,8 @@ export default (app) => {
       *            description: user's documents
       *          schema:
       *            $ref: '#/definitions/UserDocument'
+      *      security:
+      *      - x-access-token: []
       */
   app.get('/api/v1/users/:id/documents',
   Authenticate.checkUser, Authenticate.allowUser,

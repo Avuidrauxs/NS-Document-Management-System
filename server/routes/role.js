@@ -25,6 +25,17 @@ export default (app) => {
 *         example: 2016-08-29T09:12:33.001Z
 */
 
+// Security Schema definition
+ /**
+  * @swagger
+  * securityDefinitions:
+  *  x-access-token:
+  *    type: apiKey
+  *    description: JWT Authentication
+  *    in: header
+  *    name: x-access-token
+  */
+
 
 /**
    * @swagger
@@ -80,6 +91,8 @@ export default (app) => {
      *         description: roles
      *         schema:
      *          type: object
+     *     security:
+     *     - x-access-token: []
      */
   app.post('/api/v1/roles', Authenticate.checkUser, Authenticate.allowAdmin,
   Controller.role.addRole);
@@ -112,6 +125,8 @@ export default (app) => {
      *         description: roles
      *         schema:
      *          type: object
+     *     security:
+     *     - x-access-token: []
      */
   app.get('/api/v1/roles/:id', Controller.role.fetchRole);
 
@@ -148,6 +163,8 @@ export default (app) => {
      *         description: roles
      *         schema:
      *          type: object
+     *     security:
+     *     - x-access-token: []
      */
   app.put('/api/v1/roles/:id', Authenticate.checkUser,
   Authenticate.allowAdmin, Controller.role.updateRole);
@@ -180,6 +197,8 @@ export default (app) => {
      *         description: roles
      *         schema:
      *          type: object
+     *     security:
+     *     - x-access-token: []
      */
   app.delete('/api/v1/roles/:id', Authenticate.checkUser,
   Authenticate.allowAdmin, Controller.role.removeRole);
