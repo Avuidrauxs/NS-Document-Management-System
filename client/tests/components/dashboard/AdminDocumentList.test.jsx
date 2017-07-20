@@ -32,7 +32,7 @@ describe('AdminDocumentsList Component', () => {
       page: 1,
       pageCount: 2,
       pageSize: 9,
-      totalCount: 17,
+      totalCount: 9,
       offset: 0,
     },
   };
