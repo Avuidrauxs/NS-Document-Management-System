@@ -14,7 +14,8 @@ const sectionStyle = {
   backgroundSize: 'cover',
   position: 'absolute',
   left: '-10px',
-  right: '-10px'
+  right: '-10px',
+  zIndex: 1
 };
 
 /**
