@@ -129,7 +129,7 @@ style={{
             {this.props.documents.map((document, index) => {
               return (
                 <Col xs="6" md="4" key={index}>
-                  <DocumentCard document={document} ReadOnly />
+                  <DocumentCard document={document} />
                 </Col>
               );
             })}

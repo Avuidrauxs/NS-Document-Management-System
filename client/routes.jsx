@@ -1,6 +1,7 @@
 import Landing from './components/landing/Landing';
 import Dashboard from './components/dashboard/Dashboard';
-import RestrictRoute from './utilities/restrictRoutes';
+import RestrictRoute from './utilities/RestrictRoutes';
+import AllowAdminOnly from './utilities/AllowAdminOnly';
 import UsersTable from './components/dashboard/UsersTable';
 import DocumentsList from './components/dashboard/DocumentList';
 import AdminDocumentsList from './components/dashboard/AdminDocumentList';
@@ -29,12 +30,12 @@ const routes = [
   { path: '/dashboard/admin-documents',
     exact: true,
     main: AdminDocumentsList,
-    component: RestrictRoute(Dashboard),
+    component: AllowAdminOnly(Dashboard),
   },
   { path: '/dashboard/dash-users',
     exact: true,
     main: UsersTable,
-    component: RestrictRoute(Dashboard),
+    component: AllowAdminOnly(Dashboard),
   },
   { path: '/dashboard/create-document',
     exact: true,
