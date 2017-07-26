@@ -118,7 +118,9 @@ export class AdminDocumentsList extends Component {
   display={this.props.pagination.pageCount}
   onChange={number => this.getMoreDocuments((number - 1) * 9)}
    />
-        <Container className="main-container" fluid>
+        <Container
+          className="main-container"
+          fluid style={{ marginBottom: '60px' }}>
           <Row>
             <div
 style={{

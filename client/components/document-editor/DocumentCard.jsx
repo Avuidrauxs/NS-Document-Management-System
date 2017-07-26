@@ -102,87 +102,64 @@ export class DocumentCard extends Component {
     const checkAuthor = () => {
       if (this.props.user.id === authorId) {
         return (
-          <Card style={{ width: '350px', marginTop: '20px' }}>
-            <CardHeader
-              className="CustomCard"
-              title={`${title.substring(0, 15)}...`}
-              titleColor="white"
-              subtitleColor="grey"
-              titleStyle={{
-                textTransform: 'capitalize',
-                fontWeight: 'bold',
-                fontSize: '20px'
-              }}
-              style={{
-                backgroundColor: '#00bcd4',
-              }}
-            />
-            <CardText style={{ textAlign: 'left' }}>
-              <strong>Author: </strong> {User.username}
-              <br />
-              <strong>Date created: </strong>{`${createdAt.split('T')[0]}`}
-            </CardText>
-            <CardActions>
-              <IconButton
+          <CardActions>
+            <IconButton
                 className="openCard"
                 tooltip="Open Document"
                 onTouchTap={this.handleOpen}>
-                <ActionOpen />
-              </IconButton>
-              <IconButton
+              <ActionOpen />
+            </IconButton>
+            <IconButton
                 className="editCard"
                 tooltip="Edit Document"
                 onTouchTap={this.handleOpenEdit}>
-                <ActionEdit />
-              </IconButton>
-              <IconButton
+              <ActionEdit />
+            </IconButton>
+            <IconButton
                 className="deleteCard"
                 tooltip="Delete Document"
                 onTouchTap={this.onDocumentDelete}>
-                <ActionDelete />
-              </IconButton>
-            </CardActions>
-
-          </Card>
+              <ActionDelete />
+            </IconButton>
+          </CardActions>
         );
-      } else {
-        return (
-          <Card style={{ width: '350px', marginTop: '20px' }}>
-            <CardHeader
-              className="CustomCard"
-              title={`${title.substring(0, 15)}...`}
-              titleColor="white"
-              subtitleColor="grey"
-              titleStyle={{
-                textTransform: 'capitalize',
-                fontWeight: 'bold',
-                fontSize: '20px'
-              }}
-              style={{
-                backgroundColor: '#00bcd4',
-              }}
-            />
-            <CardText style={{ textAlign: 'left' }}>
-              <strong>Author: </strong> {User.username}
-              <br />
-              <strong>Date created: </strong>{`${createdAt.split('T')[0]}`}
-            </CardText>
-            <CardActions>
-              <IconButton
+      }
+      return (
+        <CardActions>
+          <IconButton
                 className="openCard"
                 tooltip="Open Document"
                 onTouchTap={this.handleOpen}>
-                <ActionOpen />
-              </IconButton>
-            </CardActions>
-          </Card>
-        );
-      }
+            <ActionOpen />
+          </IconButton>
+        </CardActions>
+      );
     };
     return (
       <div>
         <div>
-          {checkAuthor()}
+          <Card style={{ width: '350px', marginTop: '20px' }}>
+            <CardHeader
+              className="CustomCard"
+              title={`${title.substring(0, 15)}...`}
+              titleColor="white"
+              subtitleColor="grey"
+              titleStyle={{
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '20px'
+              }}
+              style={{
+                backgroundColor: '#00bcd4',
+              }}
+            />
+            <CardText style={{ textAlign: 'left' }}>
+              <strong>Author: </strong> {User.username}
+              <br />
+              <strong>Date created: </strong>{`${createdAt.split('T')[0]}`}
+            </CardText>
+            {checkAuthor()}
+          </Card>
         </div>
         <div>
           <OpenDocumentModal
