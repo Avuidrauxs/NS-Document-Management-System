@@ -37,6 +37,10 @@ ReactDOM.render(
           />
         ))}
         </div>
+        <div id="app-footer" >
+          <a href="http://faarentie.com">Audax Anchirinah</a>
+          <p>&copy; {new Date().getUTCFullYear()}</p>
+        </div>
       </div>
     </Router>
   </Provider>

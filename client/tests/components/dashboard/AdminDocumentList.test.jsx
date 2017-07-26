@@ -99,9 +99,10 @@ describe('AdminDocumentsList Component', () => {
           title: 'my title',
           body: 'great article',
           createdAt: '2017-07-13T00',
+          authorId: 3,
           User: { id: 3, username: 'ajudensi' }
         },
-        ReadOnly: true
+        user: { id: 3, username: 'ajudensi' }
       };
       const component = shallow(
         <DocumentCard {...props} />

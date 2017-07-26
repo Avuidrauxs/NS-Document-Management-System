@@ -56,6 +56,7 @@ const DocumentReducer = (state = initialState.documents, action) => {
  */
 const Document = (state = initialState.document, action) => {
   switch (action.type) {
+
   case DOCUMENT.GET_SUCCESS:
     return action.document;
 

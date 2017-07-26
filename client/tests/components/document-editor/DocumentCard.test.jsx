@@ -19,7 +19,7 @@ describe('Document Card', () => {
       createdAt: '2017-07-13T00',
       User: { id: 3, username: 'ajudensi' }
     },
-    ReadOnly: false,
+    user: { id: 3, username: 'ajudensi' },
     deleteDocument: sinon.spy(() => new Promise(() => {})),
   };
   it('should render with props', () => {
@@ -100,7 +100,7 @@ describe('Document Card', () => {
   });
   describe('<OpenDocumentModal /> presentation component', () => {
     it('should render with valid props', () => {
-      const props = {
+      const spyProps = {
         openDocument: true,
         closeDocument: sinon.spy(() => new Promise(() => {})),
         doc: { id: 1,
@@ -110,7 +110,7 @@ describe('Document Card', () => {
         },
       };
       const component = shallow(
-        <OpenDocumentModal {...props} />
+        <OpenDocumentModal {...spyProps} />
       );
       expect(component.length).toBe(1);
     });

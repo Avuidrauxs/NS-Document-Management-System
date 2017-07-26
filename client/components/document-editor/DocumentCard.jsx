@@ -98,32 +98,10 @@ export class DocumentCard extends Component {
    * @return {React.Component} [A react componet element]
    */
   render() {
-    const { title, User, createdAt } = this.props.document;
-    let openStyle, editStyle, deleteStyle;
-    if (this.props.ReadOnly) {
-      openStyle = {
-        display: ''
-      };
-      editStyle = {
-        display: 'none'
-      };
-      deleteStyle = {
-        display: 'none'
-      };
-    } else {
-      openStyle = {
-        display: ''
-      };
-      editStyle = {
-        display: ''
-      };
-      deleteStyle = {
-        display: ''
-      };
-    }
-    return (
-      <div>
-        <div>
+    const { title, User, createdAt, authorId } = this.props.document;
+    const checkAuthor = () => {
+      if (this.props.user.id === authorId) {
+        return (
           <Card style={{ width: '350px', marginTop: '20px' }}>
             <CardHeader
               className="CustomCard"
@@ -147,21 +125,18 @@ export class DocumentCard extends Component {
             <CardActions>
               <IconButton
                 className="openCard"
-                style={openStyle}
                 tooltip="Open Document"
                 onTouchTap={this.handleOpen}>
                 <ActionOpen />
               </IconButton>
               <IconButton
                 className="editCard"
-                style={editStyle}
                 tooltip="Edit Document"
                 onTouchTap={this.handleOpenEdit}>
                 <ActionEdit />
               </IconButton>
               <IconButton
                 className="deleteCard"
-                style={deleteStyle}
                 tooltip="Delete Document"
                 onTouchTap={this.onDocumentDelete}>
                 <ActionDelete />
@@ -169,6 +144,45 @@ export class DocumentCard extends Component {
             </CardActions>
 
           </Card>
+        );
+      } else {
+        return (
+          <Card style={{ width: '350px', marginTop: '20px' }}>
+            <CardHeader
+              className="CustomCard"
+              title={`${title.substring(0, 15)}...`}
+              titleColor="white"
+              subtitleColor="grey"
+              titleStyle={{
+                textTransform: 'capitalize',
+                fontWeight: 'bold',
+                fontSize: '20px'
+              }}
+              style={{
+                backgroundColor: '#00bcd4',
+              }}
+            />
+            <CardText style={{ textAlign: 'left' }}>
+              <strong>Author: </strong> {User.username}
+              <br />
+              <strong>Date created: </strong>{`${createdAt.split('T')[0]}`}
+            </CardText>
+            <CardActions>
+              <IconButton
+                className="openCard"
+                tooltip="Open Document"
+                onTouchTap={this.handleOpen}>
+                <ActionOpen />
+              </IconButton>
+            </CardActions>
+          </Card>
+        );
+      }
+    };
+    return (
+      <div>
+        <div>
+          {checkAuthor()}
         </div>
         <div>
           <OpenDocumentModal
@@ -188,13 +202,14 @@ export class DocumentCard extends Component {
 
 DocumentCard.propTypes = {
   document: PropTypes.object.isRequired,
-  ReadOnly: PropTypes.bool.isRequired,
-  deleteDocument: PropTypes.func.isRequired
+  deleteDocument: PropTypes.func.isRequired,
+  user: PropTypes.object
 };
 
 DocumentCard.defaultProps = {
   document: {},
-  ReadOnly: false
 };
 
-export default connect(null, { deleteDocument })(DocumentCard);
+export default connect(state => ({
+  user: state.AuthReducer.user
+}), { deleteDocument })(DocumentCard);
