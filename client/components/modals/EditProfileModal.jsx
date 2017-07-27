@@ -119,7 +119,7 @@ export class EditProfileModal extends Component {
           id
         })
         .then(() => {
-          swal('Yaayyy!!!', `${username} password updated`, 'success');
+          swal('Success!!!', `${username} password updated`, 'success');
           this.props.onCloseOpenEdit();
         });
       } else {

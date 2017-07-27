@@ -198,7 +198,9 @@ export class UserDocumentsList extends Component {
   display={this.state.currentPage}
   onChange={this.handleClick}
    />
-        <Container className="main-container" fluid>
+        <Container
+     className="main-container"
+     fluid style={{ marginBottom: '60px' }}>
           <Row>
             <div
 style={{
