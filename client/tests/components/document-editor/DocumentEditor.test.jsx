@@ -91,7 +91,7 @@ describe('Document Editor', () => {
     expect(component.state().hoverText).toBe('Click to toggle Public');
     expect(component.state().checked).toBe(true);
   });
-  it('should handle Mouse In hover change', () => {
+  it('should handle Mouse Out hover change', () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );

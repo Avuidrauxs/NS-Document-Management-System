@@ -66,7 +66,7 @@ describe('Dashboard App Bar', () => {
 
       expect(component.state('open')).toEqual(false);
     });
-    it('should handle Touch tap for Avatar menu', () => {
+    it('should handle onTouchTap for Avatar menu', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);
@@ -105,7 +105,7 @@ describe('Dashboard App Bar', () => {
       });
       expect(component.state('openEdit')).toEqual(true);
     });
-    it('should handle close edit user for Avatar menu', () => {
+    it('should handle close edit user function for Avatar menu', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);

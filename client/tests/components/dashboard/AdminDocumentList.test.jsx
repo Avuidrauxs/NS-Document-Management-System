@@ -46,7 +46,7 @@ describe('AdminDocumentsList Component', () => {
 
     expect(component.state('searchText')).toEqual('vooks');
   });
-  it('Should call getMoreDocuments when called', () => {
+  it('should call getMoreDocuments when called', () => {
     const getMoreDocumentsSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <AdminDocumentsList
@@ -78,7 +78,7 @@ describe('AdminDocumentsList Component', () => {
 );
     component.instance().componentDidMount();
   });
-  it('Should call onClickSearch when called', () => {
+  it('should call onClickSearch when called', () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <AdminDocumentsList

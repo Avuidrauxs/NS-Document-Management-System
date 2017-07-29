@@ -36,11 +36,13 @@ describe('SignIn page', () => {
         <SignIn {...props} />
   );
 
-      component.instance().onChange({ target: { value: 'ajudensi', name: 'username' } });
-      component.instance().onChange({ target: { value: 'password123', name: 'password' } });
+      component.instance().onChange({
+        target: { value: 'Pastor', name: 'username' } });
+      component.instance().onChange({
+        target: { value: 'louis', name: 'password' } });
 
-      expect(component.state('username')).toEqual('ajudensi');
-      expect(component.state('password')).toEqual('password123');
+      expect(component.state('username')).toEqual('Pastor');
+      expect(component.state('password')).toEqual('louis');
     });
     it('should open Sign Up modal on change', () => {
       const handleOpenSpy = sinon.spy(() => new Promise(() => {}));

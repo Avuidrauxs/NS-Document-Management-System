@@ -32,7 +32,7 @@ describe('Edit User Modal', () => {
 
     expect(component.state('roleId')).toEqual('1');
   });
-  it('Should call onUpdateUser when called', () => {
+  it('should call onUpdateUser when called', () => {
     const onUpdateUserSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditUserModal
@@ -46,6 +46,5 @@ describe('Edit User Modal', () => {
 
     expect(props.updateUser.calledOnce).toEqual(true);
     expect(typeof props.updateUser.args[0]).toEqual('object');
-
   });
 });

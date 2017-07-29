@@ -35,7 +35,7 @@ describe('The container component <EditDocumentModal />', () => {
     expect(component.state().hoverText).toBe('Click to toggle Public');
     expect(component.state().checked).toBe(true);
   });
-  it('should handle Mouse In hover change', () => {
+  it('should handle Mouse Out hover change', () => {
     const component = shallow(
       <EditDocumentModal {...props} />
 );
@@ -90,7 +90,7 @@ describe('The container component <EditDocumentModal />', () => {
     expect(component.state().access).toBe('role');
     expect(component.state().roleChecked).toBe(true);
   });
-  it('should not call `saveDocument` on component render', () => {
+  it('should call `saveDocument` when called', () => {
     const onDocumentUpdateSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditDocumentModal

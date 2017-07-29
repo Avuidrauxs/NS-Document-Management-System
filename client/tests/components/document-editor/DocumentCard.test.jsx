@@ -65,7 +65,7 @@ describe('Document Card', () => {
 
     expect(component.state('openEdit')).toEqual(false);
   });
-  it('Should call onDocumentDelete when called', () => {
+  it('should call onDocumentDelete when called', () => {
     const onDocumentDeleteSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentCard

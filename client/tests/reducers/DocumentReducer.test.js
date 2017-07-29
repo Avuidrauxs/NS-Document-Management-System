@@ -4,7 +4,7 @@ import { DocumentReducer, Document } from '../../reducers/DocumentReducer';
 import initialState from '../../utilities/initialState';
 
 describe('Documents Reducer', () => {
-  it('should set documents when passed GET_ALL_DOCS_SUCCESS', () => {
+  it('should set documents when action type passed is GET_ALL_DOCS_SUCCESS', () => {
       // arrange
     const fetchedDocuments = [
         { id: '1', title: 'Alpha' },
@@ -20,7 +20,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(fetchedDocuments);
   });
-  it('should add document when passed DOCUMENT_CREATE_SUCCESS', () => {
+  it('should add document when action type passed is DOCUMENT_CREATE_SUCCESS', () => {
     // arrange
     const state = [
       { title: 'Alpha' },
@@ -40,7 +40,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should add document when passed DOCUMENT_CREATE_FAILURE', () => {
+  it('should add document when action type passed is DOCUMENT_CREATE_FAILURE', () => {
     // arrange
     const state = [
       { title: 'Alpha' },
@@ -56,7 +56,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should update document when passed DOCUMENT_UPDATE_SUCCESS', () => {
+  it('should update document when action type passed is DOCUMENT_UPDATE_SUCCESS', () => {
     // arrange
     const state = [
       { id: '1', title: 'Alpha' },
@@ -77,7 +77,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should update document when passed DOCUMENT_DELETE_SUCCESS', () => {
+  it('should update document when action type passed is DOCUMENT_DELETE_SUCCESS', () => {
     // arrange
     const state = [
       { id: '1', title: 'Alpha' },
@@ -97,7 +97,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set search result when passed DOCUMENT_SEARCH_SUCCESS', () => {
+  it('should set search result when action type passed is DOCUMENT_SEARCH_SUCCESS', () => {
     // arrange
 
     const documents = [
@@ -112,7 +112,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(documents);
   });
-  it('should set user documents when passed GET_USER_DOCS_SUCCESS', () => {
+  it('should set user documents when action type passed is GET_USER_DOCS_SUCCESS', () => {
     // arrange
 
     const userDocuments = [
@@ -127,7 +127,7 @@ describe('Documents Reducer', () => {
 
     expect(newState).toEqual(userDocuments);
   });
-  it('should not set user documents when passed GET_USER_DOCS_FAILURE', () => {
+  it('should not set user documents when action type passed is GET_USER_DOCS_FAILURE', () => {
     // arrange
 
     const error = { message: 'Error: ' };
@@ -153,7 +153,7 @@ describe('Documents Reducer', () => {
 });
 
 describe('Document Reducer', () => {
-  it('should set document when passed GET_DOCUMENT_SUCCESS', () => {
+  it('should set document when action type passed is GET_DOCUMENT_SUCCESS', () => {
     // arrange
     const loadedDocument = { title: 'Fallopian Tube' };
     const action = { type: DOCUMENT.GET_SUCCESS, document: loadedDocument };
@@ -164,7 +164,7 @@ describe('Document Reducer', () => {
     // assert
     expect(newState).toEqual(loadedDocument);
   });
-  it('should update document when passed DOCUMENT_GET_FAILURE', () => {
+  it('should update document when action type passed is DOCUMENT_GET_FAILURE', () => {
     // arrange
     const action = { type: DOCUMENT.GET_FAILURE, error: { message: 'Error: ' } };
 

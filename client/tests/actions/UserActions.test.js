@@ -9,12 +9,12 @@ import * as UserActions from '../../actions/UserActions';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('User Actions', () => {
+describe('User Actions,', () => {
   beforeEach(() => moxios.install());
   afterEach(() => moxios.uninstall());
 
   describe('Fetch Users', () => {
-    it('should fetch users and dispatche GET_ALL_USERS_SUCCESS', (done) => {
+    it('should fetch users and dispatch GET_ALL_USERS_SUCCESS', (done) => {
       moxios.stubRequest('/api/v1/users?limit=9&offset=0', {
         status: 200,
         response: {
@@ -39,7 +39,8 @@ describe('User Actions', () => {
           });
     });
 
-    it('should not fetch users and dispatche GET_ALL_USERS_FAILURE', (done) => {
+    it('should dispatch GET_ALL_USERS_FAILURE when fetching users fails',
+    (done) => {
       moxios.stubRequest('/api/v1/users?limit=9&offset=0', {
         status: 400,
       });
@@ -54,7 +55,7 @@ describe('User Actions', () => {
     });
   });
 
-  describe('SearchUsers', () => {
+  describe('Search Users,', () => {
     const query = 'Neo';
     const limit = 9;
     const offset = 0;
@@ -86,7 +87,7 @@ describe('User Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it('searches] for users error should dispatche USER_SEARCH_FAILURE',
+    it('should dispatch USER_SEARCH_FAILURE when user search fails',
     (done) => {
       moxios
       .stubRequest(
@@ -112,7 +113,7 @@ describe('User Actions', () => {
   });
 
 
-  describe('Update a user details', () => {
+  describe('Update a user details,', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
@@ -164,7 +165,7 @@ describe('User Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it("fetching user's profile error and dispatches GET_USER_FAILURE",
+    it("should dispatch GET_USER_FAILURE and getting user's data fails",
     (done) => {
       moxios.stubRequest('/api/v1/users/4', {
         status: 400

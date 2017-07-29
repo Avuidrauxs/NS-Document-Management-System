@@ -81,9 +81,8 @@ describe('Edit User Modal', () => {
 
     expect(onUpdateUserSpy.calledOnce).toEqual(true);
     expect(typeof onUpdateUserSpy.args[0]).toEqual('object');
-
   });
-  it('Should call comparePassword when called', () => {
+  it('should call comparePassword when called', () => {
     const comparePasswordSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditProfileModal

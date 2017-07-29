@@ -43,7 +43,7 @@ describe('UsersTable Component', () => {
     expect(spyProps.fetchAllUsers.calledOnce).toEqual(true);
     expect(spyProps.fetchAllUsers.callCount).toEqual(1);
   });
-  it('Should call getMoreUsers when called', () => {
+  it('should call getMoreUsers when called', () => {
     const getMoreUsersSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
@@ -126,7 +126,7 @@ describe('UsersTable Component', () => {
       })
       expect(component.state().openEdit).toBe(false);
   });
-  it('Should call onClickSearch when called', () => {
+  it('should call onClickSearch when called', () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable

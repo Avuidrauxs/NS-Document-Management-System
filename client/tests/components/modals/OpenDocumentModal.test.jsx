@@ -13,7 +13,7 @@ const props = {
     createdAt: '2017-07-13T00',
     User: { id: 3, username: 'ajudensi' }
   },
-}
+};
 
 describe('The container component <OpenDocumentModal />', () => {
   it('should render with props', () => {

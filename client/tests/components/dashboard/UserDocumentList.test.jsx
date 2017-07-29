@@ -49,7 +49,7 @@ describe('UserDocumentsList Component', () => {
 
     expect(component.state('searchText')).toEqual('vooks');
   });
-  it('Should call handleClick when called', () => {
+  it('should call handleClick when called', () => {
     const event = {
       target: {
         id: 'id'

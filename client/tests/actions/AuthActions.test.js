@@ -12,7 +12,7 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW' +
 'Td9.MiqArbAiDB5LYIpO_MQDqbx_kh4XsQAUIK1-ZYQNYGI';
 
 describe('Authentication actions ', () => {
-  describe('User Login ', () => {
+  describe('User', () => {
     const expectedAction = {
       type: AUTH.SIGNIN_SUCCESS,
       user: { id: 1, roleId: 1, username: 'admin' }
@@ -21,7 +21,7 @@ describe('Authentication actions ', () => {
     expect(action).toEqual(expectedAction);
   });
 
-  describe('POST login api', () => {
+  describe('Login Action,', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
@@ -48,7 +48,7 @@ describe('Authentication actions ', () => {
         });
     });
 
-    it('should dispath SIGNIN_FAILURE when bad request', (done) => {
+    it('should dispath SIGNIN_FAILURE for bad requests', (done) => {
       moxios.stubRequest('/api/v1/users/login', {
         status: 400,
       });
@@ -92,7 +92,7 @@ describe('Authentication actions ', () => {
     beforeEach(() => moxios.install());
     afterEach(() => moxios.uninstall());
 
-    it(' should register and logs in a user dispatching SIGNUP_SUCCESS',
+    it(' should register and log in a user dispatching SIGNUP_SUCCESS',
     (done) => {
       moxios.stubRequest('/api/v1/users', {
         status: 200,
@@ -131,7 +131,7 @@ describe('Authentication actions ', () => {
     });
   });
 
-  describe('Log out user', () => {
+  describe('Logout action', () => {
     it('logs a user out and dispatches SIGNOUT_SUCCESS', () => {
       const expectedAction = { type: AUTH.SIGNOUT_SUCCESS };
       const store = mockStore();

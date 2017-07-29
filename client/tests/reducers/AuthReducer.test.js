@@ -4,7 +4,7 @@ import { AUTH } from '../../constants/Constants';
 import initialState from '../../utilities/initialState';
 
 describe('Authentication Reducer', () => {
-  it('should set user when passed SIGNIN_SUCCESS', () => {
+  it('should set user when action type passed is SIGNIN_SUCCESS', () => {
     // arrange
     const user = { id: 1, username: 'admin', roleId: 1 };
     const action = { type: AUTH.SIGNIN_SUCCESS, user };
@@ -18,7 +18,7 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should not set user when passed SIGNIN_FAILURE', () => {
+  it('should not set user when action type passed is SIGNIN_FAILURE', () => {
     // arrange
     const error = {};
     const action = { type: AUTH.SIGNIN_FAILURE, error };
@@ -30,7 +30,7 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should not register user when passed SIGNUP_FAILURE', () => {
+  it('should not register user when action type passed is SIGNUP_FAILURE', () => {
     // arrange
     const error = {
       message: 'Error: Error: Request failed with status code 400' };
@@ -44,7 +44,7 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should register user when passed SIGNUP_SUCCESS', () => {
+  it('should register user when action type passed is SIGNUP_SUCCESS', () => {
     // arrange
     const user = { id: 1, username: 'admin', roleId: 1 };
     const action = { type: AUTH.SIGNUP_SUCCESS, user };
@@ -58,7 +58,7 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set initial state when passed SIGNOUT_SUCCESS', () => {
+  it('should set initial state when action type passed is SIGNOUT_SUCCESS', () => {
     // arrange
     const currentState = {
       loggedIn: true,
