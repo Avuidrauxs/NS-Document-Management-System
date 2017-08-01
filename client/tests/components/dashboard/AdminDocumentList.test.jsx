@@ -19,7 +19,7 @@ describe('AdminDocumentsList Component', () => {
         title: 'my title',
         body: 'great article',
         createdAt: '2017-07-13T00',
-        User: { id: 3, username: 'ajudensi' }
+        User: { id: 3, username: 'audax' }
       },
       { id: 2,
         title: 'random title',
@@ -36,7 +36,7 @@ describe('AdminDocumentsList Component', () => {
       offset: 0,
     },
   };
-  it('should update state via onChange method', () => {
+  it('should update state when it is changed from the interface', () => {
     const component = shallow(
       <AdminDocumentsList {...spyProps} />
 );
@@ -46,7 +46,8 @@ describe('AdminDocumentsList Component', () => {
 
     expect(component.state('searchText')).toEqual('vooks');
   });
-  it('should call getMoreDocuments when called', () => {
+  it('should fetch more documents when user clicks on pagination controls',
+  () => {
     const getMoreDocumentsSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <AdminDocumentsList
@@ -78,7 +79,7 @@ describe('AdminDocumentsList Component', () => {
 );
     component.instance().componentDidMount();
   });
-  it('should call onClickSearch when called', () => {
+  it('should search for documents when user types in search text feild', () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <AdminDocumentsList
@@ -100,9 +101,9 @@ describe('AdminDocumentsList Component', () => {
           body: 'great article',
           createdAt: '2017-07-13T00',
           authorId: 3,
-          User: { id: 3, username: 'ajudensi' }
+          User: { id: 3, username: 'Peppersoup' }
         },
-        user: { id: 3, username: 'ajudensi' }
+        user: { id: 3, username: 'Peppersoup' }
       };
       const component = shallow(
         <DocumentCard {...props} />

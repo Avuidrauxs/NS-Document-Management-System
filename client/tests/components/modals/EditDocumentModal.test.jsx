@@ -12,7 +12,7 @@ describe('The container component <EditDocumentModal />', () => {
       title: 'my title',
       body: 'great article',
       createdAt: '2017-07-13T00',
-      User: { id: 3, username: 'ajudensi' }
+      User: { id: 3, username: 'Peppersoup' }
     },
     saveDocument: sinon.spy(() => new Promise(() => {})),
   };
@@ -45,7 +45,7 @@ describe('The container component <EditDocumentModal />', () => {
 
     expect(component.state().hoverText).toBe('');
   });
-  it('should update state via handleChange method', () => {
+  it('should update state as user interacts with input interfaces', () => {
     const component = shallow(
       <EditDocumentModal {...props} />
 );
@@ -55,7 +55,7 @@ describe('The container component <EditDocumentModal />', () => {
 
     expect(component.state('title')).toEqual('Poof');
   });
-  it('should update state via onChange method', () => {
+  it('should update editor state when text is being tyoed inside', () => {
     const component = shallow(
       <EditDocumentModal {...props} />
 );
@@ -64,7 +64,7 @@ describe('The container component <EditDocumentModal />', () => {
 
     expect(component.state('body')).toEqual('<p>Vape</p>');
   });
-  it('should handle checkbox change', () => {
+  it('should handle checkbox changes', () => {
     const component = shallow(
       <EditDocumentModal {...props} />
 );
@@ -78,7 +78,7 @@ describe('The container component <EditDocumentModal />', () => {
     expect(component.state().checked).toBe(true);
     expect(component.state().disableRole).toBe(false);
   });
-  it('should handle role checkbox change', () => {
+  it('should handle role checkbox changes', () => {
     const component = shallow(
       <EditDocumentModal {...props} />
 );
@@ -90,7 +90,7 @@ describe('The container component <EditDocumentModal />', () => {
     expect(component.state().access).toBe('role');
     expect(component.state().roleChecked).toBe(true);
   });
-  it('should call `saveDocument` when called', () => {
+  it('should update document when user clicks update button', () => {
     const onDocumentUpdateSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditDocumentModal

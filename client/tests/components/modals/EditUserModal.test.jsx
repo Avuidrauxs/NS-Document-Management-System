@@ -22,7 +22,7 @@ describe('Edit User Modal', () => {
     );
     expect(component.length).toBe(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state when user interacts with input interfaces', () => {
     const component = shallow(
       <EditUserModal {...props} />
 );
@@ -32,7 +32,7 @@ describe('Edit User Modal', () => {
 
     expect(component.state('roleId')).toEqual('1');
   });
-  it('should call onUpdateUser when called', () => {
+  it('should update user role when confirm button is clicked', () => {
     const onUpdateUserSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditUserModal

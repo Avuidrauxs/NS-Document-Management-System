@@ -11,7 +11,7 @@ const props = {
     title: 'my title',
     body: 'great article',
     createdAt: '2017-07-13T00',
-    User: { id: 3, username: 'ajudensi' }
+    User: { id: 3, username: 'Peppersoup' }
   },
 };
 
