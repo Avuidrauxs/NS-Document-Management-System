@@ -29,7 +29,7 @@ describe('Dashboard App Bar', () => {
       const component = shallow(<DashboardAppBar {...props} />);
       expect(component.length).toEqual(1);
     });
-    it('should call `signOut` clicked', () => {
+    it('should log out a user when user clcks signout button', () => {
       const onSignOutSpy = sinon.spy(() => new Promise(() => {}));
       const component = shallow(
         <DashboardAppBar
@@ -42,7 +42,7 @@ describe('Dashboard App Bar', () => {
       expect(onSignOutSpy.calledOnce).toEqual(true);
       expect(onSignOutSpy.callCount).toEqual(1);
     });
-    it('should toggle DashboardDrawer', () => {
+    it('should toggle DashboardDrawer when user clicks on show menu', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);
@@ -54,7 +54,7 @@ describe('Dashboard App Bar', () => {
 
       expect(component.state('open')).toEqual(true);
     });
-    it('should close DashboardDrawer', () => {
+    it('should close DashboardDrawer when user clicks outside it', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);
@@ -66,7 +66,7 @@ describe('Dashboard App Bar', () => {
 
       expect(component.state('open')).toEqual(false);
     });
-    it('should handle Touch tap for Avatar menu', () => {
+    it('should bring out a menu when user clicks on the avatar icon', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);
@@ -105,7 +105,7 @@ describe('Dashboard App Bar', () => {
       });
       expect(component.state('openEdit')).toEqual(true);
     });
-    it('should handle close edit user for Avatar menu', () => {
+    it('should handle close edit user function for Avatar menu', () => {
       const component = shallow(
         <DashboardAppBar
           {...props} />);

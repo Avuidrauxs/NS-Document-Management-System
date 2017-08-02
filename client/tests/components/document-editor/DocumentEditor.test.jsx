@@ -19,7 +19,7 @@ describe('Document Editor', () => {
       ).length
     ).toBe(1);
   });
-  it('should call `saveDocument` on component render', () => {
+  it('should save document when save document button is clicked', () => {
       const onDocumentSaveSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentEditor
@@ -34,7 +34,7 @@ describe('Document Editor', () => {
     expect(onDocumentSaveSpy.calledOnce).toEqual(true);
     expect(onDocumentSaveSpy.callCount).toEqual(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state of editor when text is being typed inside', () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );
@@ -43,7 +43,8 @@ describe('Document Editor', () => {
 
     expect(component.state('editorHtml')).toEqual('<p>Vape</p>');
   });
-  it('should update state via handleChange method', () => {
+  it('should update state when any input fields of the component is interacted',
+  () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );
@@ -53,7 +54,7 @@ describe('Document Editor', () => {
 
     expect(component.state('title')).toEqual('Poof');
   });
-  it('should handle checkbox change', () => {
+  it('should handle checkbox changes', () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );
@@ -67,7 +68,7 @@ describe('Document Editor', () => {
     expect(component.state().checked).toBe(true);
     expect(component.state().disableRole).toBe(false);
   });
-  it('should handle role checkbox change', () => {
+  it('should handle role checkbox changes', () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );
@@ -91,7 +92,7 @@ describe('Document Editor', () => {
     expect(component.state().hoverText).toBe('Click to toggle Public');
     expect(component.state().checked).toBe(true);
   });
-  it('should handle Mouse In hover change', () => {
+  it('should handle Mouse Out hover change', () => {
     const component = shallow(
       <DocumentEditor {...spyProps} />
 );

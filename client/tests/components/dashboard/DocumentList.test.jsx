@@ -18,7 +18,7 @@ describe('DocumentsList Component', () => {
         title: 'my title',
         body: 'great article',
         createdAt: '2017-07-13T00',
-        User: { id: 3, username: 'ajudensi' }
+        User: { id: 3, username: 'audax' }
       },
       { id: 2,
         title: 'random title',
@@ -29,7 +29,8 @@ describe('DocumentsList Component', () => {
     ],
     pagination: {},
   };
-  it('should call `fetchDocuments` on component render', () => {
+  it('should populate all documents onto the dashboard when component loads',
+  () => {
     const component = shallow(
       <DocumentsList
           {...spyProps}
@@ -39,7 +40,7 @@ describe('DocumentsList Component', () => {
     expect(spyProps.fetchDocuments.calledOnce).toEqual(true);
     expect(spyProps.fetchDocuments.callCount).toEqual(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state when it is changed from the interface', () => {
     const component = shallow(
       <DocumentsList {...spyProps} />
 );
@@ -49,7 +50,8 @@ describe('DocumentsList Component', () => {
 
     expect(component.state('searchText')).toEqual('vooks');
   });
-  it('Should call getMoreDocuments when called', () => {
+  it('should fetch more documents when user clicks on pagination controls',
+  () => {
     const getMoreDocumentsSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentsList
@@ -62,7 +64,8 @@ describe('DocumentsList Component', () => {
     expect(getMoreDocumentsSpy.calledOnce).toEqual(true);
     expect(typeof getMoreDocumentsSpy.args[0]).toEqual('object');
   });
-  it('Should call onClickSearch when called', () => {
+  it('should search for documents when user types in search text feild',
+  () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentsList
@@ -84,9 +87,9 @@ describe('DocumentsList Component', () => {
           body: 'great article',
           createdAt: '2017-07-13T00',
           authorId: 3,
-          User: { id: 3, username: 'ajudensi' }
+          User: { id: 3, username: 'parrot' }
         },
-        user: { id: 3, username: 'ajudensi' }
+        user: { id: 3, username: 'parrot' }
       };
       const component = shallow(
         <DocumentCard {...props} />

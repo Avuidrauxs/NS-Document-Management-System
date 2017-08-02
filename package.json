@@ -89,7 +89,8 @@
     "sass-loader": "^3.1.2",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
-    "style-loader": "^0.13.0",
+    "style-loader": "^0.13.0",  
+    "swagger": "^0.7.5",
     "swagger-jsdoc": "^1.9.4",
     "sweetalert2": "^6.6.5",
     "toastr": "^2.1.2",
@@ -123,7 +124,6 @@
     "rewire": "^2.5.2",
     "selenium-standalone": "^6.5.0",
     "sinon": "^2.3.0",
-    "swagger": "^0.7.5",
     "swagger-ui": "^3.0.16",
     "webpack-dev-server": "^2.4.5"
   },

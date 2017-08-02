@@ -36,13 +36,15 @@ describe('SignIn page', () => {
         <SignIn {...props} />
   );
 
-      component.instance().onChange({ target: { value: 'ajudensi', name: 'username' } });
-      component.instance().onChange({ target: { value: 'password123', name: 'password' } });
+      component.instance().onChange({
+        target: { value: 'Pastor', name: 'username' } });
+      component.instance().onChange({
+        target: { value: 'louis', name: 'password' } });
 
-      expect(component.state('username')).toEqual('ajudensi');
-      expect(component.state('password')).toEqual('password123');
+      expect(component.state('username')).toEqual('Pastor');
+      expect(component.state('password')).toEqual('louis');
     });
-    it('should open Sign Up modal on change', () => {
+    it('should open Sign Up modal when user clicks on register', () => {
       const handleOpenSpy = sinon.spy(() => new Promise(() => {}));
       const component = shallow(
         <SignIn
@@ -60,7 +62,7 @@ describe('SignIn page', () => {
       expect(handleOpenSpy.calledOnce).toEqual(true);
       expect(handleOpenSpy.callCount).toEqual(1);
     });
-    it('should close Sign Up modal on change', () => {
+    it('should close Sign Up modal when users clicks on close', () => {
       const component = shallow(
         <SignIn
             {...props}
@@ -73,7 +75,8 @@ describe('SignIn page', () => {
         expect(component.state().open).toBe(false);
 
     });
-    it('Should call comparePassword when called', () => {
+    it('should compare passwords before submitting the user sign uo form',
+    () => {
       const comparePasswordSpy = sinon.spy(() => new Promise(() => {}));
       const component = shallow(
         <SignIn
@@ -91,7 +94,7 @@ describe('SignIn page', () => {
       // expect(typeof comparePasswordSpy.args[0]).toEqual('object');
 
     });
-    it('Should call onSignInSubmit when called', () => {
+    it('should sign the user in when user enters correct credentials', () => {
       const onSignInSubmitSpy = sinon.spy(() => new Promise(() => {}));
       const component = mount(<SignIn
         onSignInSubmit={onSignInSubmitSpy}
@@ -106,7 +109,7 @@ describe('SignIn page', () => {
       expect(onSignInSubmitSpy.calledOnce).toEqual(true);
       expect(typeof onSignInSubmitSpy.args[0]).toEqual('object');
     });
-    it('Should call onSignUpSubmit when called', () => {
+    it('should submit user information from sign up form', () => {
       const onSignUpSubmitSpy = sinon.spy(() => new Promise(() => {}));
       const component = mount(<SignIn
         onSignUpSubmit={onSignUpSubmitSpy}
@@ -121,7 +124,7 @@ describe('SignIn page', () => {
       expect(onSignUpSubmitSpy.calledOnce).toEqual(true);
       expect(typeof onSignUpSubmitSpy.args[0]).toEqual('object');
     });
-    it('should call onSubmit method on form submit', () => {
+    it('should sign in user when user clicks log in button', () => {
       const postLoginSpy = sinon.spy(() => new Promise(() => {}));
 
       const component = mount(
@@ -135,7 +138,6 @@ describe('SignIn page', () => {
       button.simulate('submit');
 
       expect(onSubmitStub.calledOnce).toEqual(false);
-  // expect(typeof onSubmitStub.args[0]).toEqual('object');
     });
   });
 });

@@ -33,7 +33,7 @@ describe('Edit User Modal', () => {
     );
     expect(component.length).toBe(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state when user interacts with input interfaces', () => {
     const component = shallow(
       <EditProfileModal {...props} />
 );
@@ -49,7 +49,7 @@ describe('Edit User Modal', () => {
     expect(component.state('fullName')).toEqual('Pon go');
     expect(component.state('email')).toEqual('vop@op.com');
   });
-  it('should handle checkbox change', () => {
+  it('should handle checkbox changes', () => {
     const component = shallow(
       <EditProfileModal {...props} />
 );
@@ -58,7 +58,7 @@ describe('Edit User Modal', () => {
 
     expect(component.state().isChecked).toBe(true);
   });
-  it('should disable password change checkbox onChecked', () => {
+  it('should disable password change when checkbox is unchecked', () => {
     const component = shallow(
       <EditProfileModal {...props} />
 );
@@ -67,7 +67,7 @@ describe('Edit User Modal', () => {
 
     expect(component.state().isChecked).toBe(false);
   });
-  it('Should call onUpdateUser when called', () => {
+  it('should update user profile when update button is clicked', () => {
     const onUpdateUserSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditProfileModal
@@ -81,9 +81,8 @@ describe('Edit User Modal', () => {
 
     expect(onUpdateUserSpy.calledOnce).toEqual(true);
     expect(typeof onUpdateUserSpy.args[0]).toEqual('object');
-
   });
-  it('Should call comparePassword when called', () => {
+  it('should compare passwords before updating user password', () => {
     const comparePasswordSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <EditProfileModal

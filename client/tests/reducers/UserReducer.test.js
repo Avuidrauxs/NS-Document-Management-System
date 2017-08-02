@@ -3,7 +3,8 @@ import UserReducer from '../../reducers/UserReducer';
 import { USER } from '../../constants/Constants';
 
 describe('User Reducer', () => {
-  it('should set user profile when passed GET_USER_SUCCESS', () => {
+  it('should set user profile when action type passed is GET_USER_SUCCESS',
+  () => {
   // arrange
     const initialState = {
       users: [],
@@ -17,7 +18,8 @@ describe('User Reducer', () => {
 
     expect(newState.profile).toEqual(loadedProfile);
   });
-  it('should set users when passed GET_ALL_USERS_SUCCESS', () => {
+  it('should set users when action type passed is GET_ALL_USERS_SUCCESS',
+  () => {
     // arrange
     const initialState = {
       users: [],
@@ -35,7 +37,8 @@ describe('User Reducer', () => {
 
     expect(newState.users).toEqual(loadedUsers);
   });
-  it('should update user when passed USER_UPDATE_SUCCESS', () => {
+  it('should update user when action type passed is USER_UPDATE_SUCCESS',
+  () => {
     // arrange
     const initialState = {
       users: [
@@ -45,7 +48,9 @@ describe('User Reducer', () => {
       ],
       profile: { username: '' }
     };
-    const action = { type: USER.UPDATE_SUCCESS, user: { id: '2', username: 'Killua' } };
+    const action = {
+      type: USER.UPDATE_SUCCESS,
+      user: { id: '2', username: 'Killua' } };
 
     const expectedState = {
       users: [
@@ -62,7 +67,8 @@ describe('User Reducer', () => {
     // assert
     expect(newState).toEqual(expectedState);
   });
-  it('should not update user when passed USER_UPDATE_FAILURE', () => {
+  it('should not update user when action type passed is USER_UPDATE_FAILURE',
+  () => {
     // arrange
     const initialState = {
       users: [
@@ -81,7 +87,8 @@ describe('User Reducer', () => {
     // assert
     expect(newState).toEqual(error);
   });
-  it('should delete user when passed USER_DELETE_SUCCESS', () => {
+  it('should delete user when action type passed is USER_DELETE_SUCCESS',
+  () => {
     // arrange
     const initialState = {
       users: [
@@ -91,7 +98,9 @@ describe('User Reducer', () => {
       ],
       profile: { username: '' }
     };
-    const action = { type: USER.DELETE_SUCCESS, user: { id: '2', username: 'Deku' } };
+    const action = {
+      type: USER.DELETE_SUCCESS,
+      user: { id: '2', username: 'Deku' } };
 
     const expectedState = {
       users: [
@@ -107,7 +116,7 @@ describe('User Reducer', () => {
     // assert
     expect(newState).toEqual(expectedState);
   });
-  it('should set users when passed USERS_SEARCH_SUCCESS', () => {
+  it('should set users when action type passed is USERS_SEARCH_SUCCESS', () => {
     // arrange
     const initialState = {
       users: [],
@@ -119,7 +128,9 @@ describe('User Reducer', () => {
       profile: { username: '' }
     };
 
-    const action = { type: USER.SEARCH_SUCCESS, users: [{ username: 'Naruto' }] };
+    const action = {
+      type: USER.SEARCH_SUCCESS,
+      users: [{ username: 'Naruto' }] };
 
     // act
     const newState = UserReducer(initialState, action);

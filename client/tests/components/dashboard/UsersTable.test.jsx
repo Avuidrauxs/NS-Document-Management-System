@@ -33,7 +33,7 @@ describe('UsersTable Component', () => {
     ],
     pagination: {},
   };
-  it('should call `fetchAllUsers` on component render', () => {
+  it('should populate the users table list when component loads', () => {
     const component = shallow(
       <UsersTable
           {...spyProps}
@@ -43,7 +43,9 @@ describe('UsersTable Component', () => {
     expect(spyProps.fetchAllUsers.calledOnce).toEqual(true);
     expect(spyProps.fetchAllUsers.callCount).toEqual(1);
   });
-  it('Should call getMoreUsers when called', () => {
+  it('should fetch more users into the users table list' +
+  'when pagination controls is clicked',
+  () => {
     const getMoreUsersSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
@@ -56,7 +58,7 @@ describe('UsersTable Component', () => {
     expect(getMoreUsersSpy.calledOnce).toEqual(true);
     expect(typeof getMoreUsersSpy.args[0]).toEqual('object');
   });
-  it('should call `deleteUser` on component render', () => {
+  it('should handle the delete user operation appropriately', () => {
     const onDeleteUserSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
@@ -72,7 +74,7 @@ describe('UsersTable Component', () => {
     expect(onDeleteUserSpy.calledOnce).toEqual(true);
     expect(onDeleteUserSpy.callCount).toEqual(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state when it is changed from the interface', () => {
     const component = shallow(
       <UsersTable {...spyProps} />
 );
@@ -92,7 +94,7 @@ describe('UsersTable Component', () => {
 
     expect(component.state('height')).toEqual(90);
   });
-  it('should open EditModal on change', () => {
+  it('should open the edit modal for editting user roles', () => {
     const handleOpenEditSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
@@ -111,7 +113,7 @@ describe('UsersTable Component', () => {
     expect(handleOpenEditSpy.calledOnce).toEqual(true);
     expect(handleOpenEditSpy.callCount).toEqual(1);
   });
-  it('should close EditModal on change', () => {
+  it('should close the edit modal when user clicks on close button', () => {
     const onCloseOpenEditSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable
@@ -126,7 +128,8 @@ describe('UsersTable Component', () => {
       })
       expect(component.state().openEdit).toBe(false);
   });
-  it('Should call onClickSearch when called', () => {
+  it('should search for users when user starts typing in the search text field',
+   () => {
     const onClickSearchSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <UsersTable

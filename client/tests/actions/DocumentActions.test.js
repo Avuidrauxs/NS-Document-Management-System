@@ -17,7 +17,7 @@ const doc = {
   body: 'Am a banana'
 };
 const query = 'Front';
-describe('Document Actions', () => {
+describe('Document Actions,', () => {
   beforeEach(() => moxios.install());
   afterEach(() => moxios.uninstall());
 
@@ -43,7 +43,7 @@ describe('Document Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it('should not fetch documents and dispatches GET_ALL_DOCS_FAILURE',
+    it('should dispatch GET_ALL_DOCS_FAILURE when documents fetch fails',
     (done) => {
       moxios.stubRequest(`/api/v1/documents?limit=${limit}&offset=${offset}`, {
         status: 400,
@@ -87,7 +87,7 @@ describe('Document Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it('should not search for documents and dispatches GET_ALL_DOCS_FAILURE',
+    it('should dispatch GET_ALL_DOCS_FAILURE when search documents fails',
     (done) => {
       moxios
       .stubRequest(
@@ -127,7 +127,7 @@ describe('Document Actions', () => {
             expect(store.getActions()).toEqual(expectedActions);
           });
     });
-    it('should not save a new document and dispatches DOCUMENT_CREATE_FAILURE',
+    it('should dispatch DOCUMENT_CREATE_FAILURE when saving a document fails',
     (done) => {
       moxios.stubRequest('/api/v1/documents', {
         status: 400,
@@ -163,7 +163,7 @@ describe('Document Actions', () => {
             expect(store.getActions()).toEqual(expectedActions);
           });
     });
-    it(' should not update a document dispatching DOCUMENT_UPDATE_FAILURE',
+    it(' should dispatch DOCUMENT_UPDATE_FAILURE when document update fails',
     (done) => {
       moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
         status: 400,
@@ -183,7 +183,7 @@ describe('Document Actions', () => {
   });
 
   describe('Delete a Document', () => {
-    it('should delete a document and dispatches DOCUMENT_DELETE_SUCCESS',
+    it('should delete a document and dispatch DOCUMENT_DELETE_SUCCESS',
     (done) => {
       moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
         status: 200
@@ -198,7 +198,7 @@ describe('Document Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it('should not delete a document and dispatches DOCUMENT_DELETE_FAILURE',
+    it('should dispatch DOCUMENT_DELETE_FAILURE when document delete fails',
     (done) => {
       moxios.stubRequest(`/api/v1/documents/${doc.id}`, {
         status: 400
@@ -216,7 +216,7 @@ describe('Document Actions', () => {
   });
 
   describe('Fetch a Document', () => {
-    it('should fetche a document and dispatches GET_DOCUMENT_SUCCESS',
+    it('should fetch a document and dispatches GET_DOCUMENT_SUCCESS',
     (done) => {
       moxios.stubRequest('/api/v1/documents/3', {
         status: 200,
@@ -233,7 +233,7 @@ describe('Document Actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
-    it('should not fetch a document and dispatches GET_DOCUMENT_FAILURE',
+    it('should dispatch GET_DOCUMENT_FAILURE if get document fails',
     (done) => {
       moxios.stubRequest('/api/v1/documents/3', {
         status: 400,
@@ -271,8 +271,8 @@ describe('Document Actions', () => {
           expect(store.getActions()).toEqual(expectedActions);
         });
     });
-    it(`should not fetch a user's documents and dispatches
-    GET_USER_DOCS_FAILURE`, (done) => {
+    it(`should dispatch GET_USER_DOCS_FAILURE
+      when fetching user's documents fails`, (done) => {
       moxios.stubRequest('/api/v1/users/69/documents', {
         status: 400,
         response: {}

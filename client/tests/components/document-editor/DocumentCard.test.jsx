@@ -17,9 +17,9 @@ describe('Document Card', () => {
       title: 'my title',
       body: 'great article',
       createdAt: '2017-07-13T00',
-      User: { id: 3, username: 'ajudensi' }
+      User: { id: 3, username: 'Peppersoup' }
     },
-    user: { id: 3, username: 'ajudensi' },
+    user: { id: 3, username: 'Peppersoup' },
     deleteDocument: sinon.spy(() => new Promise(() => {})),
   };
   it('should render with props', () => {
@@ -38,7 +38,7 @@ describe('Document Card', () => {
 
     expect(component.state('openDocument')).toEqual(true);
   });
-  it('should handle openDocument state change', () => {
+  it('should open document card when user clicks on open icon button', () => {
     const component = shallow(
       <DocumentCard {...props} />
 );
@@ -47,7 +47,8 @@ describe('Document Card', () => {
 
     expect(component.state('openDocument')).toEqual(false);
   });
-  it('should handle openEdit state change', () => {
+  it('should allow user to document when user clicks on edit icon button',
+  () => {
     const component = shallow(
       <DocumentCard {...props} />
 );
@@ -56,7 +57,8 @@ describe('Document Card', () => {
 
     expect(component.state('openEdit')).toEqual(true);
   });
-  it('should handle openEdit state change', () => {
+  it('should close the the edit document modal on click of cancel button',
+  () => {
     const component = shallow(
       <DocumentCard {...props} />
 );
@@ -65,7 +67,8 @@ describe('Document Card', () => {
 
     expect(component.state('openEdit')).toEqual(false);
   });
-  it('Should call onDocumentDelete when called', () => {
+  it('should delete the document when user clicks on delete icon button',
+  () => {
     const onDocumentDeleteSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentCard
@@ -89,7 +92,7 @@ describe('Document Card', () => {
         doc: { id: 1,
           title: 'my title',
           body: 'great article',
-          User: { id: 3, username: 'ajudensi' }
+          User: { id: 3, username: 'Peppersoup' }
         },
       };
       const component = shallow(
@@ -106,7 +109,7 @@ describe('Document Card', () => {
         doc: { id: 1,
           title: 'my title',
           body: 'great article',
-          User: { id: 3, username: 'ajudensi' }
+          User: { id: 3, username: 'Peppersoup' }
         },
       };
       const component = shallow(

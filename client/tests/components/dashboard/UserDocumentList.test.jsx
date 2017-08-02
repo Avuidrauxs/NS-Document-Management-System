@@ -18,7 +18,7 @@ describe('UserDocumentsList Component', () => {
         title: 'my title',
         body: 'great article',
         createdAt: '2017-07-13T00',
-        User: { id: 3, username: 'ajudensi' }
+        User: { id: 3, username: 'audax' }
       },
       { id: 2,
         title: 'random title',
@@ -29,7 +29,8 @@ describe('UserDocumentsList Component', () => {
     ],
     pagination: {},
   };
-  it('should call `fetchUserDocuments` on component render', () => {
+  it('should populate all documents onto the dashboard when component loads',
+  () => {
     const component = shallow(
       <UserDocumentsList
           {...spyProps}
@@ -39,7 +40,7 @@ describe('UserDocumentsList Component', () => {
     expect(spyProps.fetchUserDocuments.calledOnce).toEqual(true);
     expect(spyProps.fetchUserDocuments.callCount).toEqual(1);
   });
-  it('should update state via onChange method', () => {
+  it('should update state when it is changed from the interface', () => {
     const component = shallow(
       <UserDocumentsList {...spyProps} />
 );
@@ -49,7 +50,8 @@ describe('UserDocumentsList Component', () => {
 
     expect(component.state('searchText')).toEqual('vooks');
   });
-  it('Should call handleClick when called', () => {
+  it('should fetch more documents when user clicks on pagination controls',
+  () => {
     const event = {
       target: {
         id: 'id'
@@ -66,7 +68,6 @@ describe('UserDocumentsList Component', () => {
 
 
     expect(handleClickSpy.calledOnce).toEqual(false);
-    // expect(typeof handleClickSpy.args[0]).toEqual('object');
   });
   describe('<DocumentCard /> presentation component', () => {
     it('should render with valid props', () => {
@@ -76,9 +77,9 @@ describe('UserDocumentsList Component', () => {
           body: 'great article',
           createdAt: '2017-07-13T00',
           authorId: 3,
-          User: { id: 3, username: 'ajudensi' }
+          User: { id: 3, username: 'Peppersoup' }
         },
-        user: { id: 3, username: 'ajudensi' }
+        user: { id: 3, username: 'Peppersoup' }
       };
       const component = shallow(
         <DocumentCard {...props} />
