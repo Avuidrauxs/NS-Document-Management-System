@@ -67,7 +67,8 @@ describe('Document Card', () => {
 
     expect(component.state('openEdit')).toEqual(false);
   });
-  it('should delete the document when user clicks on delete icon button', () => {
+  it('should delete the document when user clicks on delete icon button',
+  () => {
     const onDocumentDeleteSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
       <DocumentCard

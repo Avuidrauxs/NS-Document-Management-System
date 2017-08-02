@@ -30,7 +30,8 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should not register user when action type passed is SIGNUP_FAILURE', () => {
+  it('should not register user when action type passed is SIGNUP_FAILURE',
+  () => {
     // arrange
     const error = {
       message: 'Error: Error: Request failed with status code 400' };
@@ -58,7 +59,8 @@ describe('Authentication Reducer', () => {
 
     expect(newState).toEqual(expectedState);
   });
-  it('should set initial state when action type passed is SIGNOUT_SUCCESS', () => {
+  it('should set initial state when action type passed is SIGNOUT_SUCCESS',
+  () => {
     // arrange
     const currentState = {
       loggedIn: true,

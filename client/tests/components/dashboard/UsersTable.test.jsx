@@ -43,7 +43,8 @@ describe('UsersTable Component', () => {
     expect(spyProps.fetchAllUsers.calledOnce).toEqual(true);
     expect(spyProps.fetchAllUsers.callCount).toEqual(1);
   });
-  it('should fetch more users into the users table list when pagination controls is clicked',
+  it('should fetch more users into the users table list' +
+  'when pagination controls is clicked',
   () => {
     const getMoreUsersSpy = sinon.spy(() => new Promise(() => {}));
     const component = shallow(
