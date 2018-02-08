@@ -8,15 +8,8 @@ injectTapEventPlugin();
 
 describe('Dashboard Drawer page', () => {
   let defaultProps;
-  let spyProps;
   beforeEach(() => {
     defaultProps = {
-      dispatch: () => {},
-      open: false,
-      closeDrawer: () => {},
-      user: { username: 'admin', roleId: 1, id: 1 },
-    };
-    spyProps = {
       dispatch: () => {},
       open: false,
       closeDrawer: () => {},
