@@ -4,7 +4,12 @@ import Paginate from '../helpers/paginate';
 
 const User = {
 
-  // Route: POST: /users
+  /**
+   * Route: POST: /users
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   createNewUser(req, res) {
     if (req.body.roleId === 1) {
       return res.status(401).send({ message: 'Invalid Privilege' });
@@ -24,7 +29,12 @@ const User = {
     .catch(error => res.status(400).send(error));
   },
 
-  // Route: GET: /users/:id
+  /**
+   * Route: GET: /users/:id
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   fetchUser(req, res) {
     return models.User.findById(req.params.id)
       .then((user) => {
@@ -35,8 +45,12 @@ const User = {
       .catch(error => res.status(400).send(error));
   },
 
-// Route: PUT: /users/:id
-// This updates user information
+/**
+ * Route: PUT: /users/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   updateUser(req, res) {
     if (req.body.roleId === 1 && res.header.decoded.roleId !== 1) {
       return res.status(403).send({
@@ -50,13 +64,19 @@ const User = {
     .catch(error => res.status(400).send(error));
   },
 
-  // Route: GET: /users or GET: /search/users/?limit=[integer]&offset=[integer]&q=[username]
+  /**
+   * Route: GET: /users or
+   * GET: /search/users/?limit=[integer]&offset=[integer]&q=[username]
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   fetchAllUsers(req, res) {
     let searchQuery = '%%';
     if (req.query.q) searchQuery = `%${req.query.q}%`;
 
     const offset = Number(req.query.offset) || 0;
-    const limit = Number(req.query.limit) || 20;
+    const limit = Number(req.query.limit) || 9;
 
     return models.User.findAndCount({
       offset,
@@ -66,18 +86,10 @@ const User = {
         $iLike: searchQuery
       } },
       order: [['createdAt', 'DESC']]
-      // include: [{
-      //   model: models.Role,
-      //   as: 'roles',
-      // }],
-      //   order: [
-      //     ['createdAt', 'DESC'],
-      //     [{ model: models.Role, as: 'roles' }, 'createdAt', 'ASC'],
-      //   ],
     })
     .then((users) => {
       const response = {
-        rows: users.rows,
+        users: users.rows,
         metaData: Paginate(users.count, limit, offset)
       };
       return res.status(200).send(response);
@@ -85,17 +97,27 @@ const User = {
     .catch(error => res.status(400).send(error));
   },
 
-
-// Route: DELETE: /users/:id
+/**
+ * Route: DELETE: /users/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   deleteUser(req, res) {
-    if (res.header.decoded.roleId === req.params.id && res.header.decoded.roleId !== 1) {
+    if (res.header.decoded.roleId === req.params.id
+      && res.header.decoded.roleId !== 1) {
       return res.status(403).send({ message: 'You dont have that privilege' });
     }
     return res.header.user.destroy()
     .then(() => res.status(203).send({ message: 'User deleted' }));
   },
 
-// Route: POST: /users/login
+/**
+ * Route: POST: /users/login
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   login(req, res) {
     return models.User.findOne({ where: {
       username: req.body.username
@@ -118,7 +140,12 @@ const User = {
   .catch(error => res.status(400).send(error));
   },
 
-// Route: GET: /users/:id/documents
+/**
+ * Route: GET: /users/:id/documents
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   fetchUserDocuments(req, res) {
     return models.Document.findAll({
       where: { authorId: res.header.user.id },
@@ -132,7 +159,12 @@ const User = {
   .catch(error => res.status(400).send(error));
   },
 
-// Route: POST: /users/logout
+/**
+ * Route: POST: /users/logout
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   logout(req, res) {
     return res.status(203).send({
       message: 'Successfully logged out'

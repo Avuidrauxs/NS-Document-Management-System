@@ -1,0 +1,30 @@
+/**
+ * Side drawer CSS
+ */
+
+#sidedrawer-brand {
+  padding-left: 20px;
+}
+
+#sidedrawer {
+  ul {
+    list-style: none;
+  }
+  > ul {
+    padding-left: 0px;
+    > li:first-child {
+      padding-top: 15px;
+    }
+  }
+  strong {
+    display: block;
+    padding: 15px 22px;
+    cursor: pointer;
+    &:hover {
+      background-color: #E0E0E0;
+    }
+    + ul > li {
+      padding: 6px 0px;
+    }
+  }
+}

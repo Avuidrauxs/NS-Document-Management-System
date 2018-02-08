@@ -4,32 +4,51 @@ import Paginate from '../helpers/paginate';
 
 const documents = {
 
-// Route: POST: /documents
-
+/**
+ * Route: POST: /documents
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   createDocument(req, res) {
     return models.User.findById(res.header.decoded.id)
        .then((user) => {
          req.body.authorId = user.id;
-         return models.Document.create(req.body)
-           .then((document) => {
-             const response = {
-               id: document.id,
-               title: document.title,
-               body: document.body,
-               access: document.access,
-               User: { username: user.username, roleId: user.roleId },
-               authorId: document.authorId,
-               createdAt: document.createdAt,
-               message: `"${document.title}" created`
-             };
-             return res.status(201).send(response);
-           })
-           .catch(error => res.status(400).send(error));
+         return models.Document.findOne({ where: { title: req.body.title } })
+         .then((doc) => {
+           if (!doc) {
+             return models.Document.create(req.body)
+             .then((document) => {
+               const response = {
+                 id: document.id,
+                 title: document.title,
+                 body: document.body,
+                 access: document.access,
+                 User: { username: user.username, roleId: user.roleId },
+                 authorId: document.authorId,
+                 createdAt: document.createdAt,
+                 message: `"${document.title}" created`
+               };
+               return res.status(201).send(response);
+             })
+           .catch(error => res.status(400)
+           .send({ message: 'Document already exists',
+             error }));
+           } else {
+             return res.status(400)
+             .send({ message: 'Document already exists' });
+           }
+         });
        })
        .catch(error => res.status(400).send(error));
   },
-// Route: GET: /documents/:id
 
+/**
+ * Route: GET: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   fetchDocument(req, res) {
     return models.Document.findById(req.params.id, {
       include: [{
@@ -40,7 +59,8 @@ const documents = {
       if (!document) {
         return res.status(404).send({ message: 'Document not found' });
       }
-      const token = req.body.token || req.query.token || req.headers['x-access-token'];
+      const token = req.body.token
+      || req.query.token || req.headers['x-access-token'];
       const decoded = Authenticate.checkToken(token);
       const userId = decoded ? decoded.id : null;
       const userRoleId = decoded ? decoded.roleId : null;
@@ -57,29 +77,48 @@ const documents = {
     .catch(error => res.status(400).send(error));
   },
 
-// Route: PUT: /documents/:id
-
+/**
+ * Route: PUT: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   updateDocument(req, res) {
-    return res.header.document
-    .update(req.body, { fields: Object.keys(req.body) })
-    .then((updatedDocument) => {
-      return models.Document.findById(updatedDocument.id, {
-        include: [{
-          model: models.User,
-          attributes: ['username', 'roleId'] }]
+    if (req.body.authorId === undefined) {
+      return res.header.document
+      .update(req.body, { fields: Object.keys(req.body) })
+      .then((updatedDocument) => {
+        return models.Document.findById(updatedDocument.id, {
+          include: [{
+            model: models.User,
+            attributes: ['username', 'roleId'] }]
+        })
+        .then(document => res.status(200).send(document));
       })
-      .then(document => res.status(200).send(document));
-    })
-    .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send(error));
+    } else {
+      res.status(400).send({ message: "You can't edit author id" });
+    }
   },
 
-// Route: DELETE: /documents/:id
+/**
+ *  Route: DELETE: /documents/:id
+ * @param  {object} req [request object parameter]
+ * @param  {object} res [response object paramter]
+ * @return {object}    returns a response object
+ */
   deleteDocument(req, res) {
     res.header.document.destroy()
     .then(() => res.status(200).send({ message: 'Document deleted' }));
   },
 
-  // Route: GET: /documents or GET: /documents/?limit=[integer]&offset=[integer]&q=[title]
+  /**
+   * Route: GET: /documents or
+   *  GET: /documents/?limit=[integer]&offset=[integer]&q=[title]
+   * @param  {object} req [request object parameter]
+   * @param  {object} res [response object paramter]
+   * @return {object}    returns a response object
+   */
   fetchAllDocuments(req, res) {
     let searchKey = '%%';
     if (req.query.q) {
@@ -87,11 +126,13 @@ const documents = {
     }
 
     let queryOptions = { access: 'public', title: { $iLike: searchKey } };
-    const token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.body.token
+    || req.query.token || req.headers['x-access-token'];
     const decoded = Authenticate.checkToken(token);
 
     if (decoded) {
-      queryOptions = (decoded.roleId === 1) ? { title: { $iLike: searchKey } } : {
+      queryOptions = (decoded.roleId === 1) ?
+      { title: { $iLike: searchKey } } : {
         $or: [
           { access: { $or: ['public', 'role'] } },
           { authorId: decoded.id }
@@ -100,7 +141,7 @@ const documents = {
     }
 
     const offset = Number(req.query.offset) || 0;
-    const limit = Number(req.query.limit) || 20;
+    const limit = Number(req.query.limit) || 9;
 
     return models.Document.findAndCount({
       offset,
@@ -118,7 +159,7 @@ const documents = {
         );
 
       const response = {
-        rows: documentRows,
+        documents: documentRows,
         metaData: Paginate(allDocuments.count, limit, offset)
       };
 
@@ -127,4 +168,5 @@ const documents = {
     .catch(error => res.status(400).send(error));
   },
 };
+
 export default documents;

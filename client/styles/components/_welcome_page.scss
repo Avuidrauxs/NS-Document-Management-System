@@ -1,0 +1,14 @@
+.welcome-page {
+  text-align: center;
+  padding-top: 100px;
+  color: #000000;
+}
+@media(max-width:767px) {
+  .welcome-page{
+    padding-top: 20px;
+  }
+  .welcome-page img{
+    height: 180px;
+    width: 200px;
+  }
+}
